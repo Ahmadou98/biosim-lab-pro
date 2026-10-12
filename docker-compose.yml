@@ -1,0 +1,46 @@
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: biosimlab
+      MYSQL_USER: biosim
+      MYSQL_PASSWORD: ${BIOSIM_DB_PASSWORD:-change-this-local-password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change-this-root-password}
+    volumes:
+      - biosim_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 4s
+      retries: 30
+    networks: [biosim]
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/biosimlab?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: biosim
+      SPRING_DATASOURCE_PASSWORD: ${BIOSIM_DB_PASSWORD:-change-this-local-password}
+      SPRING_DATASOURCE_DRIVER: com.mysql.cj.jdbc.Driver
+      CORS_ORIGIN: http://localhost:8088
+      PORT: 8080
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [biosim]
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "8088:80"
+    depends_on: [backend]
+    networks: [biosim]
+
+volumes:
+  biosim_mysql:
+networks:
+  biosim:
+    driver: bridge

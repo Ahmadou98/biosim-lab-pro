@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: biosim-lab-pro
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: "jdbc:h2:mem:biosimlab;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+      - key: SPRING_DATASOURCE_USERNAME
+        value: "sa"
+      - key: SPRING_DATASOURCE_DRIVER
+        value: "org.h2.Driver"
