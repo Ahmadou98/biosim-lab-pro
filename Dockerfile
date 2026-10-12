@@ -13,7 +13,7 @@ COPY backend/pom.xml ./pom.xml
 RUN mvn -q -DskipTests dependency:go-offline
 COPY backend/src ./src
 COPY --from=frontend-build /ui/dist ./src/main/resources/static
-RUN mvn -q -DskipTests package
+RUN mvn -q -Dmaven.test.skip=true package
 
 # One web service = one Render web service, no separate DB/proxy needed for a demo.
 FROM eclipse-temurin:21-jre-alpine
