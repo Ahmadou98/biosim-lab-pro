@@ -132,3 +132,10 @@ curl -X POST http://localhost:8080/api/quality-tests \
 ## Périmètre de validation de cette livraison
 
 Le code source et les fichiers de lancement sont fournis. L'environnement d'exécution de génération ne disposait ni de Maven ni d'un accès réseau aux dépôts de paquets ; je n'ai donc pas pu lancer `mvn test`, `mvn package` ou `npm install` ici. Il faut exécuter le premier build avec Docker ou les outils de développement listés, puis corriger tout éventuel problème de dépendance selon la version effectivement téléchargée. La structure applicative, les routes, les modèles persistants et le client web sont présents dans le projet ; ne considère pas cette mention comme une certification de logiciel GMP.
+
+
+## Fondation commerciale en cours
+
+Voir [`docs/COMMERCIAL-FOUNDATION.md`](docs/COMMERCIAL-FOUNDATION.md) avant tout déploiement de cette branche. Cette étape introduit un identifiant d'espace navigateur et la prise en charge de PostgreSQL via `DATABASE_URL`, mais **n'inclut pas encore d'authentification utilisateur**. L'identifiant navigateur n'est pas une frontière de sécurité commerciale.
+
+Sur Render, ajoute `DATABASE_URL` dans l'onglet **Environment** du service en utilisant l'Internal Database URL de la base PostgreSQL. Les secrets restent dans l'hébergeur, jamais dans le dépôt.

@@ -1,15 +1,20 @@
 package sn.biosimlab.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import java.time.Instant;
 
 @Entity
-@Table(name = "training_batches")
+@Table(name = "training_batches", indexes = @Index(name = "idx_training_batch_owner_created", columnList = "owner_session_id, created_at"))
 public class TrainingBatch {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
     @Column(nullable = false, unique = true, length = 32) private String batchCode;
+    // Anonymous browser workspace identifier; not a substitute for authenticated user identity.
+    @Column(name = "owner_session_id", length = 36) private String ownerSessionId;
     @Column(nullable = false, length = 80) private String scenario;
-    @Enumerated(EnumType.STRING) @Column(nullable = false, length = 32) private BatchStatus status = BatchStatus.READY;
+    @Enumerated(EnumType.STRING) @JdbcTypeCode(SqlTypes.VARCHAR) @Column(nullable = false, length = 32) private BatchStatus status = BatchStatus.READY;
     @Column(nullable = false, length = 80) private String phase = "Mise en route";
     private int step = 0;
     private int progressPercent = 0;
@@ -27,6 +32,7 @@ public class TrainingBatch {
     @PreUpdate public void beforeUpdate() { updatedAt = Instant.now(); }
     public Long getId() { return id; } public void setId(Long id) { this.id = id; }
     public String getBatchCode() { return batchCode; } public void setBatchCode(String batchCode) { this.batchCode = batchCode; }
+    @JsonIgnore public String getOwnerSessionId() { return ownerSessionId; } public void setOwnerSessionId(String ownerSessionId) { this.ownerSessionId = ownerSessionId; }
     public String getScenario() { return scenario; } public void setScenario(String scenario) { this.scenario = scenario; }
     public BatchStatus getStatus() { return status; } public void setStatus(BatchStatus status) { this.status = status; }
     public String getPhase() { return phase; } public void setPhase(String phase) { this.phase = phase; }

@@ -25,22 +25,22 @@ public class SimulationService {
     }
 
     @Transactional
-    public SimulationSnapshot state() { TrainingBatch batch = ensureBatch(); return snapshot(batch); }
+    public SimulationSnapshot state(String clientId) { TrainingBatch batch = ensureBatch(clientId); return snapshot(batch); }
 
     @Transactional
-    public SimulationSnapshot newBatch(String scenario) {
+    public SimulationSnapshot newBatch(String scenario, String clientId) {
         String safeScenario = Set.of("bioreactor", "purification", "fillfinish").contains(scenario) ? scenario : "bioreactor";
         TrainingBatch b = new TrainingBatch();
         b.setBatchCode("BS-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase(Locale.ROOT));
-        b.setScenario(safeScenario); b.setPhase("Mise en route"); b.setStatus(BatchStatus.READY);
+        b.setOwnerSessionId(clientId); b.setScenario(safeScenario); b.setPhase("Mise en route"); b.setStatus(BatchStatus.READY);
         batches.save(b);
         event(b, "INFO", "SESSION", "Nouvelle session pédagogique créée. Toutes les valeurs sont fictives et normalisées sur une échelle de démonstration.");
         return snapshot(b);
     }
 
     @Transactional
-    public SimulationSnapshot start() {
-        TrainingBatch b = ensureBatch();
+    public SimulationSnapshot start(String clientId) {
+        TrainingBatch b = ensureBatch(clientId);
         if (b.getStatus() == BatchStatus.SIMULATED_RELEASED) throw new IllegalStateException("Cette session est terminée. Crée une nouvelle session pour recommencer.");
         if (b.getStatus() == BatchStatus.AWAITING_QC) throw new IllegalStateException("Le scénario de procédé est terminé. Passe au laboratoire et à la revue de lot.");
         if (b.getStatus() != BatchStatus.RUNNING) { b.setStatus(BatchStatus.RUNNING); batches.save(b); event(b, "INFO", "PROCÉDÉ", "Simulation démarrée par l'apprenant."); }
@@ -48,15 +48,15 @@ public class SimulationService {
     }
 
     @Transactional
-    public SimulationSnapshot pause() {
-        TrainingBatch b = ensureBatch();
-        if (b.getStatus() == BatchStatus.RUNNING) { b.setStatus(BatchStatus.READY); batches.save(b); event(b, "INFO", "PROCÉDÉ", "Simulation mise en pause. Les données enregistrées sont conservées."); }
+    public SimulationSnapshot pause(String clientId) {
+        TrainingBatch b = ensureBatch(clientId);
+        if (b.getStatus() == BatchStatus.RUNNING) { b.setStatus(BatchStatus.PAUSED); batches.save(b); event(b, "INFO", "PROCÉDÉ", "Simulation mise en pause. Les données enregistrées sont conservées."); }
         return snapshot(b);
     }
 
     @Transactional
-    public SimulationSnapshot advance() {
-        TrainingBatch b = ensureBatch();
+    public SimulationSnapshot advance(String clientId) {
+        TrainingBatch b = ensureBatch(clientId);
         if (b.getStatus() == BatchStatus.SIMULATED_RELEASED) throw new IllegalStateException("La session est déjà terminée. Crée une nouvelle session.");
         if (b.getStatus() == BatchStatus.AWAITING_QC) throw new IllegalStateException("Le procédé est terminé. Les prochaines actions se trouvent au laboratoire et à la revue documentaire.");
         if (b.getStatus() != BatchStatus.RUNNING) b.setStatus(BatchStatus.RUNNING);
@@ -78,8 +78,8 @@ public class SimulationService {
     }
 
     @Transactional
-    public SimulationSnapshot updateParameters(ParameterRequest request) {
-        TrainingBatch b = ensureBatch();
+    public SimulationSnapshot updateParameters(ParameterRequest request, String clientId) {
+        TrainingBatch b = ensureBatch(clientId);
         if (b.getStatus() == BatchStatus.AWAITING_QC || b.getStatus() == BatchStatus.SIMULATED_RELEASED) throw new IllegalStateException("Les paramètres sont verrouillés après la fin du scénario. Crée une nouvelle session si nécessaire.");
         b.setTemperatureSetpointIndex(request.temperatureSetpointIndex());
         b.setAgitationSetpointIndex(request.agitationSetpointIndex());
@@ -90,8 +90,8 @@ public class SimulationService {
     }
 
     @Transactional
-    public SimulationSnapshot runTest(TestRequest request) {
-        TrainingBatch b = ensureBatch();
+    public SimulationSnapshot runTest(TestRequest request, String clientId) {
+        TrainingBatch b = ensureBatch(clientId);
         if (b.getStep() < 3 && b.getStatus() != BatchStatus.AWAITING_QC) event(b, "WARN", "FORMATION", "Essai de laboratoire lancé avant la fin du scénario : il est permis pour apprendre, mais la revue finale restera bloquée tant que le procédé ne sera pas complet.");
         TestDefinition def = testDefinition(request.testId());
         double value = def.sampleValue();
@@ -106,8 +106,8 @@ public class SimulationService {
     }
 
     @Transactional
-    public SimulationSnapshot createDeviation(DeviationRequest request) {
-        TrainingBatch b = ensureBatch();
+    public SimulationSnapshot createDeviation(DeviationRequest request, String clientId) {
+        TrainingBatch b = ensureBatch(clientId);
         String severity = normalizeSeverity(request.severity());
         TrainingDeviation d = new TrainingDeviation(b.getBatchCode(), request.title().trim(), severity, "OPEN", request.action().trim());
         deviations.save(d); event(b, "WARN", "DÉVIATION", "Événement " + d.getId() + " consigné : " + d.getTitle());
@@ -115,8 +115,8 @@ public class SimulationService {
     }
 
     @Transactional
-    public SimulationSnapshot updateDeviationStatus(long id, DeviationStatusRequest request) {
-        TrainingBatch b = ensureBatch();
+    public SimulationSnapshot updateDeviationStatus(long id, DeviationStatusRequest request, String clientId) {
+        TrainingBatch b = ensureBatch(clientId);
         TrainingDeviation d = deviations.findById(id).orElseThrow(() -> new NoSuchElementException("Déviation introuvable."));
         if (!d.getBatchCode().equals(b.getBatchCode())) throw new NoSuchElementException("Cette déviation n'appartient pas à la session active.");
         String status = request.status().trim().toUpperCase(Locale.ROOT);
@@ -126,8 +126,8 @@ public class SimulationService {
     }
 
     @Transactional
-    public ReleaseResult reviewAndDisposition(ReleaseRequest request) {
-        TrainingBatch b = ensureBatch(); List<String> blockers = new ArrayList<>();
+    public ReleaseResult reviewAndDisposition(ReleaseRequest request, String clientId) {
+        TrainingBatch b = ensureBatch(clientId); List<String> blockers = new ArrayList<>();
         if (b.getStatus() != BatchStatus.AWAITING_QC) blockers.add("Le scénario de procédé doit être terminé avant la revue finale.");
         if (request.checks() == null || request.checks().size() != 5 || request.checks().stream().anyMatch(v -> !Boolean.TRUE.equals(v))) blockers.add("Les cinq éléments de la liste documentaire doivent être revus.");
         Map<String, QualityTest> latest = new HashMap<>();
@@ -149,16 +149,16 @@ public class SimulationService {
     }
 
     @Transactional
-    public DashboardSummary dashboard() {
-        TrainingBatch b = ensureBatch(); List<QualityTest> allTests = tests.findByBatchCodeOrderByCreatedAtDesc(b.getBatchCode());
+    public DashboardSummary dashboard(String clientId) {
+        TrainingBatch b = ensureBatch(clientId); List<QualityTest> allTests = tests.findByBatchCodeOrderByCreatedAtDesc(b.getBatchCode());
         Set<String> seen = new HashSet<>(); int passed = 0, executed = 0;
         for (QualityTest t : allTests) if (seen.add(t.getTestId())) { executed++; if ("CONFORME".equals(t.getResultStatus())) passed++; }
         return new DashboardSummary(b.getBatchCode(), b.getStatus().name(), b.getProgressPercent(), b.getStep(), TOTAL_STEPS, b.getAlarmCount(), executed, passed, (int)deviations.countByBatchCodeAndStatusNot(b.getBatchCode(), "CLOSED"), b.getQualityTrendIndex());
     }
 
-    private TrainingBatch ensureBatch() {
-        return batches.findTopByOrderByCreatedAtDesc().orElseGet(() -> {
-            TrainingBatch b = new TrainingBatch(); b.setBatchCode("BS-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase(Locale.ROOT)); b.setScenario("bioreactor"); b.setPhase("Mise en route");
+    private TrainingBatch ensureBatch(String clientId) {
+        return batches.findTopByOwnerSessionIdOrderByCreatedAtDesc(clientId).orElseGet(() -> {
+            TrainingBatch b = new TrainingBatch(); b.setOwnerSessionId(clientId); b.setBatchCode("BS-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase(Locale.ROOT)); b.setScenario("bioreactor"); b.setPhase("Mise en route");
             batches.save(b); event(b, "INFO", "SESSION", "Session d'apprentissage initialisée. Équipement virtuel, valeurs fictives."); return b;
         });
     }

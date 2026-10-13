@@ -1,0 +1,26 @@
+# Java / Maven
+**/target/
+*.class
+
+# Bases de données locales H2
+*.mv.db
+*.trace.db
+
+# Variables d'environnement et secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Frontend / Node.js
+frontend/node_modules/
+frontend/dist/
+frontend/tsconfig.tsbuildinfo

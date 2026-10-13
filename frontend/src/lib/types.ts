@@ -1,4 +1,4 @@
-export type BatchStatus = 'READY' | 'RUNNING' | 'AWAITING_QC' | 'ON_HOLD' | 'SIMULATED_RELEASED';
+export type BatchStatus = 'READY' | 'RUNNING' | 'PAUSED' | 'AWAITING_QC' | 'ON_HOLD' | 'SIMULATED_RELEASED';
 export interface TrainingBatch {
   id: number; batchCode: string; scenario: 'bioreactor' | 'purification' | 'fillfinish' | string; status: BatchStatus;
   phase: string; step: number; progressPercent: number; temperatureSetpointIndex: number; agitationSetpointIndex: number; gasTransferSetpointIndex: number;

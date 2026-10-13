@@ -1,3 +1,6 @@
+# For persistent hosted data, create PostgreSQL separately and configure DATABASE_URL
+# in the Render service Environment (use the database's Internal Database URL).
+# Never commit database credentials. Configure DATABASE_URL in Render before deployment.
 services:
   - type: web
     name: biosim-lab-pro
@@ -7,10 +10,3 @@ services:
     dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /api/health
-    envVars:
-      - key: SPRING_DATASOURCE_URL
-        value: "jdbc:h2:mem:biosimlab;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
-      - key: SPRING_DATASOURCE_USERNAME
-        value: "sa"
-      - key: SPRING_DATASOURCE_DRIVER
-        value: "org.h2.Driver"
