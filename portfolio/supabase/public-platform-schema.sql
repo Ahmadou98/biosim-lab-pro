@@ -16,6 +16,7 @@ create table if not exists public.public_profiles (
   email text,
   pin_salt text,
   pin_hash text,
+  recovery_hash text,
   is_demo boolean not null default false,
   is_public boolean not null default true,
   created_at timestamptz not null default now(),
