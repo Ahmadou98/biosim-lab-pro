@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1f3a">
+  <meta name="description" content="Bilingual professional portfolio and digital business card.">
+  <title>Professional portfolio | BioPage</title>
+  <link rel="stylesheet" href="platform.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <header class="pp-header">
+    <div class="pp-shell pp-header-inner">
+      <a class="pp-brand" href="platform.html"><span class="pp-brand-mark">BP</span><span>BIOPAGE <span style="font-weight:500;color:#94a8bb">/ PORTFOLIO</span></span></a>
+      <div class="pp-header-actions">
+        <div class="pp-lang"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="fr" aria-pressed="false">FR</button></div>
+        <a class="pp-btn pp-btn-dark-outline pp-btn-small" href="platform.html" data-en="Create yours ↗" data-fr="Créer le vôtre ↗">Create yours ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="profileView" hidden>
+    <section class="pp-profile-hero">
+      <div class="pp-shell pp-profile-hero-inner">
+        <div class="pp-avatar" id="profileAvatar"><span id="profileInitials">BP</span></div>
+        <div>
+          <div id="demoLabel" class="pp-demo-label" hidden>DEMONSTRATION PROFILE · FICTIONAL DATA</div>
+          <p class="pp-eyebrow" style="color:#8be0bf;margin-top:12px" id="profileOverline">PROFESSIONAL PROFILE</p>
+          <h1 id="profileName">Professional name</h1>
+          <p class="pp-profile-title" id="profileTitle"></p>
+          <p class="pp-profile-bio" id="profileBio"></p>
+          <div class="pp-profile-meta" id="profileMeta"></div>
+          <div class="pp-profile-actions">
+            <button class="pp-btn pp-btn-primary" type="button" id="showCardBtn" data-en="Digital Card & QR Code ↓" data-fr="Carte numérique & QR Code ↓">Digital Card & QR Code ↓</button>
+            <a class="pp-btn pp-btn-dark-outline" id="profileWhatsApp" href="#" target="_blank" rel="noopener" hidden>WhatsApp ↗</a>
+            <a class="pp-btn pp-btn-dark-outline" id="profileLinkedIn" href="#" target="_blank" rel="noopener" hidden>LinkedIn ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pp-section pp-section-white">
+      <div class="pp-shell">
+        <div class="pp-two-col">
+          <section>
+            <p class="pp-eyebrow" data-en="CAREER" data-fr="PARCOURS">CAREER</p>
+            <h2 data-en="Professional experience" data-fr="Expériences professionnelles">Professional experience</h2>
+            <div class="pp-section-list" id="experiencesList"></div>
+          </section>
+          <section>
+            <p class="pp-eyebrow" data-en="EDUCATION" data-fr="FORMATION">EDUCATION</p>
+            <h2 data-en="Education & credentials" data-fr="Diplômes & certifications">Education & credentials</h2>
+            <div class="pp-section-list" id="diplomasList"></div>
+          </section>
+          <section>
+            <p class="pp-eyebrow" data-en="CONVENING & NETWORKS" data-fr="RENCONTRES & RÉSEAUX">CONVENING & NETWORKS</p>
+            <h2 data-en="Events & conferences" data-fr="Événements & conférences">Events & conferences</h2>
+            <div class="pp-section-list" id="eventsList"></div>
+          </section>
+          <section>
+            <p class="pp-eyebrow" data-en="IMPACT" data-fr="ENGAGEMENT">IMPACT</p>
+            <h2 data-en="Initiatives & projects" data-fr="Initiatives & projets">Initiatives & projects</h2>
+            <div class="pp-section-list" id="initiativesList"></div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="pp-section" id="digitalCardSection" hidden>
+      <div class="pp-shell">
+        <div style="max-width:420px;margin:0 auto 24px;text-align:center">
+          <p class="pp-eyebrow" data-en="DIGITAL BUSINESS CARD" data-fr="CARTE DE VISITE NUMÉRIQUE">DIGITAL BUSINESS CARD</p>
+          <h2 data-en="Take this connection with you." data-fr="Emportez ce contact avec vous.">Take this connection with you.</h2>
+          <p class="pp-lead" style="margin-inline:auto" data-en="Scan the QR code, save the vCard or exchange contact details in a few taps." data-fr="Scannez le QR Code, enregistrez la vCard ou échangez vos coordonnées en quelques instants.">Scan the QR code, save the vCard or exchange contact details in a few taps.</p>
+        </div>
+        <article class="pp-card-frame">
+          <div class="pp-card-top"><div class="pp-demo-label" id="cardDemoLabel" hidden>FICTIONAL DEMO</div></div>
+          <div class="pp-card-body">
+            <div class="pp-card-photo" id="cardPhoto"><span id="cardInitials">BP</span></div>
+            <h3 class="pp-card-name" id="cardName">Professional name</h3>
+            <p class="pp-card-title" id="cardTitle"></p>
+            <p class="pp-card-org" id="cardOrg"></p>
+            <p class="pp-card-bio" id="cardBio"></p>
+            <div class="pp-qr"><div class="pp-qr-frame"><div id="profileQr" aria-label="QR code for this portfolio"></div><p id="qrFallback" hidden style="margin:5px 0 0;color:#64748b;font-size:9px">QR code library unavailable. Use the profile link above.</p></div></div>
+            <p style="margin:7px 0 0;color:#8290a0;font-size:9px" data-en="Scan to open this portfolio" data-fr="Scannez pour ouvrir ce portfolio">Scan to open this portfolio</p>
+            <div class="pp-card-details" id="cardDetails"></div>
+            <div class="pp-card-actions">
+              <button id="saveVcardBtn" class="pp-btn pp-btn-primary" type="button">SAVE CONTACT (.VCF)</button>
+              <button id="shareBackBtn" class="pp-btn pp-btn-outline" type="button" data-en="Share your contact back ↗" data-fr="Partager votre contact ↗">Share your contact back ↗</button>
+              <button id="hideCardBtn" class="pp-btn pp-btn-outline" type="button" data-en="← Back to portfolio" data-fr="← Retour au portfolio">← Back to portfolio</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <section id="loadingState" class="pp-shell pp-page">
+    <div class="pp-panel" style="max-width:680px;margin:38px auto;text-align:center">
+      <p class="pp-eyebrow">BIOPAGE</p><h1 class="pp-page-heading" data-en="Loading professional profile…" data-fr="Chargement du profil professionnel…">Loading professional profile…</h1>
+      <p class="pp-page-intro" style="margin-inline:auto" data-en="Please wait while the public portfolio is retrieved." data-fr="Veuillez patienter pendant le chargement du portfolio public.">Please wait while the public portfolio is retrieved.</p>
+    </div>
+  </section>
+  <section id="notFoundState" class="pp-shell pp-page" hidden>
+    <div class="pp-panel" style="max-width:680px;margin:38px auto;text-align:center">
+      <p class="pp-eyebrow">BIOPAGE</p><h1 class="pp-page-heading" data-en="This portfolio is unavailable." data-fr="Ce portfolio est introuvable.">This portfolio is unavailable.</h1>
+      <p class="pp-page-intro" id="notFoundMessage" style="margin:12px auto 22px">The link may be incorrect, or the portfolio is no longer public.</p>
+      <a class="pp-btn pp-btn-primary" href="platform.html" data-en="Discover BioPage ↗" data-fr="Découvrir BioPage ↗">Discover BioPage ↗</a>
+    </div>
+  </section>
+
+  <div class="pp-modal" id="contactModal" hidden>
+    <div class="pp-modal-card" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+      <button class="pp-modal-close" type="button" id="closeContactModal" aria-label="Close">×</button>
+      <div id="contactFormPane">
+        <p class="pp-eyebrow" data-en="EXCHANGE CONTACTS" data-fr="ÉCHANGE DE COORDONNÉES">EXCHANGE CONTACTS</p>
+        <h2 id="contactModalTitle" data-en="Share your contact back" data-fr="Partagez votre contact en retour">Share your contact back</h2>
+        <p data-en="Your details will be shared with this portfolio owner only after you submit this form." data-fr="Vos coordonnées seront transmises uniquement au propriétaire de ce portfolio après validation du formulaire.">Your details will be shared with this portfolio owner only after you submit this form.</p>
+        <form id="contactForm" class="pp-form">
+          <label class="pp-field"><span class="pp-label" data-en="Your name *" data-fr="Votre nom *">Your name *</span><input class="pp-input" id="contactName" name="name" autocomplete="name" maxlength="160" required placeholder="Full name"></label>
+          <label class="pp-field"><span class="pp-label" data-en="Phone number" data-fr="Téléphone">Phone number</span><input class="pp-input" id="contactPhone" name="tel" type="tel" autocomplete="tel" maxlength="40" placeholder="+…"></label>
+          <label class="pp-field"><span class="pp-label" data-en="Email address" data-fr="Adresse e-mail">Email address</span><input class="pp-input" id="contactEmail" name="email" type="email" autocomplete="email" maxlength="254" placeholder="name@example.com"></label>
+          <label class="pp-field"><span class="pp-label" data-en="Organisation" data-fr="Organisation">Organisation</span><input class="pp-input" id="contactOrganization" name="organization" autocomplete="organization" maxlength="180" placeholder="Company or institution"></label>
+          <label class="pp-checkline"><input id="contactConsent" type="checkbox" required><span data-en="I agree to share these details with the portfolio owner." data-fr="J'accepte de partager ces coordonnées avec le propriétaire du portfolio.">I agree to share these details with the portfolio owner.</span></label>
+          <div class="pp-hint" data-en="On supported Android browsers, you can choose a contact from your address book. On other devices, your keyboard may offer AutoFill." data-fr="Sur certains navigateurs Android compatibles, vous pouvez choisir un contact dans votre carnet. Sur les autres appareils, le clavier peut proposer le remplissage automatique.">On supported Android browsers, you can choose a contact from your address book. On other devices, your keyboard may offer AutoFill.</div>
+          <div id="contactError" class="pp-message" role="alert" aria-live="polite"></div>
+          <button id="submitContactBtn" class="pp-btn pp-btn-primary" type="submit" data-en="Share contact securely" data-fr="Partager mes coordonnées">Share contact securely</button>
+        </form>
+      </div>
+      <div id="contactSuccessPane" hidden style="text-align:center;padding:12px 0 0">
+        <div style="width:54px;height:54px;display:grid;place-items:center;border-radius:50%;margin:0 auto 14px;background:#e5f6ee;color:#07845f;font-size:27px;font-weight:900">✓</div>
+        <h2 id="contactSuccessTitle" style="margin:0 0 8px">Contact shared!</h2>
+        <p id="contactSuccessCopy"></p>
+        <a id="contactWhatsAppBtn" class="pp-btn pp-btn-primary" href="#" target="_blank" rel="noopener" hidden>Say Hi on WhatsApp ↗</a>
+        <button id="contactDoneBtn" class="pp-btn pp-btn-outline" style="width:100%;margin-top:10px" type="button" data-en="Done" data-fr="Terminer">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="pp-footer"><div class="pp-shell pp-footer-inner"><span>© <span id="year"></span> BioPage Studio</span><a href="platform.html" data-en="Create your own portfolio ↗" data-fr="Créer votre propre portfolio ↗">Create your own portfolio ↗</a></div></footer>
+  <button class="pp-backtop" type="button" data-backtop aria-label="Back to top" title="Back to top" hidden>↑</button>
+
+  <script src="platform-api.js"></script>
+  <script>
+    (function(){
+      const $=id=>document.getElementById(id);
+      let profile=null, lang="en", qrBuilt=false, shareMethod="autofill";
+      const slug=new URLSearchParams(location.search).get("id")||"";
+      const text=(en,fr)=>lang==="fr"?fr:en;
+      function setLang(next){
+        lang=next==="fr"?"fr":"en";document.documentElement.lang=lang;
+        document.querySelectorAll("[data-en][data-fr]").forEach(n=>{n.textContent=n.getAttribute(lang==="fr"?"data-fr":"data-en");});
+        if(profile)renderProfileText();
+        document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===lang)));
+        try{localStorage.setItem("biopage-language",lang);}catch(_){}
+      }
+      document.querySelectorAll("[data-lang]").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));
+      try{lang=localStorage.getItem("biopage-language")||"en";}catch(_){lang="en";}
+      function avatarMarkup(imageUrl, initialId, avatarId){
+        const avatar=$(avatarId), initials=$(initialId);
+        initials.textContent=PP.initials(profile.full_name);
+        if(imageUrl){
+          const img=document.createElement("img");img.alt=profile.full_name+" portrait";
+          img.onload=()=>{avatar.innerHTML="";avatar.appendChild(img);};
+          img.onerror=()=>{avatar.innerHTML="";const span=document.createElement("span");span.textContent=PP.initials(profile.full_name);avatar.appendChild(span);};
+          img.src=imageUrl;
+        }
+      }
+      function metaMarkup(){
+        const pieces=[];
+        if(profile.organization)pieces.push(profile.organization);
+        if(profile.location)pieces.push(profile.location);
+        $("profileMeta").innerHTML=pieces.map(x=>'<span class="pp-badge">'+PP.esc(x)+'</span>').join("");
+      }
+      function titleValue(){
+        return (lang==="fr"?(profile.title_fr||profile.title_en):(profile.title_en||profile.title_fr))||"";
+      }
+      function bioValue(){
+        return (lang==="fr"?(profile.bio_fr||profile.bio_en):(profile.bio_en||profile.bio_fr))||"";
+      }
+      function renderProfileText(){
+        $("profileName").textContent=profile.full_name;
+        $("profileTitle").textContent=titleValue();
+        $("profileBio").textContent=bioValue();
+        $("profileOverline").textContent=text("PROFESSIONAL PROFILE","PROFIL PROFESSIONNEL");
+        $("cardName").textContent=profile.full_name;
+        $("cardTitle").textContent=titleValue();
+        $("cardOrg").textContent=profile.organization||"";
+        $("cardBio").textContent=bioValue();
+        metaMarkup();
+        const wa=PP.waLink(profile.whatsapp,text("Hello, I would like to connect with you.","Bonjour, je souhaite échanger avec vous."));
+        $("profileWhatsApp").hidden=!wa;$("profileWhatsApp").href=wa;
+        const linked=profile.linkedin_url&&/^https?:\/\//i.test(profile.linkedin_url)?profile.linkedin_url:"";
+        $("profileLinkedIn").hidden=!linked;$("profileLinkedIn").href=linked;
+        $("profileLinkedIn").textContent="LinkedIn ↗";
+        renderCollectionCards();
+        renderCardDetails();
+      }
+      function safeLink(value){
+        if(!value)return "";
+        try{const u=new URL(value);return ["https:","http:"].includes(u.protocol)?u.href:"";}catch(_){return "";}
+      }
+      function renderCardDetails(){
+        const entries=[];
+        if(profile.whatsapp)entries.push(["WhatsApp",'<a href="'+PP.esc(PP.waLink(profile.whatsapp))+'" target="_blank" rel="noopener">'+PP.esc(profile.whatsapp)+'</a>']);
+        if(profile.email)entries.push(["Email",'<a href="mailto:'+encodeURIComponent(profile.email)+'">'+PP.esc(profile.email)+'</a>']);
+        if(profile.linkedin_url){const url=safeLink(profile.linkedin_url);if(url)entries.push(["LinkedIn",'<a href="'+PP.esc(url)+'" target="_blank" rel="noopener">View profile ↗</a>']);}
+        if(profile.organization)entries.push([text("Organisation","Organisation"),'<span>'+PP.esc(profile.organization)+'</span>']);
+        if(profile.location)entries.push([text("Location","Localisation"),'<span>'+PP.esc(profile.location)+'</span>']);
+        $("cardDetails").innerHTML=entries.map(x=>'<div class="pp-card-detail"><strong>'+PP.esc(x[0])+'</strong>'+x[1]+'</div>').join("");
+      }
+      function emptyText(message){return '<div class="pp-empty">'+PP.esc(message)+'</div>';}
+      function renderEntries(id,rows,titleField,metaField,descField,yearField){
+        const node=$(id);
+        if(!rows||!rows.length){node.innerHTML=emptyText(text("No information published yet.","Aucune information publiée pour le moment."));return;}
+        node.innerHTML=rows.map(item=>{
+          const title=item[lang==="fr"?(titleField.replace("_en","_fr")):titleField]||item[titleField]||item[titleField.replace("_en","_fr")]||"";
+          const meta=[item[metaField],item.start_date?PP.formatDate(item.start_date,lang):"",item.end_date?PP.formatDate(item.end_date,lang):"",item.year||""].filter(Boolean).join(" · ");
+          const description=item[lang==="fr"?descField.replace("_en","_fr"):descField]||item[descField]||item[descField.replace("_en","_fr")]||"";
+          return '<article class="pp-entry"><h3>'+PP.esc(title)+'</h3>'+(meta?'<div class="pp-entry-meta">'+PP.esc(meta)+'</div>':"")+(description?'<p>'+PP.esc(description)+'</p>':"")+'</article>';
+        }).join("");
+      }
+      function renderCollectionCards(){
+        renderEntries("experiencesList",publicData.experiences||[],"title_en","organization","description_en");
+        renderEntries("diplomasList",publicData.diplomas||[],"title_en","institution","details_en");
+        renderEntries("eventsList",publicData.events||[],"title_en","location","summary_en");
+        renderEntries("initiativesList",publicData.initiatives||[],"title_en","category","description_en");
+      }
+      let publicData={experiences:[],diplomas:[],events:[],initiatives:[]};
+      function buildQr(){
+        if(qrBuilt)return;qrBuilt=true;
+        const box=$("profileQr");box.innerHTML="";
+        if(typeof QRCode==="undefined"){$("qrFallback").hidden=false;return;}
+        const url=location.origin+location.pathname+"?id="+encodeURIComponent(profile.slug);
+        try{new QRCode(box,{text:url,width:142,height:142,colorDark:"#0b1f3a",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});}
+        catch(_){$("qrFallback").hidden=false;}
+      }
+      function openCard(){
+        $("digitalCardSection").hidden=false;buildQr();
+        $("digitalCardSection").scrollIntoView({behavior:"smooth",block:"start"});
+      }
+      $("showCardBtn").addEventListener("click",openCard);
+      $("hideCardBtn").addEventListener("click",()=>{$("digitalCardSection").hidden=true;$("profileView").scrollIntoView({behavior:"smooth"});});
+      $("saveVcardBtn").addEventListener("click",()=>PP.downloadVcard(profile));
+
+      function openShareModal(prefill){
+        $("contactFormPane").hidden=false;$("contactSuccessPane").hidden=true;
+        $("contactForm").reset();$("contactConsent").checked=false;
+        $("contactName").value=prefill&&prefill.full_name||"";
+        $("contactPhone").value=prefill&&prefill.phone||"";
+        $("contactEmail").value=prefill&&prefill.email||"";
+        $("contactOrganization").value=prefill&&prefill.organization||"";
+        PP.setMessage($("contactError"),"");
+        $("contactModal").hidden=false;
+        setTimeout(()=>$("contactName").focus(),80);
+      }
+      function closeShareModal(){$("contactModal").hidden=true;}
+      $("closeContactModal").addEventListener("click",closeShareModal);
+      $("contactDoneBtn").addEventListener("click",closeShareModal);
+      $("contactModal").addEventListener("click",e=>{if(e.target===$("contactModal"))closeShareModal();});
+      function contactValue(value){
+        if(Array.isArray(value))return value.length?String(value[0]):"";
+        return value?String(value):"";
+      }
+      async function saveContact(data,method){
+        if(!data.full_name||data.full_name.trim().length<2)throw new Error(text("Please provide your full name.","Veuillez saisir votre nom complet."));
+        if(!data.phone&&!data.email)throw new Error(text("Enter a phone number or an email address.","Indiquez un téléphone ou une adresse e-mail."));
+        const result=await PP.api("share-contact",{
+          slug:profile.slug,full_name:data.full_name,phone:data.phone||null,email:data.email||null,
+          organization:data.organization||null,share_method:method
+        });
+        showContactSuccess(data.full_name,result.owner_name||profile.full_name);
+      }
+      function showContactSuccess(name,owner){
+        $("contactFormPane").hidden=true;$("contactSuccessPane").hidden=false;
+        $("contactSuccessTitle").textContent=text("Contact shared with "+owner+"!","Contact partagé avec "+owner+" !");
+        $("contactSuccessCopy").textContent=text("Thank you, "+name+". Your contact details have been sent securely.","Merci "+name+". Vos coordonnées ont été transmises de manière sécurisée.");
+        const message=text("Hello "+name+", thank you for sharing your contact via my BioPage. I look forward to connecting.","Bonjour "+name+", merci d’avoir partagé vos coordonnées via mon BioPage. Au plaisir d’échanger.");
+        const link=PP.waLink(profile.whatsapp,message);
+        $("contactWhatsAppBtn").hidden=!link;$("contactWhatsAppBtn").href=link;
+        $("contactWhatsAppBtn").textContent=text("Say Hi on WhatsApp ↗","Dire bonjour sur WhatsApp ↗");
+      }
+      async function startContactShare(){
+        if(navigator.contacts&&typeof navigator.contacts.select==="function"){
+          try{
+            const selected=await navigator.contacts.select(["name","tel","email"],{multiple:false});
+            const contact=Array.isArray(selected)?selected[0]:null;
+            if(contact){
+              const details={
+                full_name:contactValue(contact.name),
+                phone:contactValue(contact.tel),
+                email:contactValue(contact.email),
+                organization:""
+              };
+              if(details.full_name&& (details.phone||details.email)){
+                shareMethod="contact_picker";
+                try{await saveContact(details,shareMethod);}
+                catch(error){openShareModal(details);PP.setMessage($("contactError"),error.message,true);}
+                return;
+              }
+              openShareModal(details);
+              return;
+            }
+          }catch(_){
+            // Cancelled or blocked: continue with the AutoFill fallback.
+          }
+        }
+        shareMethod="autofill";
+        openShareModal(null);
+      }
+      $("shareBackBtn").addEventListener("click",startContactShare);
+      $("contactForm").addEventListener("submit",async e=>{
+        e.preventDefault();
+        if(!$("contactConsent").checked){PP.setMessage($("contactError"),text("Please confirm your consent.","Veuillez confirmer votre accord."),true);return;}
+        const data={
+          full_name:$("contactName").value.trim(),phone:$("contactPhone").value.trim(),
+          email:$("contactEmail").value.trim(),organization:$("contactOrganization").value.trim()
+        };
+        if(!data.phone&&!data.email){PP.setMessage($("contactError"),text("Enter a phone number or an email address.","Indiquez un téléphone ou une adresse e-mail."),true);return;}
+        const button=$("submitContactBtn");button.disabled=true;
+        try{await saveContact(data,"autofill");}
+        catch(error){PP.setMessage($("contactError"),error.message,true);}
+        finally{button.disabled=false;}
+      });
+
+      async function init(){
+        $("year").textContent=new Date().getFullYear();
+        setLang(lang);
+        if(!slug||!/^[a-z0-9](?:[a-z0-9-]{1,30}[a-z0-9])$/i.test(slug))throw new Error(text("This portfolio link is invalid.","Ce lien de portfolio est invalide."));
+        publicData=await PP.api("public-profile",{slug:slug.toLowerCase()});
+        profile=publicData.profile;
+        if(!profile||!profile.is_public)throw new Error(text("This portfolio is not public.","Ce portfolio n'est pas public."));
+        $("demoLabel").hidden=!profile.is_demo;$("cardDemoLabel").hidden=!profile.is_demo;
+        if(profile.is_demo){
+          $("demoLabel").textContent=text("DEMONSTRATION PROFILE · FICTIONAL DATA","PROFIL DE DÉMONSTRATION · DONNÉES FICTIVES");
+          $("cardDemoLabel").textContent=text("FICTIONAL DEMO PROFILE","PROFIL FICTIF");
+        }
+        avatarMarkup(profile.photo_url,"profileInitials","profileAvatar");
+        avatarMarkup(profile.photo_url,"cardInitials","cardPhoto");
+        renderProfileText();
+        $("profileView").hidden=false;$("loadingState").hidden=true;
+        const title=profile.full_name+" | "+(profile.title_en||"Professional portfolio")+" | BioPage";
+        document.title=title;
+        const meta=document.querySelector('meta[name="description"]');if(meta)meta.content=(profile.bio_en||"Professional portfolio").slice(0,155);
+        const canonical=location.origin+location.pathname+"?id="+encodeURIComponent(profile.slug);
+        const urlMeta=document.createElement("meta");urlMeta.setAttribute("property","og:url");urlMeta.content=canonical;document.head.appendChild(urlMeta);
+      }
+      init().catch(error=>{
+        $("loadingState").hidden=true;$("notFoundState").hidden=false;
+        $("notFoundMessage").textContent=error.message||text("The portfolio could not be loaded.","Le portfolio n'a pas pu être chargé.");
+      });
+    })();
+  </script>
+</body>
+</html>
