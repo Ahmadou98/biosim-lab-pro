@@ -191,6 +191,8 @@
       let activeTab = 'events';
       let records = {events:[],experiences:[],diplomas:[],initiatives:[]};
       let editing = null;
+      let removedMediaPaths = [];
+      let profilePhotoRemoved = false;
 
       function escapeHtml(value) {
         return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
@@ -282,6 +284,8 @@
       function setTab(tab) {
         activeTab = tab;
         editing = null;
+        removedMediaPaths = [];
+        profilePhotoRemoved = false;
         document.querySelectorAll('[data-tab]').forEach(function (button) {
           if (button.dataset.tab === tab) button.setAttribute('aria-current','page');
           else button.removeAttribute('aria-current');
@@ -296,8 +300,8 @@
       document.querySelectorAll('[data-tab]').forEach(function (button) {
         button.addEventListener('click', function () { setTab(button.dataset.tab); });
       });
-      $('newButton').addEventListener('click', function () { editing = null; renderEditor(null); });
-      $('cancelEdit').addEventListener('click', function () { editing = null; if (activeTab === 'profile') loadProfileEditor(); else renderEditor(null); });
+      $('newButton').addEventListener('click', function () { editing = null; removedMediaPaths = []; renderEditor(null); });
+      $('cancelEdit').addEventListener('click', async function () { editing = null; removedMediaPaths = []; profilePhotoRemoved = false; await loadAll(); if (activeTab === 'profile') loadProfileEditor(); else renderEditor(null); });
 
       function renderList() {
         const list = $('recordsList');
@@ -322,6 +326,7 @@
         }).join('');
         list.querySelectorAll('[data-edit]').forEach(function (button) {
           button.addEventListener('click', function () {
+            removedMediaPaths = [];
             editing = rows.find(function (row) { return row.id === button.dataset.edit; }) || null;
             renderEditor(editing);
           });
@@ -361,7 +366,6 @@
         if (field.type === 'tags') return '<div class="sm:col-span-2"><label class="field-label" for="field_' + field.name + '">' + escapeHtml(field.label) + '</label><input class="field" type="text" ' + base + ' value="' + escapeHtml(Array.isArray(value) ? value.join(', ') : value) + '" placeholder="Upstream, Downstream, GMP…"></div>';
         return '<div' + (field.full ? ' class="sm:col-span-2"' : '') + '><label class="field-label" for="field_' + field.name + '">' + escapeHtml(field.label) + '</label><input class="field" type="' + escapeHtml(field.type || 'text') + '" ' + base + ' value="' + escapeHtml(value) + '" placeholder="' + escapeHtml(field.placeholder || '') + '"' + (field.required ? ' required' : '') + '></div>';
       }
-      let removedMediaPaths = [];
       function mediaPreview(record) {
         const media = tableMedia[activeTab];
         if (!media) return '';
@@ -396,7 +400,6 @@
         if (activeTab === 'profile') return loadProfileEditor();
         $('editorTitle').textContent = (record ? 'Modifier : ' : 'Nouveau : ') + labels[activeTab];
         $('formFields').innerHTML = fields[activeTab].map(function (field) { return inputMarkup(field,record); }).join('');
-        removedMediaPaths = [];
         $('mediaEditor').innerHTML = mediaPreview(record);
         if (record) wireMediaRemoval(record);
         $('saveButton').textContent = record ? 'Enregistrer les modifications' : 'Ajouter au portfolio';
@@ -405,13 +408,13 @@
         const result = await client.from('profile').select('*').eq('id',1).maybeSingle();
         if (result.error) { setMessage('Impossible de charger le profil : ' + result.error.message,'error'); return; }
         editing = result.data || {id:1,full_name:'Ahmadou Lamine Diouf'};
+        if (profilePhotoRemoved) editing.photo_url = null;
         $('editorTitle').textContent = 'Profil principal';
         $('formFields').innerHTML = fields.profile.map(function (field) { return inputMarkup(field,editing); }).join('');
         const existing = editing.photo_url ? '<div class="mb-3"><img class="h-28 w-28 rounded-xl object-cover" src="' + escapeHtml(editing.photo_url) + '" alt="Portrait actuel"></div>' : '';
-        removedMediaPaths = [];
         $('mediaEditor').innerHTML = '<div class="rounded-xl border border-dashed border-slate-300 p-3"><label class="field-label">Photo de profil</label>' + existing + (editing.photo_url ? '<button id="removeProfilePhoto" type="button" class="mb-3 rounded-lg bg-red-50 px-3 py-2 text-xs font-bold text-red-700">Retirer le portrait actuel</button>' : '') + '<input class="field" type="file" id="mediaFiles" accept="image/jpeg,image/png,image/webp"><p class="mt-2 text-xs text-slate-500">Portrait principal · JPG, PNG ou WebP · 12 Mo maximum.</p></div>';
         const removeProfilePhoto = $('removeProfilePhoto');
-        if (removeProfilePhoto) removeProfilePhoto.addEventListener('click', function () { const oldPath = storagePath(editing.photo_url); if (oldPath) removedMediaPaths.push(oldPath); editing.photo_url = null; loadProfileEditor(); });
+        if (removeProfilePhoto) removeProfilePhoto.addEventListener('click', function () { const oldPath = storagePath(editing.photo_url); if (oldPath) removedMediaPaths.push(oldPath); editing.photo_url = null; profilePhotoRemoved = true; loadProfileEditor(); });
         $('saveButton').textContent = 'Enregistrer le profil';
       }
 
@@ -503,11 +506,12 @@
         try {
           const files = $('mediaFiles') && $('mediaFiles').files ? Array.from($('mediaFiles').files) : [];
           if (files.length) payload.photo_url = await uploadOne(files[0],'profile','1');
-          else payload.photo_url = editing && editing.photo_url ? editing.photo_url : null;
+          else payload.photo_url = profilePhotoRemoved ? null : (editing && editing.photo_url ? editing.photo_url : null);
           const result = await client.from('profile').upsert(payload).select().single();
           if (result.error) throw result.error;
           if (removedMediaPaths.length) await client.storage.from(BUCKET).remove(removedMediaPaths);
           removedMediaPaths = [];
+          profilePhotoRemoved = false;
           editing = result.data;
           setMessage('Profil principal mis à jour.', 'success');
           await loadProfileEditor();
