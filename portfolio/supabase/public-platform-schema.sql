@@ -181,7 +181,7 @@ declare
   v_reset boolean;
 begin
   if p_rate_key is null or length(p_rate_key) < 32 or length(p_rate_key) > 128
-     or p_action not in ('login','create','contact')
+     or p_action not in ('login','create','contact','recover')
      or p_max_attempts < 1 or p_window_seconds < 1 then
     raise exception 'Invalid rate limit parameters';
   end if;
