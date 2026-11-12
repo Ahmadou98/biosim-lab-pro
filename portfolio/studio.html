@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1f3a">
+  <meta name="description" content="Private BioPage studio — manage your professional portfolio.">
+  <title>Mon espace | BioPage Studio</title>
+  <link rel="stylesheet" href="platform.css">
+</head>
+<body>
+  <header class="pp-header"><div class="pp-shell pp-header-inner">
+    <a class="pp-brand" href="platform.html"><span class="pp-brand-mark">BP</span><span>BIOPAGE <span style="font-weight:500;color:#94a8bb">/ STUDIO</span></span></a>
+    <div class="pp-header-actions"><a class="pp-btn pp-btn-dark-outline pp-btn-small" href="platform.html">Accueil BioPage</a><button id="logoutBtn" class="pp-btn pp-btn-light pp-btn-small" type="button" hidden>Déconnexion</button></div>
+  </div></header>
+
+  <main class="pp-shell pp-studio-wrap">
+    <section id="loginPanel" class="pp-panel" style="max-width:500px;margin:35px auto">
+      <p class="pp-eyebrow">ACCÈS PRIVÉ</p>
+      <h1 class="pp-page-heading">Votre espace de gestion</h1>
+      <p class="pp-page-intro">Connectez-vous avec l’identifiant de votre portfolio et votre code PIN à 6 chiffres.</p>
+      <form id="loginForm" class="pp-form" style="margin-top:22px">
+        <label class="pp-field"><span class="pp-label">Identifiant de votre portfolio</span><input class="pp-input" id="loginSlug" name="slug" autocomplete="username" required placeholder="votre-identifiant"></label>
+        <label class="pp-field"><span class="pp-label">Code PIN à 6 chiffres</span><input class="pp-input" id="loginPin" name="pin" type="password" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" autocomplete="current-password" required placeholder="••••••"></label>
+        <div id="loginMessage" class="pp-message" role="alert" aria-live="polite"></div>
+        <button id="loginButton" class="pp-btn pp-btn-primary" type="submit">Accéder à mon espace ↗</button>
+        <p class="pp-hint">Vous n’avez pas encore de portfolio ? <a href="create.html" style="color:#07845f;font-weight:800">Créer mon portfolio</a>.</p>
+      </form>
+    </section>
+
+    <section id="studioApp" hidden>
+      <div class="pp-studio-head">
+        <div><p class="pp-eyebrow">ESPACE UTILISATEUR</p><h1 class="pp-page-heading" id="studioName">Mon portfolio</h1><p class="pp-page-intro" id="studioSlug"></p></div>
+        <div class="pp-form-actions"><a id="publicLink" class="pp-btn pp-btn-primary pp-btn-small" href="#" target="_blank" rel="noopener">Voir mon portfolio ↗</a><button id="refreshBtn" class="pp-btn pp-btn-outline pp-btn-small" type="button">Actualiser</button></div>
+      </div>
+      <div id="welcomeMessage" class="pp-message show" hidden style="margin-bottom:16px">Bienvenue dans votre espace. Votre portfolio est déjà public ; vous pouvez maintenant le compléter.</div>
+      <div class="pp-stat-row" id="stats"></div>
+      <div class="pp-studio-layout">
+        <nav class="pp-sidebar" aria-label="Sections du studio">
+          <button class="pp-tab" type="button" data-tab="profile" aria-selected="true">◉ <span>Mon profil</span></button>
+          <button class="pp-tab" type="button" data-tab="experiences" aria-selected="false">▤ <span>Expériences</span></button>
+          <button class="pp-tab" type="button" data-tab="diplomas" aria-selected="false">◇ <span>Diplômes</span></button>
+          <button class="pp-tab" type="button" data-tab="events" aria-selected="false">◎ <span>Événements</span></button>
+          <button class="pp-tab" type="button" data-tab="initiatives" aria-selected="false">✳ <span>Initiatives</span></button>
+          <button class="pp-tab" type="button" data-tab="contacts" aria-selected="false">↗ <span>Contacts reçus</span></button>
+        </nav>
+        <section class="pp-content">
+          <div class="pp-content-head"><div><h2 id="sectionTitle">Mon profil</h2><p class="pp-hint" id="sectionHint">Gérez les informations visibles sur votre page publique.</p></div><button class="pp-btn pp-btn-primary pp-btn-small" id="addItemBtn" type="button" hidden>+ Ajouter</button></div>
+          <div id="studioMessage" class="pp-message" role="status" aria-live="polite"></div>
+          <div id="studioContent"></div>
+          <div id="editorPanel" class="pp-panel" hidden style="margin-top:16px"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <footer class="pp-footer"><div class="pp-shell pp-footer-inner"><span>BioPage Studio · Espace privé</span><a href="platform.html">Accueil de la plateforme ↗</a></div></footer>
+  <button class="pp-backtop" type="button" data-backtop aria-label="Remonter en haut" title="Remonter en haut" hidden>↑</button>
+  <script src="platform-api.js"></script>
+  <script>
+    (function(){
+      const $=id=>document.getElementById(id);
+      const storeTokenKey="biopage_session", storeSlugKey="biopage_slug";
+      let token=sessionStorage.getItem(storeTokenKey)||"";
+      let data=null, activeTab="profile", editing=null;
+
+      const tabMeta={
+        profile:["Mon profil","Gérez les informations et les coordonnées de votre carte."],
+        experiences:["Expériences professionnelles","Présentez vos fonctions, missions et compétences."],
+        diplomas:["Diplômes & certifications","Ajoutez vos formations et qualifications."],
+        events:["Événements & conférences","Présentez vos participations et interventions."],
+        initiatives:["Initiatives & projets","Mettez en avant vos projets et engagements."],
+        contacts:["Contacts reçus","Consultez les personnes qui ont choisi de partager leurs coordonnées avec vous."]
+      };
+      const configs={
+        experiences:[
+          ["title_en","Titre (anglais)","text",true],["title_fr","Titre (français)","text"],["organization","Organisation","text"],["location","Lieu","text"],
+          ["start_date","Date de début","date"],["end_date","Date de fin","date"],["is_current","Poste actuel","checkbox"],
+          ["description_en","Description (anglais)","textarea"],["description_fr","Description (français)","textarea"],["skills","Compétences (séparées par des virgules)","array"],
+          ["image_urls","Liens des images (séparés par des virgules)","array"],["sort_order","Ordre d'affichage","number"],["is_published","Visible sur le portfolio","checkbox"]
+        ],
+        diplomas:[
+          ["title_en","Diplôme / titre (anglais)","text",true],["title_fr","Diplôme / titre (français)","text"],["institution","Établissement","text"],["year","Année","number"],
+          ["details_en","Détails (anglais)","textarea"],["details_fr","Détails (français)","textarea"],["image_url","Lien vers une image ou attestation","url"],["sort_order","Ordre d'affichage","number"],["is_published","Visible sur le portfolio","checkbox"]
+        ],
+        events:[
+          ["title_en","Événement (anglais)","text",true],["title_fr","Événement (français)","text"],["location","Ville / lieu","text"],["country","Pays","text"],
+          ["start_date","Date de début","date"],["end_date","Date de fin","date"],["status","Statut","select",["upcoming","past"]],
+          ["role_en","Rôle (anglais)","text"],["role_fr","Rôle (français)","text"],["summary_en","Résumé (anglais)","textarea"],["summary_fr","Résumé (français)","textarea"],
+          ["cover_image","Lien vers l'image principale","url"],["gallery_urls","Liens des images (séparés par des virgules)","array"],["sort_order","Ordre d'affichage","number"],["is_published","Visible sur le portfolio","checkbox"]
+        ],
+        initiatives:[
+          ["title_en","Nom de l'initiative (anglais)","text",true],["title_fr","Nom de l'initiative (français)","text"],["category","Catégorie","text"],
+          ["status","Statut","select",["ongoing","completed","planned"]],["start_date","Date de début","date"],["end_date","Date de fin","date"],
+          ["description_en","Description (anglais)","textarea"],["description_fr","Description (français)","textarea"],
+          ["image_urls","Liens des images (séparés par des virgules)","array"],["link_url","Lien externe","url"],["sort_order","Ordre d'affichage","number"],["is_published","Visible sur le portfolio","checkbox"]
+        ]
+      };
+
+      function message(text,error){PP.setMessage($("studioMessage"),text,error);}
+      function dateTime(value){
+        if(!value)return "—";
+        const d=new Date(value);
+        return Number.isNaN(d.getTime())?value:new Intl.DateTimeFormat("fr-FR",{dateStyle:"medium",timeStyle:"short"}).format(d);
+      }
+      function stat(label,value){return '<div class="pp-stat"><strong>'+value+'</strong><span>'+PP.esc(label)+'</span></div>';}
+      function updateHeader(){
+        $("studioName").textContent=data.profile.full_name;
+        $("studioSlug").textContent="Votre adresse : "+location.origin+location.pathname.replace(/studio\.html$/,"")+"u.html?id="+data.profile.slug;
+        $("publicLink").href="u.html?id="+encodeURIComponent(data.profile.slug);
+        $("stats").innerHTML=[
+          stat("Expériences",data.experiences.length),stat("Diplômes",data.diplomas.length),
+          stat("Événements",data.events.length),stat("Contacts reçus",data.contacts.length)
+        ].join("");
+      }
+      async function loadData(){
+        data=await PP.api("studio-load",{token});
+        updateHeader(); $("loginPanel").hidden=true; $("studioApp").hidden=false; $("logoutBtn").hidden=false;
+        renderTab();
+      }
+      function fieldMarkup(field,item){
+        const [name,label,type,extra]=field;
+        const value=item && item[name] != null ? item[name] : "";
+        const checked=!!value;
+        if(type==="checkbox")return '<label class="pp-checkline pp-field-full"><input type="checkbox" name="'+name+'" '+(checked?"checked":"")+'><span>'+PP.esc(label)+'</span></label>';
+        if(type==="textarea")return '<label class="pp-field pp-field-full"><span class="pp-label">'+PP.esc(label)+'</span><textarea class="pp-textarea" name="'+name+'" rows="3">'+PP.esc(value)+'</textarea></label>';
+        if(type==="select")return '<label class="pp-field"><span class="pp-label">'+PP.esc(label)+'</span><select class="pp-select" name="'+name+'">'+extra.map(v=>'<option value="'+v+'" '+(String(value||"")===v?"selected":"")+'>'+PP.esc(v==="upcoming"?"À venir":v==="past"?"Passé":v==="ongoing"?"En cours":v==="completed"?"Terminé":v==="planned"?"Prévu":v)+'</option>').join("")+'</select></label>';
+        const inputType=type==="date"?"date":type==="number"?"number":type==="url"?"url":"text";
+        const hint=type==="array"?'<span class="pp-hint">Séparez les éléments par des virgules.</span>':"";
+        return '<label class="pp-field"><span class="pp-label">'+PP.esc(label)+'</span><input class="pp-input" type="'+inputType+'" name="'+name+'" value="'+PP.esc(Array.isArray(value)?value.join(", "):value)+'" '+(extra===true?"required":"")+'>'+hint+'</label>';
+      }
+      function renderProfile(){
+        const p=data.profile;
+        $("studioContent").innerHTML="";
+        $("addItemBtn").hidden=true;
+        $("editorPanel").hidden=false;
+        $("editorPanel").innerHTML=
+          '<form id="profileForm" class="pp-form">'+
+            '<div class="pp-photo-preview">'+(p.photo_url?'<img src="'+PP.esc(p.photo_url)+'" alt="Portrait actuel" onerror="this.hidden=true">':'<div class="pp-photo-fallback">'+PP.esc(PP.initials(p.full_name))+'</div>')+
+              '<div><strong style="display:block;color:#0b1f3a;font-size:12px">Photo de profil</strong><span class="pp-hint">JPG, PNG ou WebP · 5 Mo maximum</span></div></div>'+
+            '<label class="pp-field"><span class="pp-label">Remplacer le portrait</span><input class="pp-input" type="file" name="photo_file" accept="image/jpeg,image/png,image/webp"></label>'+
+            '<div class="pp-form-grid">'+
+              profileField("full_name","Nom complet",p.full_name,true)+profileField("organization","Organisation",p.organization)+
+              profileField("title_en","Titre professionnel (anglais)",p.title_en,true)+profileField("title_fr","Titre professionnel (français)",p.title_fr)+
+              profileArea("bio_en","Biographie (anglais)",p.bio_en,true)+profileArea("bio_fr","Biographie (français)",p.bio_fr,true)+
+              profileField("location","Ville / pays",p.location)+profileField("whatsapp","WhatsApp",p.whatsapp)+
+              profileField("email","Adresse e-mail",p.email,"email")+profileField("linkedin_url","URL LinkedIn",p.linkedin_url,"url")+
+            '</div>'+
+            '<div id="profileMessage" class="pp-message" role="status"></div>'+
+            '<button class="pp-btn pp-btn-primary" type="submit">Enregistrer mon profil</button>'+
+          '</form>';
+        $("profileForm").addEventListener("submit",saveProfile);
+      }
+      function profileField(name,label,value,required){
+        const type=required=== "email"||required==="url"?required:"text";
+        const req=required===true?"required":"";
+        return '<label class="pp-field"><span class="pp-label">'+PP.esc(label)+'</span><input class="pp-input" type="'+type+'" name="'+name+'" value="'+PP.esc(value||"")+'" '+req+'></label>';
+      }
+      function profileArea(name,label,value,required){
+        return '<label class="pp-field pp-field-full"><span class="pp-label">'+PP.esc(label)+'</span><textarea class="pp-textarea" name="'+name+'" rows="4" '+(required?"required":"")+'>'+PP.esc(value||"")+'</textarea></label>';
+      }
+      async function saveProfile(event){
+        event.preventDefault();
+        const form=event.currentTarget,btn=form.querySelector('button[type="submit"]');
+        btn.disabled=true;
+        try{
+          const fd=new FormData(form),payload={};
+          ["full_name","organization","title_en","title_fr","bio_en","bio_fr","location","whatsapp","email","linkedin_url"].forEach(k=>payload[k]=fd.get(k));
+          const file=form.elements.photo_file.files[0];
+          if(file)payload.photo_data=await PP.photoToDataUrl(file);
+          const result=await PP.api("profile-update",Object.assign({token},payload));
+          data.profile=result.profile;updateHeader();renderProfile();message("Votre profil a été mis à jour.");
+        }catch(error){PP.setMessage($("profileMessage"),error.message,true);}
+        finally{btn.disabled=false;}
+      }
+      function renderItems(){
+        const list=data[activeTab]||[];
+        $("addItemBtn").hidden=false;
+        $("studioContent").innerHTML=list.length?'<div class="pp-list">'+list.map(item=>{
+          const secondary=item.organization||item.institution||item.location||item.category||"";
+          const date=item.start_date?PP.formatDate(item.start_date,"fr"):"";
+          const status=item.is_published===false?'<span class="pp-badge" style="background:#fff4e5;color:#995b08">Non publié</span>':'<span class="pp-badge">Publié</span>';
+          return '<article class="pp-list-item"><div><h3>'+PP.esc(item.title_en||"Élément sans titre")+'</h3><p>'+PP.esc(secondary)+(date?" · "+PP.esc(date):"")+'</p><div style="margin-top:8px">'+status+'</div></div><div class="pp-list-actions"><button class="pp-btn pp-btn-outline pp-btn-small" data-edit="'+PP.esc(item.id)+'" type="button">Modifier</button><button class="pp-btn pp-btn-outline pp-btn-small" data-delete="'+PP.esc(item.id)+'" type="button" style="color:#a13a32">Supprimer</button></div></article>';
+        }).join("")+'</div>':'<div class="pp-empty">Aucun élément pour le moment. Utilisez « Ajouter » pour enrichir votre portfolio.</div>';
+        $("editorPanel").hidden=!editing;
+        if(editing)renderEditor();
+        $("studioContent").querySelectorAll("[data-edit]").forEach(btn=>btn.addEventListener("click",()=>{
+          editing=list.find(x=>x.id===btn.dataset.edit)||null;renderTab();
+        }));
+        $("studioContent").querySelectorAll("[data-delete]").forEach(btn=>btn.addEventListener("click",async()=>{
+          if(!confirm("Supprimer définitivement cet élément ?"))return;
+          try{await PP.api("delete-entry",{token,kind:activeTab,id:btn.dataset.delete});await loadData();message("Élément supprimé.");}
+          catch(error){message(error.message,true);}
+        }));
+      }
+      function renderEditor(){
+        const fields=configs[activeTab]||[];
+        $("editorPanel").hidden=false;
+        $("editorPanel").innerHTML='<form id="entryForm" class="pp-form"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><h3 class="pp-form-section">'+(editing?"Modifier l’élément":"Ajouter un élément")+'</h3><button class="pp-btn pp-btn-outline pp-btn-small" id="closeEditor" type="button">Fermer</button></div><input type="hidden" name="id" value="'+PP.esc(editing&&editing.id||"")+'"><div class="pp-form-grid">'+fields.map(f=>fieldMarkup(f,editing||{})).join("")+'</div><div id="entryMessage" class="pp-message" role="status"></div><div class="pp-form-actions"><button class="pp-btn pp-btn-primary" type="submit">Enregistrer</button><button class="pp-btn pp-btn-outline" id="cancelEditor" type="button">Annuler</button></div></form>';
+        $("closeEditor").addEventListener("click",()=>{editing=null;renderTab();});
+        $("cancelEditor").addEventListener("click",()=>{editing=null;renderTab();});
+        $("entryForm").addEventListener("submit",saveEntry);
+      }
+      async function saveEntry(event){
+        event.preventDefault();
+        const form=event.currentTarget,btn=form.querySelector('[type="submit"]'),fd=new FormData(form),item={};
+        const fields=configs[activeTab];
+        for(const field of fields){
+          const [name,,type]=field;
+          if(type==="checkbox")item[name]=form.elements[name].checked;
+          else if(type==="array")item[name]=String(fd.get(name)||"").split(/[,\\n]/).map(x=>x.trim()).filter(Boolean);
+          else item[name]=fd.get(name);
+        }
+        if(fd.get("id"))item.id=fd.get("id");
+        btn.disabled=true;
+        try{await PP.api("save-entry",{token,kind:activeTab,item});editing=null;await loadData();message("Élément enregistré.");}
+        catch(error){PP.setMessage($("entryMessage"),error.message,true);}
+        finally{btn.disabled=false;}
+      }
+      function renderContacts(){
+        $("addItemBtn").hidden=true;$("editorPanel").hidden=true;$("studioContent").innerHTML="";
+        const list=data.contacts||[];
+        let html='<div class="pp-content-head"><span class="pp-badge">'+list.length+' contact(s)</span><div class="pp-list-actions"><button class="pp-btn pp-btn-outline pp-btn-small" id="refreshContacts" type="button">↻ Actualiser</button><button class="pp-btn pp-btn-primary pp-btn-small" id="exportCsv" type="button">Exporter CSV ↓</button></div></div>';
+        if(!list.length)html+='<div class="pp-empty">Aucun contact reçu pour le moment. Les personnes pourront partager leurs coordonnées depuis votre carte numérique publique.</div>';
+        else html+='<div class="pp-table-wrap"><table class="pp-table"><thead><tr><th>Nom</th><th>Téléphone</th><th>E-mail</th><th>Organisation</th><th>Reçu le</th><th>Action</th></tr></thead><tbody>'+list.map(c=>{
+          const wa=PP.waLink(c.phone,"Bonjour "+c.full_name+", merci d’avoir partagé vos coordonnées via mon portfolio BioPage.");
+          return '<tr><td><strong>'+PP.esc(c.full_name)+'</strong></td><td>'+PP.esc(c.phone||"—")+'</td><td>'+PP.esc(c.email||"—")+'</td><td>'+PP.esc(c.organization||"—")+'</td><td>'+PP.esc(dateTime(c.created_at))+'</td><td>'+(wa?'<a class="pp-btn pp-btn-primary pp-btn-small" href="'+PP.esc(wa)+'" target="_blank" rel="noopener">WhatsApp ↗</a>':"—")+'</td></tr>';
+        }).join("")+'</tbody></table></div>';
+        $("studioContent").innerHTML=html;
+        $("refreshContacts").addEventListener("click",async()=>{try{await loadData();activeTab="contacts";renderTab();message("Liste actualisée.");}catch(e){message(e.message,true);}});
+        $("exportCsv").addEventListener("click",exportContacts);
+      }
+      function exportContacts(){
+        const rows=[["Nom","Téléphone","E-mail","Organisation","Date de réception","Méthode"]];
+        (data.contacts||[]).forEach(c=>rows.push([c.full_name,c.phone,c.email,c.organization,c.created_at,c.share_method]));
+        const csv="\\uFEFF"+rows.map(row=>row.map(value=>'"'+String(value||"").replace(/"/g,'""')+'"').join(";")).join("\\r\\n");
+        const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+        const url=URL.createObjectURL(blob),a=document.createElement("a");
+        a.href=url;a.download="biopage-contacts-"+data.profile.slug+".csv";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+      }
+      function renderTab(){
+        document.querySelectorAll("[data-tab]").forEach(btn=>btn.setAttribute("aria-selected",String(btn.dataset.tab===activeTab)));
+        $("sectionTitle").textContent=tabMeta[activeTab][0];$("sectionHint").textContent=tabMeta[activeTab][1];
+        message("");
+        if(activeTab==="profile")renderProfile();
+        else if(activeTab==="contacts")renderContacts();
+        else renderItems();
+      }
+      document.querySelectorAll("[data-tab]").forEach(btn=>btn.addEventListener("click",()=>{activeTab=btn.dataset.tab;editing=null;renderTab();}));
+      $("addItemBtn").addEventListener("click",()=>{editing={};renderEditor();});
+      $("refreshBtn").addEventListener("click",async()=>{try{await loadData();message("Espace actualisé.");}catch(e){message(e.message,true);}});
+      $("logoutBtn").addEventListener("click",async()=>{
+        try{await PP.api("logout",{token});}catch(_){}
+        sessionStorage.removeItem(storeTokenKey);sessionStorage.removeItem(storeSlugKey);location.reload();
+      });
+      $("loginSlug").value=new URLSearchParams(location.search).get("slug")||sessionStorage.getItem(storeSlugKey)||"";
+      $("loginForm").addEventListener("submit",async event=>{
+        event.preventDefault();PP.setMessage($("loginMessage"),"");
+        const button=$("loginButton");button.disabled=true;button.textContent="Vérification…";
+        try{
+          const result=await PP.api("login",{slug:$("loginSlug").value.trim().toLowerCase(),pin:$("loginPin").value});
+          token=result.token;sessionStorage.setItem(storeTokenKey,token);sessionStorage.setItem(storeSlugKey,result.profile.slug);await loadData();
+        }catch(error){PP.setMessage($("loginMessage"),error.message,true);}
+        finally{button.disabled=false;button.textContent="Accéder à mon espace ↗";}
+      });
+      if(new URLSearchParams(location.search).get("welcome")==="1")$("welcomeMessage").hidden=false;
+      if(token){
+        loadData().catch(error=>{sessionStorage.removeItem(storeTokenKey);token="";$("loginPanel").hidden=false;PP.setMessage($("loginMessage"),error.message,true);});
+      }else{
+        const prefill=new URLSearchParams(location.search).get("slug");
+        if(prefill)$("loginSlug").value=prefill;
+      }
+    })();
+  </script>
+</body>
+</html>
