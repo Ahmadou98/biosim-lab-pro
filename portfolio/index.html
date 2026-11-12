@@ -106,6 +106,41 @@
     #mobileNav .mobile-link:last-child { border-bottom: 0; }
     #mobileNav .mobile-link:hover,
     #mobileNav .mobile-link:focus-visible { color: #8ce0c4; }
+
+    /* Floating back-to-top control */
+    .back-to-top {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 50;
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 999px;
+      background: #0B1F3A;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(7,26,45,.24);
+      font: 800 23px/1 Inter, sans-serif;
+      cursor: pointer;
+      opacity: 1;
+      transform: translateY(0);
+      transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+    }
+    .back-to-top:hover {
+      background: #15375b;
+      box-shadow: 0 11px 28px rgba(7,26,45,.3);
+      transform: translateY(-2px);
+    }
+    .back-to-top:focus-visible {
+      outline: 3px solid #c9a76a;
+      outline-offset: 4px;
+    }
+    .back-to-top[hidden] { display: none !important; }
+    @media (prefers-reduced-motion: reduce) {
+      .back-to-top { transition: none; }
+    }
   </style>
 </head>
 <body class="bg-white text-slate-800 antialiased selection:bg-emerald/20 selection:text-ink">
@@ -365,9 +400,10 @@
     <div class="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-7 text-xs sm:px-8 md:flex-row md:items-center md:justify-between lg:px-10">
       <p>© <span id="year"></span> Ahmadou Lamine Diouf. <span data-i18n="footer_rights">All rights reserved.</span> · <a href="/carte.html" class="hover:text-white" data-i18n="footer_card">Digital business card</a> · <a href="/admin.html" class="hover:text-white">Admin</a></p>
       <p class="font-mono uppercase tracking-[.15em] text-slate-500" data-i18n="footer_signature">Advocating for African Vaccine Manufacturing</p>
-      <a href="#home" class="focus-ring rounded text-slate-300 transition hover:text-white" data-i18n="back_top">Back to top ↑</a>
     </div>
   </footer>
+
+  <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top" title="Back to top" hidden>↑</button>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0"></script>
   <script>
@@ -809,66 +845,17 @@
     }
     setLanguage(currentLanguage);
     loadPortfolioContent();
-  </script>
-</body>
-</html>, 'i'), '').trim();
-      const title = (cleanTitle || fallbackTitle) + ' · ' + tagline;
-      const name = document.getElementById('profileName');
-      const titleNode = document.getElementById('profileTitle');
-      if (name && p.full_name) name.textContent = p.full_name;
-      if (titleNode) titleNode.textContent = title;
-      const photo = document.getElementById('profilePhoto');
-      const fallback = document.getElementById('photoFallback');
-      const photoUrl = safeImageUrl(p.photo_url);
-      if (photo && photoUrl) { photo.src = photoUrl; photo.style.display = ''; }
-      if (photo && fallback && photoUrl) photo.addEventListener('load', function () { fallback.style.display = 'none'; }, {once:true});
-      const location = document.getElementById('contactLocation');
-      if (location && p.location) location.textContent = p.location;
-      const phone = document.getElementById('contactPhone');
-      if (phone && p.phone) { phone.textContent = p.phone; phone.href = 'tel:' + p.phone.replace(/[^\d+]/g,''); }
-      const email = document.getElementById('contactEmail');
-      if (email && p.email) { email.textContent = p.email; email.href = 'mailto:' + p.email; }
-      if (p.linkedin_url) document.querySelectorAll('a[href*="linkedin.com/in/"]:not(#contactLinkedin)').forEach(function (link) { link.href = p.linkedin_url; });
+
+    // Show the floating control only after the visitor has scrolled down.
+    const backToTopButton = document.getElementById('backToTop');
+    function updateBackToTopVisibility() {
+      backToTopButton.hidden = window.scrollY < 320;
     }
-    async function loadPortfolioContent() {
-      const queries = [
-        portfolioDb.from('profile').select('*').eq('id',1).maybeSingle(),
-        portfolioDb.from('events').select('*').eq('is_published',true).order('start_date',{ascending:false}).order('sort_order',{ascending:true}),
-        portfolioDb.from('experiences').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('start_date',{ascending:false}),
-        portfolioDb.from('diplomas').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('year',{ascending:false}),
-        portfolioDb.from('initiatives').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('created_at',{ascending:false})
-      ];
-      const requests = await Promise.all(queries.map(function (query) {
-        return Promise.resolve(query).then(
-          function (result) { return result; },
-          function (error) { return {data:null,error:error}; }
-        );
-      }));
-
-      // Load collections independently: a failure in one table must not blank every section.
-      const labels = ['profile','events','experiences','diplomas','initiatives'];
-      requests.forEach(function (result,index) {
-        if (result.error) console.error('Portfolio '+labels[index]+' query failed:',result.error);
-      });
-      portfolioProfile = requests[0].error ? null : (requests[0].data || null);
-      portfolioEvents = requests[1].error ? [] : (requests[1].data || []);
-      portfolioExperiences = requests[2].error ? [] : (requests[2].data || []);
-      portfolioDiplomas = requests[3].error ? [] : (requests[3].data || []);
-      portfolioInitiatives = requests[4].error ? [] : (requests[4].data || []);
-
-      applyPortfolioProfile();
-      renderDynamicPortfolio();
-
-      const gridIds = ['eventsGrid','experiencesGrid','diplomasGrid','initiativesGrid'];
-      requests.slice(1).forEach(function (result,index) {
-        if (!result.error) return;
-        const node = document.getElementById(gridIds[index]);
-        if (node) node.innerHTML = '<p class="rounded-xl border border-dashed border-amber-300 bg-amber-50 p-5 text-sm text-amber-800">'+
-          escapeDynamic(currentLanguage === 'fr' ? 'Impossible de charger cette section pour le moment.' : 'This section could not be loaded right now.')+'</p>';
-      });
-    }
-    setLanguage(currentLanguage);
-    loadPortfolioContent();
+    window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
+    backToTopButton.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    updateBackToTopVisibility();
   </script>
 </body>
 </html>
