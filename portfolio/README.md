@@ -15,6 +15,12 @@ A bilingual (EN/FR) executive portfolio and advocacy site connected to a private
 - Supabase Auth (email/password), Postgres RLS, and public-read image bucket `portfolio-media`.
 - Tables: `events`, `experiences`, `diplomas`, `initiatives`, `profile`.
 
+## Digital business card
+- Public contact card: https://ahmadou-lamine-diouf.pages.dev/carte.html
+- QR code opens this interactive card; phone, email, WhatsApp and LinkedIn are clickable on the page.
+- Download a shareable PNG, use native mobile sharing, or save a vCard.
+- Profile details and portrait are loaded from the Supabase `profile` row so card updates do not require source edits.
+
 ## Content management
 Use `admin.html` to add, edit, publish/unpublish or remove events, experiences, diplomas/certifications, initiatives and the main profile. Images can be selected from a phone or computer, are resized/compressed in the browser, then uploaded to Supabase Storage. Existing images can be removed from a record's editor.
 
