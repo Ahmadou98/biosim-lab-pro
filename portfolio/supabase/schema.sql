@@ -229,3 +229,47 @@ select
   'A forthcoming introductory book designed to make the fundamentals of vaccine biomanufacturing clearer and more accessible to French-speaking students and young professionals.',
   'Un ouvrage d’introduction en cours de finalisation, conçu pour rendre les fondamentaux de la bioproduction vaccinale plus clairs et accessibles aux étudiants et jeunes professionnels francophones.',20
 where not exists(select 1 from public.initiatives where title='Introduction to Vaccine Biomanufacturing');
+
+-- CPHIA digital business card: visitor-consented contact shares.
+-- Public visitors can INSERT only; only the portfolio owner can SELECT.
+create table if not exists public.received_contacts (
+  id uuid primary key default gen_random_uuid(),
+  full_name text not null check (char_length(btrim(full_name)) between 2 and 160),
+  phone text not null check (char_length(btrim(phone)) between 7 and 40 and phone ~ '^[0-9+(). -]+$'),
+  email text check (email is null or char_length(email) <= 254),
+  organization text check (organization is null or char_length(organization) <= 180),
+  share_method text not null default 'autofill' check (share_method in ('contact_picker','autofill')),
+  created_at timestamptz not null default now()
+);
+
+revoke all privileges on public.received_contacts from public, anon, authenticated;
+grant insert on public.received_contacts to anon, authenticated;
+grant select on public.received_contacts to authenticated;
+
+alter table public.received_contacts enable row level security;
+
+drop policy if exists "Visitors can submit shared contacts" on public.received_contacts;
+create policy "Visitors can submit shared contacts"
+  on public.received_contacts for insert to anon, authenticated
+  with check (true);
+
+drop policy if exists "Portfolio owner can read received contacts" on public.received_contacts;
+create policy "Portfolio owner can read received contacts"
+  on public.received_contacts for select to authenticated
+  using (public.is_portfolio_admin());
+
+create index if not exists received_contacts_created_at_idx
+  on public.received_contacts(created_at desc);
+
+do $$
+begin
+  if exists (select 1 from pg_publication where pubname = 'supabase_realtime')
+     and not exists (
+       select 1 from pg_publication_tables
+       where pubname = 'supabase_realtime'
+         and schemaname = 'public'
+         and tablename = 'received_contacts'
+     ) then
+    execute 'alter publication supabase_realtime add table public.received_contacts';
+  end if;
+end $$;
