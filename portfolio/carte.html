@@ -505,7 +505,7 @@
 
       function contactValue(value, joinArray) {
         if (Array.isArray(value)) {
-          return value.map(function (item) { return String(item || '').trim(); }).filter(Boolean).join(joinArray ? ' ' : ', ');
+          return joinArray ? value.map(function (item) { return String(item || '').trim(); }).filter(Boolean).join(' ') : String(value[0] || '').trim();
         }
         return String(value || '').trim();
       }
