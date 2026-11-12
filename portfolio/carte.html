@@ -234,7 +234,7 @@
         $('qrCode').innerHTML='';
         if(!window.QRCode){$('status').textContent=t('qrError');return false;}
         new QRCode($('qrCode'),{
-          text:CARD_URL,width:220,height:220,colorDark:'#071a2d',
+          text:CARD_URL,width:300,height:300,colorDark:'#071a2d',
           colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H
         });
         return true;
@@ -312,7 +312,9 @@
         ctx.fillText(lang==='fr'?'VOTRE CONTACT':'YOUR CONTACT',455,285);
         const photo=await loadImage(profile.photo_url||FALLBACK_PHOTO);
         if(photo){
-          ctx.save();ctx.beginPath();ctx.arc(265,505,145,0,Math.PI*2);ctx.clip();ctx.drawImage(photo,120,360,290,290);ctx.restore();
+          const side=Math.min(photo.naturalWidth,photo.naturalHeight);
+          const sx=(photo.naturalWidth-side)/2,sy=(photo.naturalHeight-side)/2;
+          ctx.save();ctx.beginPath();ctx.arc(265,505,145,0,Math.PI*2);ctx.clip();ctx.drawImage(photo,sx,sy,side,side,120,360,290,290);ctx.restore();
           ctx.strokeStyle='#c9a76a';ctx.lineWidth=7;ctx.beginPath();ctx.arc(265,505,149,0,Math.PI*2);ctx.stroke();
         }else{
           ctx.fillStyle='#16415b';ctx.beginPath();ctx.arc(265,505,145,0,Math.PI*2);ctx.fill();
