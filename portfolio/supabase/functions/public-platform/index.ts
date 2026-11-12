@@ -98,7 +98,7 @@ function constantTimeEqual(a: string, b: string): boolean {
 function requestIp(req: Request): string {
   return (req.headers.get("cf-connecting-ip") || req.headers.get("x-forwarded-for") || "unknown").split(",")[0].trim().slice(0, 80);
 }
-async function checkRateLimit(req: Request, action: "login" | "create" | "contact", identity: string, max: number, seconds: number) {
+async function checkRateLimit(req: Request, action: "login" | "create" | "contact" | "recover", identity: string, max: number, seconds: number) {
   const key = await sha256([action, requestIp(req), identity].join("|"));
   const { data, error } = await db.rpc("consume_public_platform_rate_limit", {
     p_rate_key: key, p_action: action, p_max_attempts: max, p_window_seconds: seconds
@@ -178,6 +178,8 @@ async function createProfile(req: Request, body: Record<string, unknown>) {
   if (bio_en.length < 10 || bio_fr.length < 10) throw new Error("Each biography must contain at least 10 characters.");
   const salt = randomHex(16);
   const pin_hash = await pinDigest(pin, salt);
+  const recovery_code = randomHex(32);
+  const recovery_hash = await sha256("BioPage recovery code v1|" + recovery_code);
   const existing = await db.from("public_profiles").select("slug").eq("slug", slug).maybeSingle();
   if (existing.error) throw existing.error;
   if (existing.data) throw new Error("This identifier is already in use. Please choose another one.");
@@ -185,7 +187,7 @@ async function createProfile(req: Request, body: Record<string, unknown>) {
     slug, full_name, title_en, title_fr: str(body.title_fr, 180),
     bio_en, bio_fr, organization: str(body.organization, 180), location: str(body.location, 160),
     whatsapp: str(body.whatsapp, 40), linkedin_url: validUrl(body.linkedin_url), email: validEmail(body.email),
-    pin_salt: salt, pin_hash, is_demo: false, is_public: true
+    pin_salt: salt, pin_hash, recovery_hash, is_demo: false, is_public: true
   };
   const { error } = await db.from("public_profiles").insert(profile);
   if (error) {
@@ -203,7 +205,7 @@ async function createProfile(req: Request, body: Record<string, unknown>) {
     throw error;
   }
   const session = await issueSession(slug);
-  return { profile: await safeProfile(slug), ...session };
+  return { profile: await safeProfile(slug), recovery_code, ...session };
 }
 async function login(req: Request, body: Record<string, unknown>) {
   const slug = validSlug(body.slug);
@@ -220,6 +222,44 @@ async function login(req: Request, body: Record<string, unknown>) {
   const session = await issueSession(slug);
   return { profile: await safeProfile(slug), ...session };
 }
+async function generateRecoveryCode(slug: string) {
+  const recovery_code = randomHex(32);
+  const recovery_hash = await sha256("BioPage recovery code v1|" + recovery_code);
+  const { error } = await db.from("public_profiles").update({
+    recovery_hash, updated_at: new Date().toISOString()
+  }).eq("slug", slug).eq("is_demo", false);
+  if (error) throw error;
+  return { slug, recovery_code };
+}
+
+async function recoverAccount(req: Request, body: Record<string, unknown>) {
+  const rateKey = await checkRateLimit(req, "recover", "all", 5, 3600);
+  const recoveryCode = String(body.recovery_code || "").trim().toLowerCase();
+  if (!/^[a-f0-9]{64}$/.test(recoveryCode)) throw new Error("The recovery code is invalid.");
+  const newPin = validPin(body.new_pin);
+  const recoveryHash = await sha256("BioPage recovery code v1|" + recoveryCode);
+  const { data: profile, error: lookupError } = await db.from("public_profiles")
+    .select("slug,is_demo,is_public").eq("recovery_hash", recoveryHash).maybeSingle();
+  if (lookupError) throw lookupError;
+  if (!profile || profile.is_demo || !profile.is_public) {
+    throw new Error("This recovery code is invalid or has already been used. Check your saved recovery file.");
+  }
+
+  const pinSalt = randomHex(16);
+  const pinHash = await pinDigest(newPin, pinSalt);
+  const nextRecoveryCode = randomHex(32);
+  const nextRecoveryHash = await sha256("BioPage recovery code v1|" + nextRecoveryCode);
+  const { error: updateError } = await db.from("public_profiles").update({
+    pin_salt: pinSalt, pin_hash: pinHash, recovery_hash: nextRecoveryHash, updated_at: new Date().toISOString()
+  }).eq("slug", profile.slug);
+  if (updateError) throw updateError;
+
+  await db.from("public_sessions").delete().eq("owner_slug", profile.slug);
+  await resetRateLimit(rateKey);
+  const session = await issueSession(profile.slug);
+  return { slug: profile.slug, recovery_code: nextRecoveryCode, ...session };
+}
+
 async function loadAllContacts(slug: string) {
   const all: any[] = [];
   const pageSize = 1000;
@@ -349,6 +389,12 @@ const securedHandler = withSupabase({ auth: "publishable" }, async (req: Request
     switch (String(body.action || "")) {
       case "create": result = await createProfile(req, body); break;
       case "login": result = await login(req, body); break;
+      case "recover-account": result = await recoverAccount(req, body); break;
+      case "rotate-recovery-code": {
+        const auth = await authenticate(body.token);
+        result = await generateRecoveryCode(auth.slug);
+        break;
+      }
       case "public-profile": result = await loadPublic(validSlug(body.slug)); break;
       case "studio-load": {
         const auth = await authenticate(body.token);
