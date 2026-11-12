@@ -254,7 +254,8 @@ async function recoverAccount(req: Request, body: Record<string, unknown>) {
   }).eq("slug", profile.slug);
   if (updateError) throw updateError;
 
-  await db.from("public_sessions").delete().eq("owner_slug", profile.slug);
+  const { error: revokeError } = await db.from("public_sessions").delete().eq("owner_slug", profile.slug);
+  if (revokeError) throw revokeError;
   await resetRateLimit(rateKey);
   const session = await issueSession(profile.slug);
   return { slug: profile.slug, recovery_code: nextRecoveryCode, ...session };
