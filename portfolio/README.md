@@ -27,3 +27,13 @@ Use `admin.html` to add, edit, publish/unpublish or remove events, experiences, 
 Public content reads are restricted to published records. Database writes and Storage uploads/updates/deletions are restricted by RLS to the owner email `ahmadoulaminediouf39@gmail.com`. Only the Supabase publishable key appears in browser code; no service-role or secret key is present.
 
 See [ADMIN-SETUP.md](./ADMIN-SETUP.md) before first sign-in, especially the Supabase Auth Site URL and redirect URL settings.
+
+## Public multi-user BioPage platform
+- Platform home: [platform.html](./platform.html)
+- Public portfolio creation: [create.html](./create.html)
+- Private user studio: [studio.html](./studio.html)
+- Dynamic public portfolio and digital card: [u.html](./u.html?id=amara-diallo)
+- Isolated schema migration: [supabase/public-platform-schema.sql](./supabase/public-platform-schema.sql)
+- Edge Function: [supabase/functions/public-platform/index.ts](./supabase/functions/public-platform/index.ts)
+
+New profiles receive a one-time 256-bit recovery code after creation. Users must download or securely save it. It can recover a forgotten identifier and reset the 6-digit PIN; a recovery action rotates the code and invalidates existing sessions. Existing users who created accounts before recovery was added can generate their first recovery code from the Profile section of their private studio. The recovery code is not sent by email; it is displayed once and stored server-side only as a SHA-256 digest.
