@@ -86,6 +86,10 @@
     (function(){
       const $=id=>document.getElementById(id);
       let slugTouched=false;
+      let recoveryCodeStored=false;
+      function updateRecoveryContinue(){
+        $("continueToStudio").disabled=!(recoveryCodeStored && $("confirmRecoverySaved").checked);
+      }
       function normaliseSlug(value){return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,32).replace(/-+$/g,"");}
       function updateSlug(){const value=normaliseSlug($("slug").value);$("slugPreview").textContent="u.html?id="+(value||"your-name");}
       $("full_name").addEventListener("input",function(){if(!slugTouched){$("slug").value=normaliseSlug(this.value);updateSlug();}});
@@ -102,13 +106,14 @@
       setLang(lang);
       $("downloadRecoveryBtn").addEventListener("click",function(){
         PP.downloadRecoveryFile($("createdSlug").textContent,$("createdRecoveryCode").value);
+        recoveryCodeStored=true;updateRecoveryContinue();
         PP.setMessage($("recoverySavedMessage"),lang==="fr"?"Fichier téléchargé. Conservez-le en lieu sûr.":"File downloaded. Keep it in a secure place.");
       });
       $("copyRecoveryBtn").addEventListener("click",async function(){
-        try{await PP.copyText($("createdRecoveryCode").value);PP.setMessage($("recoverySavedMessage"),lang==="fr"?"Code copié.":"Code copied.");}
+        try{await PP.copyText($("createdRecoveryCode").value);recoveryCodeStored=true;updateRecoveryContinue();PP.setMessage($("recoverySavedMessage"),lang==="fr"?"Code copié.":"Code copied.");}
         catch(error){PP.setMessage($("recoverySavedMessage"),error.message,true);}
       });
-      $("confirmRecoverySaved").addEventListener("change",function(){$("continueToStudio").disabled=!this.checked;});
+      $("confirmRecoverySaved").addEventListener("change",updateRecoveryContinue);
       $("continueToStudio").addEventListener("click",function(){
         if(!$("confirmRecoverySaved").checked)return;
         sessionStorage.removeItem("biopage_pending_recovery");
