@@ -76,6 +76,36 @@
       reader.readAsDataURL(file);
     });
   }
+  function recoveryFileText(slug, code) {
+    const url = location.origin + location.pathname.replace(/[^/]*$/, "") + "u.html?id=" + encodeURIComponent(slug);
+    return [
+      "BIOPAGE — ACCOUNT RECOVERY",
+      "Keep this file in a secure place. Anyone with this recovery code can reset the PIN and take control of this portfolio.",
+      "",
+      "Portfolio identifier: " + slug,
+      "Public portfolio: " + url,
+      "Recovery code: " + code,
+      "",
+      "The recovery code is shown only once. After using it, this code becomes invalid and a new one is issued.",
+      "Do not share this file or store it in a public folder."
+    ].join("\r\n");
+  }
+  function downloadRecoveryFile(slug, code) {
+    const blob = new Blob([recoveryFileText(slug, code)], {type:"text/plain;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "BioPage-recovery-" + slug + ".txt";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  async function copyText(value) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(String(value));
+    const field = document.createElement("textarea");
+    field.value = String(value); field.style.position = "fixed"; field.style.opacity = "0";
+    document.body.appendChild(field); field.select();
+    const ok = document.execCommand("copy"); field.remove();
+    if (!ok) throw new Error("Copy is not available in this browser.");
+  }
   function setMessage(node, message, error) {
     if (!node) return;
     node.textContent = message || "";
@@ -91,5 +121,5 @@
     update();
   }
   document.addEventListener("DOMContentLoaded", initBackTop);
-  window.PP = { api, esc, initials, formatDate, waLink, downloadVcard, photoToDataUrl, setMessage };
+  window.PP = { api, esc, initials, formatDate, waLink, downloadVcard, photoToDataUrl, setMessage, recoveryFileText, downloadRecoveryFile, copyText };
 })();
