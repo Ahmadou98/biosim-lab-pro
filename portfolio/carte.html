@@ -537,6 +537,8 @@
         return 'https://wa.me/221771018290?text=' + encodeURIComponent(message);
       }
       function showContactShareSuccess(name) {
+        $('contactShareModal').hidden = false;
+        document.body.style.overflow = 'hidden';
         $('contactShareFormView').hidden = true;
         $('contactShareSuccess').hidden = false;
         $('sayHiWhatsApp').href = contactWhatsAppUrl(name);
