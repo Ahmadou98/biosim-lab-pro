@@ -303,6 +303,7 @@ async function shareContact(req: Request, body: Record<string, unknown>) {
   const profile = await safeProfile(slug);
   if (!profile) throw new Error("This portfolio could not be found.");
   await checkRateLimit(req, "contact", slug, 25, 3600);
+  if (body.consent !== true) throw new Error("You must confirm that you consent to share these contact details.");
   const full_name = str(body.full_name, 160, true)!;
   const phone = str(body.phone, 40);
   const email = validEmail(body.email);
