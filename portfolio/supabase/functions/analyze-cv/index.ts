@@ -148,6 +148,7 @@ Deno.serve(async (req: Request) => {
         ],
         max_tokens: 4200,
         temperature: 0.15,
+        chat_template_kwargs: { enable_thinking: false },
         response_format: { type: "json_schema", json_schema: schema },
       }),
     });
