@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071a2d">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Administration | Ahmadou Lamine Diouf</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0"></script>
+  <style>
+    :root{color-scheme:light}body{font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:#f3f6f8}
+    .navbtn[aria-current="page"]{background:#0b2540;color:#fff}.navbtn{border:1px solid #dce3e9}
+    .field{width:100%;border:1px solid #cbd5e1;border-radius:.65rem;padding:.75rem .85rem;background:#fff;color:#0f172a;min-height:46px}
+    .field:focus{outline:3px solid rgba(22,160,120,.18);border-color:#16a078}
+    .field-label{display:block;font-size:.78rem;font-weight:700;color:#334155;margin-bottom:.4rem}
+    .btn{border-radius:.65rem;padding:.7rem 1rem;font-size:.85rem;font-weight:700;min-height:44px}
+    .btn-primary{background:#0b2540;color:#fff}.btn-primary:hover{background:#123653}.btn-light{background:#e9eef2;color:#0b2540}.btn-danger{background:#fff1f1;color:#b42318}
+    .card{background:#fff;border:1px solid #e2e8f0;border-radius:1rem}
+    .pill{font-size:.68rem;font-weight:700;border-radius:999px;padding:.28rem .55rem;background:#e8f6f1;color:#087b5c}
+    .thumb{width:70px;height:70px;object-fit:cover;border-radius:.6rem;background:#e2e8f0}
+  </style>
+</head>
+<body class="text-slate-800 antialiased">
+  <header class="bg-[#071a2d] text-white">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
+      <div>
+        <p class="text-[10px] font-bold uppercase tracking-[.2em] text-emerald-300">Personal portfolio CMS</p>
+        <h1 class="mt-1 font-semibold sm:text-lg">Administration · Ahmadou Lamine Diouf</h1>
+      </div>
+      <a href="/" class="rounded-lg border border-white/20 px-3 py-2 text-xs font-semibold hover:bg-white/10">Voir le site ↗</a>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-9">
+    <section id="authPanel" class="mx-auto max-w-md card p-5 shadow-sm sm:p-7">
+      <div class="mb-5">
+        <span class="pill">Espace propriétaire</span>
+        <h2 class="mt-3 text-2xl font-bold text-[#071a2d]">Connexion sécurisée</h2>
+        <p class="mt-2 text-sm leading-6 text-slate-500">Connectez-vous avec l’adresse propriétaire du portfolio. Seul ce compte est autorisé à modifier les contenus et les images.</p>
+      </div>
+      <form id="authForm" class="space-y-4">
+        <div><label class="field-label" for="authEmail">Adresse e-mail propriétaire</label><input id="authEmail" class="field bg-slate-50" type="email" value="ahmadoulaminediouf39@gmail.com" readonly></div>
+        <div><label class="field-label" for="authPassword">Mot de passe</label><input id="authPassword" class="field" type="password" minlength="8" autocomplete="current-password" required placeholder="Votre mot de passe Supabase"></div>
+        <button id="loginButton" class="btn btn-primary w-full" type="submit">Se connecter</button>
+        <button id="signupButton" class="btn btn-light w-full" type="button">Créer mon accès propriétaire (première utilisation)</button>
+      </form>
+      <p id="authMessage" class="mt-4 text-sm leading-6 text-slate-600" role="status"></p>
+      <p class="mt-5 border-t border-slate-100 pt-4 text-xs leading-5 text-slate-400">La page ne contient aucun mot de passe administrateur. L’authentification est assurée par Supabase Auth et les droits sont contrôlés par PostgreSQL RLS.</p>
+    </section>
+
+    <section id="appPanel" class="hidden">
+      <div class="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3">
+        <div><p class="text-sm font-bold text-emerald-900">Session propriétaire active</p><p id="signedInEmail" class="text-xs text-emerald-800"></p></div>
+        <button id="logoutButton" class="btn btn-light" type="button">Se déconnecter</button>
+      </div>
+
+      <div class="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div class="card p-4"><p class="text-xs text-slate-500">Événements</p><p id="countEvents" class="mt-1 text-2xl font-bold text-[#071a2d]">—</p></div>
+        <div class="card p-4"><p class="text-xs text-slate-500">Expériences</p><p id="countExperiences" class="mt-1 text-2xl font-bold text-[#071a2d]">—</p></div>
+        <div class="card p-4"><p class="text-xs text-slate-500">Diplômes & certificats</p><p id="countDiplomas" class="mt-1 text-2xl font-bold text-[#071a2d]">—</p></div>
+        <div class="card p-4"><p class="text-xs text-slate-500">Initiatives</p><p id="countInitiatives" class="mt-1 text-2xl font-bold text-[#071a2d]">—</p></div>
+      </div>
+
+      <nav class="mb-5 flex gap-2 overflow-x-auto pb-1" aria-label="Sections d’administration">
+        <button class="navbtn btn whitespace-nowrap" data-tab="events" aria-current="page">Événements</button>
+        <button class="navbtn btn whitespace-nowrap" data-tab="experiences">Expériences</button>
+        <button class="navbtn btn whitespace-nowrap" data-tab="diplomas">Diplômes</button>
+        <button class="navbtn btn whitespace-nowrap" data-tab="initiatives">Initiatives</button>
+        <button class="navbtn btn whitespace-nowrap" data-tab="profile">Profil principal</button>
+      </nav>
+
+      <div id="adminMessage" class="mb-4 hidden rounded-lg border px-4 py-3 text-sm" role="status"></div>
+      <div class="grid items-start gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(340px,.9fr)]">
+        <section class="card min-w-0 p-4 sm:p-5">
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <div><p id="listEyebrow" class="text-[10px] font-bold uppercase tracking-[.18em] text-emerald-700">Contenus</p><h2 id="listTitle" class="mt-1 text-xl font-bold text-[#071a2d]">Événements</h2></div>
+            <button id="newButton" class="btn btn-primary shrink-0" type="button">+ Ajouter</button>
+          </div>
+          <div id="recordsList" class="space-y-3"><p class="text-sm text-slate-500">Chargement…</p></div>
+        </section>
+
+        <section id="editorPanel" class="card min-w-0 p-4 sm:p-5">
+          <div class="mb-4">
+            <p class="text-[10px] font-bold uppercase tracking-[.18em] text-emerald-700">Éditeur visuel</p>
+            <h2 id="editorTitle" class="mt-1 text-xl font-bold text-[#071a2d]">Nouvel événement</h2>
+            <p class="mt-1 text-xs leading-5 text-slate-500">Les champs FR et EN alimentent automatiquement la version linguistique correspondante du site.</p>
+          </div>
+          <form id="contentForm" class="space-y-4">
+            <div id="formFields" class="grid gap-4 sm:grid-cols-2"></div>
+            <div id="mediaEditor" class="space-y-3"></div>
+            <div class="flex flex-col-reverse gap-2 border-t border-slate-100 pt-4 sm:flex-row">
+              <button id="cancelEdit" class="btn btn-light" type="button">Annuler</button>
+              <button id="saveButton" class="btn btn-primary flex-1" type="submit">Enregistrer</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+      const SUPABASE_URL = 'https://kjrgvpxmqrbhbejqedcm.supabase.co';
+      const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_LIE3gft788Rt0Y9szWBBbQ_9vW2rwZw';
+      const ADMIN_EMAIL = 'ahmadoulaminediouf39@gmail.com';
+      const BUCKET = 'portfolio-media';
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+      });
+
+      const $ = function (id) { return document.getElementById(id); };
+      const tables = ['events', 'experiences', 'diplomas', 'initiatives'];
+      const labels = {
+        events: 'Événements et conférences',
+        experiences: 'Expériences professionnelles',
+        diplomas: 'Diplômes et certifications',
+        initiatives: 'Initiatives et projets',
+        profile: 'Profil principal'
+      };
+      const fields = {
+        events: [
+          {name:'title',label:'Nom de l’événement',required:true},
+          {name:'location',label:'Ville / lieu'},
+          {name:'country',label:'Pays'},
+          {name:'start_date',label:'Date de début',type:'date'},
+          {name:'end_date',label:'Date de fin',type:'date'},
+          {name:'status',label:'Statut',type:'select',options:[['upcoming','À venir / Upcoming'],['past','Passé / Past']]},
+          {name:'role_en',label:'Mon rôle (EN)',placeholder:'Participant, Speaker, Ambassador…'},
+          {name:'role_fr',label:'Mon rôle (FR)',placeholder:'Participant, Intervenant, Ambassadeur…'},
+          {name:'summary_en',label:'Résumé en anglais',type:'textarea',full:true},
+          {name:'summary_fr',label:'Résumé en français',type:'textarea',full:true},
+          {name:'sort_order',label:'Ordre d’affichage',type:'number',value:0},
+          {name:'is_published',label:'Publier sur le site',type:'checkbox',value:true}
+        ],
+        experiences: [
+          {name:'title',label:'Intitulé du poste / expérience',required:true},
+          {name:'organization',label:'Organisation / entreprise',required:true},
+          {name:'start_date',label:'Date de début',type:'date'},
+          {name:'end_date',label:'Date de fin',type:'date'},
+          {name:'is_current',label:'Poste actuel',type:'checkbox',value:false},
+          {name:'skills',label:'Compétences / tags (séparés par des virgules)',type:'tags',full:true},
+          {name:'description_en',label:'Description en anglais',type:'textarea',full:true},
+          {name:'description_fr',label:'Description en français',type:'textarea',full:true},
+          {name:'sort_order',label:'Ordre d’affichage',type:'number',value:0},
+          {name:'is_published',label:'Publier sur le site',type:'checkbox',value:true}
+        ],
+        diplomas: [
+          {name:'title',label:'Diplôme / certification',required:true},
+          {name:'institution',label:'Institution / organisme',required:true},
+          {name:'year',label:'Année',type:'number'},
+          {name:'details_en',label:'Détails en anglais',type:'textarea',full:true},
+          {name:'details_fr',label:'Détails en français',type:'textarea',full:true},
+          {name:'sort_order',label:'Ordre d’affichage',type:'number',value:0},
+          {name:'is_published',label:'Publier sur le site',type:'checkbox',value:true}
+        ],
+        initiatives: [
+          {name:'title',label:'Nom du projet / initiative',required:true},
+          {name:'category',label:'Catégorie',placeholder:'Livre, plaidoyer, programme…'},
+          {name:'status',label:'Statut',type:'select',options:[['ongoing','En cours'],['in_progress','En préparation'],['completed','Terminé'],['paused','En pause']]},
+          {name:'start_date',label:'Date de début',type:'date'},
+          {name:'end_date',label:'Date de fin',type:'date'},
+          {name:'link_url',label:'Lien externe',type:'url',full:true},
+          {name:'description_en',label:'Description en anglais',type:'textarea',full:true},
+          {name:'description_fr',label:'Description en français',type:'textarea',full:true},
+          {name:'sort_order',label:'Ordre d’affichage',type:'number',value:0},
+          {name:'is_published',label:'Publier sur le site',type:'checkbox',value:true}
+        ],
+        profile: [
+          {name:'full_name',label:'Nom complet',required:true,full:true},
+          {name:'title_en',label:'Titre professionnel (EN)',full:true},
+          {name:'title_fr',label:'Titre professionnel (FR)',full:true},
+          {name:'signature_en',label:'Signature / slogan (EN)',full:true},
+          {name:'signature_fr',label:'Signature / slogan (FR)',full:true},
+          {name:'location',label:'Localisation'},
+          {name:'phone',label:'Téléphone / WhatsApp'},
+          {name:'email',label:'E-mail',type:'email'},
+          {name:'linkedin_url',label:'URL LinkedIn',type:'url',full:true},
+          {name:'intro_en',label:'Présentation courte (EN)',type:'textarea',full:true},
+          {name:'intro_fr',label:'Présentation courte (FR)',type:'textarea',full:true}
+        ]
+      };
+      const tableMedia = {
+        events: {array:'gallery_urls',single:'cover_image',arrayLabel:'Photos de la conférence / galerie',singleLabel:'Image de couverture'},
+        experiences: {array:'image_urls',arrayLabel:'Photos liées à cette expérience'},
+        diplomas: {single:'image_url',singleLabel:'Image du diplôme / badge'},
+        initiatives: {array:'image_urls',arrayLabel:'Images du projet'},
+        profile: {single:'photo_url',singleLabel:'Photo de profil principale'}
+      };
+      let activeTab = 'events';
+      let records = {events:[],experiences:[],diplomas:[],initiatives:[]};
+      let editing = null;
+
+      function escapeHtml(value) {
+        return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
+          return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]);
+        });
+      }
+      function setMessage(message, kind) {
+        const el = $('adminMessage');
+        el.textContent = message;
+        el.className = 'mb-4 rounded-lg border px-4 py-3 text-sm ' + (kind === 'error' ? 'border-red-200 bg-red-50 text-red-800' : 'border-emerald-200 bg-emerald-50 text-emerald-900');
+        el.classList.remove('hidden');
+      }
+      function authMessage(message, error) {
+        $('authMessage').textContent = message;
+        $('authMessage').className = 'mt-4 text-sm leading-6 ' + (error ? 'text-red-700' : 'text-slate-600');
+      }
+      async function verifyOwner() {
+        const userResult = await client.auth.getUser();
+        const user = userResult.data && userResult.data.user;
+        if (!user || !user.email || user.email.toLowerCase() !== ADMIN_EMAIL) {
+          await client.auth.signOut();
+          return false;
+        }
+        const check = await client.rpc('is_portfolio_admin');
+        if (check.error || check.data !== true) {
+          await client.auth.signOut();
+          authMessage('Ce compte ne possède pas les droits administrateur du portfolio.', true);
+          return false;
+        }
+        $('authPanel').classList.add('hidden');
+        $('appPanel').classList.remove('hidden');
+        $('signedInEmail').textContent = user.email;
+        await loadAll();
+        return true;
+      }
+
+      $('authForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        $('loginButton').disabled = true;
+        const password = $('authPassword').value;
+        const result = await client.auth.signInWithPassword({email:ADMIN_EMAIL,password:password});
+        $('loginButton').disabled = false;
+        if (result.error) { authMessage('Connexion impossible : ' + result.error.message, true); return; }
+        await verifyOwner();
+      });
+      $('signupButton').addEventListener('click', async function () {
+        const password = $('authPassword').value;
+        if (password.length < 8) { authMessage('Choisissez un mot de passe d’au moins 8 caractères.', true); return; }
+        $('signupButton').disabled = true;
+        const result = await client.auth.signUp({
+          email: ADMIN_EMAIL,
+          password: password,
+          options: { emailRedirectTo: window.location.origin + '/admin.html' }
+        });
+        $('signupButton').disabled = false;
+        if (result.error) { authMessage('Création du compte impossible : ' + result.error.message, true); return; }
+        if (result.data && result.data.session) {
+          await verifyOwner();
+        } else {
+          authMessage('Compte créé. Ouvrez le lien de confirmation reçu à cette adresse e-mail, puis revenez sur cette page pour vous connecter.');
+        }
+      });
+      $('logoutButton').addEventListener('click', async function () {
+        await client.auth.signOut();
+        $('appPanel').classList.add('hidden');
+        $('authPanel').classList.remove('hidden');
+        $('authPassword').value = '';
+        authMessage('Vous êtes déconnecté.');
+      });
+      client.auth.onAuthStateChange(function (event, session) {
+        if (session && $('appPanel').classList.contains('hidden')) {
+          setTimeout(function () { verifyOwner(); }, 0);
+        }
+      });
+
+      async function loadAll() {
+        for (const table of tables) {
+          const result = await client.from(table).select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:false});
+          if (result.error) throw result.error;
+          records[table] = result.data || [];
+        }
+        $('countEvents').textContent = records.events.length;
+        $('countExperiences').textContent = records.experiences.length;
+        $('countDiplomas').textContent = records.diplomas.length;
+        $('countInitiatives').textContent = records.initiatives.length;
+        renderList();
+        if (activeTab === 'profile') await loadProfileEditor();
+      }
+      function setTab(tab) {
+        activeTab = tab;
+        editing = null;
+        document.querySelectorAll('[data-tab]').forEach(function (button) {
+          if (button.dataset.tab === tab) button.setAttribute('aria-current','page');
+          else button.removeAttribute('aria-current');
+        });
+        $('listTitle').textContent = labels[tab];
+        $('editorPanel').classList.remove('hidden');
+        $('newButton').classList.toggle('hidden', tab === 'profile');
+        renderList();
+        if (tab === 'profile') loadProfileEditor();
+        else renderEditor(null);
+      }
+      document.querySelectorAll('[data-tab]').forEach(function (button) {
+        button.addEventListener('click', function () { setTab(button.dataset.tab); });
+      });
+      $('newButton').addEventListener('click', function () { editing = null; renderEditor(null); });
+      $('cancelEdit').addEventListener('click', function () { editing = null; if (activeTab === 'profile') loadProfileEditor(); else renderEditor(null); });
+
+      function renderList() {
+        const list = $('recordsList');
+        if (activeTab === 'profile') {
+          list.innerHTML = '<div class="rounded-xl bg-slate-50 p-4 text-sm leading-6 text-slate-600">Modifiez ici vos coordonnées, votre titre et votre portrait principal. Les changements apparaîtront sur le site après enregistrement.</div>';
+          return;
+        }
+        const rows = records[activeTab] || [];
+        if (!rows.length) { list.innerHTML = '<p class="rounded-xl bg-slate-50 p-4 text-sm text-slate-500">Aucun contenu pour le moment. Cliquez sur « Ajouter » pour commencer.</p>'; return; }
+        list.innerHTML = rows.map(function (row) {
+          const image = row.cover_image || row.image_url || (row.gallery_urls || row.image_urls || [])[0] || '';
+          const sub = activeTab === 'events' ? [row.location,row.country,row.status === 'past' ? 'Passé' : 'À venir'].filter(Boolean).join(' · ')
+            : activeTab === 'experiences' ? row.organization
+            : activeTab === 'diplomas' ? [row.institution,row.year].filter(Boolean).join(' · ')
+            : [row.category,row.status].filter(Boolean).join(' · ');
+          return '<article class="flex gap-3 rounded-xl border border-slate-200 p-3">' +
+            (image ? '<img class="thumb shrink-0" src="' + escapeHtml(image) + '" alt="" loading="lazy">' : '<div class="thumb flex shrink-0 items-center justify-center text-2xl text-slate-400">＋</div>') +
+            '<div class="min-w-0 flex-1"><div class="flex flex-wrap items-center gap-2"><h3 class="break-words text-sm font-bold text-[#071a2d]">' + escapeHtml(row.title) + '</h3>' +
+            '<span class="pill">' + (row.is_published ? 'Publié' : 'Brouillon') + '</span></div>' +
+            '<p class="mt-1 text-xs text-slate-500">' + escapeHtml(sub || '') + '</p>' +
+            '<div class="mt-3 flex flex-wrap gap-2"><button class="btn btn-light !min-h-9 !px-3 !py-1.5 text-xs" data-edit="' + row.id + '">Modifier</button><button class="btn btn-danger !min-h-9 !px-3 !py-1.5 text-xs" data-delete="' + row.id + '">Supprimer</button></div></div></article>';
+        }).join('');
+        list.querySelectorAll('[data-edit]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            editing = rows.find(function (row) { return row.id === button.dataset.edit; }) || null;
+            renderEditor(editing);
+          });
+        });
+        list.querySelectorAll('[data-delete]').forEach(function (button) {
+          button.addEventListener('click', async function () {
+            const row = rows.find(function (item) { return item.id === button.dataset.delete; });
+            if (!row || !confirm('Supprimer définitivement « ' + row.title + ' » ?')) return;
+            try {
+              const media = tableMedia[activeTab];
+              const paths = [];
+              if (media.array && Array.isArray(row[media.array])) row[media.array].forEach(function (url) { const path = storagePath(url); if (path) paths.push(path); });
+              if (media.single && row[media.single]) { const path = storagePath(row[media.single]); if (path) paths.push(path); }
+              const del = await client.from(activeTab).delete().eq('id',row.id);
+              if (del.error) throw del.error;
+              if (paths.length) await client.storage.from(BUCKET).remove(paths);
+              await loadAll();
+              setMessage('Contenu supprimé.', 'success');
+            } catch (error) { setMessage('Suppression impossible : ' + error.message, 'error'); }
+          });
+        });
+      }
+
+      function storagePath(url) {
+        if (!url) return null;
+        const marker = '/storage/v1/object/public/' + BUCKET + '/';
+        const index = url.indexOf(marker);
+        return index >= 0 ? decodeURIComponent(url.slice(index + marker.length).split('?')[0]) : null;
+      }
+      function inputMarkup(field, record) {
+        const value = record && record[field.name] != null ? record[field.name] : (field.value != null ? field.value : '');
+        const isCheck = field.type === 'checkbox';
+        const base = 'name="' + field.name + '" id="field_' + field.name + '"';
+        if (field.type === 'checkbox') return '<label class="flex items-center gap-3 rounded-lg bg-slate-50 p-3 text-sm font-semibold sm:col-span-2"><input class="h-5 w-5 accent-emerald-700" type="checkbox" ' + base + (value ? ' checked' : '') + '>' + escapeHtml(field.label) + '</label>';
+        if (field.type === 'textarea') return '<div class="sm:col-span-2"><label class="field-label" for="field_' + field.name + '">' + escapeHtml(field.label) + '</label><textarea class="field min-h-28" ' + base + ' placeholder="' + escapeHtml(field.placeholder || '') + '">' + escapeHtml(value) + '</textarea></div>';
+        if (field.type === 'select') return '<div><label class="field-label" for="field_' + field.name + '">' + escapeHtml(field.label) + '</label><select class="field" ' + base + '>' + field.options.map(function (option) { return '<option value="' + escapeHtml(option[0]) + '"' + (value === option[0] ? ' selected' : '') + '>' + escapeHtml(option[1]) + '</option>'; }).join('') + '</select></div>';
+        if (field.type === 'tags') return '<div class="sm:col-span-2"><label class="field-label" for="field_' + field.name + '">' + escapeHtml(field.label) + '</label><input class="field" type="text" ' + base + ' value="' + escapeHtml(Array.isArray(value) ? value.join(', ') : value) + '" placeholder="Upstream, Downstream, GMP…"></div>';
+        return '<div' + (field.full ? ' class="sm:col-span-2"' : '') + '><label class="field-label" for="field_' + field.name + '">' + escapeHtml(field.label) + '</label><input class="field" type="' + escapeHtml(field.type || 'text') + '" ' + base + ' value="' + escapeHtml(value) + '" placeholder="' + escapeHtml(field.placeholder || '') + '"' + (field.required ? ' required' : '') + '></div>';
+      }
+      function mediaPreview(record) {
+        const media = tableMedia[activeTab];
+        if (!media) return '';
+        const parts = [];
+        if (media.single && record && record[media.single]) parts.push('<img class="thumb" src="' + escapeHtml(record[media.single]) + '" alt="Image actuelle">');
+        if (media.array && record && Array.isArray(record[media.array])) record[media.array].forEach(function (url) { parts.push('<img class="thumb" src="' + escapeHtml(url) + '" alt="Image actuelle" loading="lazy">'); });
+        const fileLabel = activeTab === 'diplomas' || activeTab === 'profile' ? 'Choisir une image' : 'Ajouter des photos';
+        const multiple = media.array ? ' multiple' : '';
+        return '<div class="rounded-xl border border-dashed border-slate-300 p-3"><label class="field-label">' + escapeHtml(media.arrayLabel || media.singleLabel) + '</label>' +
+          (parts.length ? '<div class="mb-3 flex flex-wrap gap-2">' + parts.join('') + '</div>' : '') +
+          '<input class="field" type="file" id="mediaFiles" accept="image/jpeg,image/png,image/webp" ' + multiple + '>' +
+          '<p class="mt-2 text-xs leading-5 text-slate-500">' + fileLabel + '. JPG, PNG ou WebP · 12 Mo maximum par image. Les photos sont optimisées avant l’envoi.</p></div>';
+      }
+      function renderEditor(record) {
+        if (activeTab === 'profile') return loadProfileEditor();
+        $('editorTitle').textContent = (record ? 'Modifier : ' : 'Nouveau : ') + labels[activeTab];
+        $('formFields').innerHTML = fields[activeTab].map(function (field) { return inputMarkup(field,record); }).join('');
+        $('mediaEditor').innerHTML = mediaPreview(record);
+        $('saveButton').textContent = record ? 'Enregistrer les modifications' : 'Ajouter au portfolio';
+      }
+      async function loadProfileEditor() {
+        const result = await client.from('profile').select('*').eq('id',1).maybeSingle();
+        if (result.error) { setMessage('Impossible de charger le profil : ' + result.error.message,'error'); return; }
+        editing = result.data || {id:1,full_name:'Ahmadou Lamine Diouf'};
+        $('editorTitle').textContent = 'Profil principal';
+        $('formFields').innerHTML = fields.profile.map(function (field) { return inputMarkup(field,editing); }).join('');
+        const existing = editing.photo_url ? '<div class="mb-3"><img class="h-28 w-28 rounded-xl object-cover" src="' + escapeHtml(editing.photo_url) + '" alt="Portrait actuel"></div>' : '';
+        $('mediaEditor').innerHTML = '<div class="rounded-xl border border-dashed border-slate-300 p-3"><label class="field-label">Photo de profil</label>' + existing + '<input class="field" type="file" id="mediaFiles" accept="image/jpeg,image/png,image/webp"><p class="mt-2 text-xs text-slate-500">Portrait principal · JPG, PNG ou WebP · 12 Mo maximum.</p></div>';
+        $('saveButton').textContent = 'Enregistrer le profil';
+      }
+
+      async function optimizeImage(file) {
+        if (!file.type.startsWith('image/')) throw new Error('Le fichier sélectionné n’est pas une image.');
+        if (file.size > 12582912) throw new Error('Une image dépasse la limite de 12 Mo.');
+        if (!('createImageBitmap' in window)) return file;
+        try {
+          const bitmap = await createImageBitmap(file);
+          const max = 1800;
+          const scale = Math.min(1,max / Math.max(bitmap.width,bitmap.height));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(1,Math.round(bitmap.width * scale));
+          canvas.height = Math.max(1,Math.round(bitmap.height * scale));
+          const context = canvas.getContext('2d');
+          context.drawImage(bitmap,0,0,canvas.width,canvas.height);
+          bitmap.close();
+          const blob = await new Promise(function (resolve) { canvas.toBlob(resolve,'image/webp',.82); });
+          return blob ? new File([blob],'image.webp',{type:'image/webp',lastModified:Date.now()}) : file;
+        } catch (error) { return file; }
+      }
+      async function uploadOne(file, table, id) {
+        const optimized = await optimizeImage(file);
+        const original = file.name.replace(/[^a-zA-Z0-9._-]/g,'-').replace(/-+/g,'-').slice(-70) || 'photo';
+        const extension = optimized.type === 'image/webp' ? 'webp' : (optimized.type === 'image/png' ? 'png' : 'jpg');
+        const name = Date.now() + '-' + Math.random().toString(36).slice(2,9) + '-' + original.replace(/\.[^.]+$/,'') + '.' + extension;
+        const path = table + '/' + id + '/' + name;
+        const result = await client.storage.from(BUCKET).upload(path,optimized,{cacheControl:'31536000',upsert:false,contentType:optimized.type});
+        if (result.error) throw result.error;
+        return client.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+      }
+
+      $('contentForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        if (activeTab === 'profile') return saveProfile();
+        const table = activeTab;
+        const record = editing;
+        const payload = {};
+        fields[table].forEach(function (field) {
+          const element = $('field_' + field.name);
+          if (!element) return;
+          if (field.type === 'checkbox') payload[field.name] = element.checked;
+          else if (field.type === 'number') payload[field.name] = element.value === '' ? null : Number(element.value);
+          else if (field.type === 'tags') payload[field.name] = element.value.split(',').map(function (value) { return value.trim(); }).filter(Boolean);
+          else payload[field.name] = element.value.trim() === '' ? null : element.value.trim();
+        });
+        if (table === 'experiences' && payload.is_current) payload.end_date = null;
+        const id = record && record.id ? record.id : crypto.randomUUID();
+        payload.id = id;
+        $('saveButton').disabled = true;
+        $('saveButton').textContent = 'Enregistrement…';
+        try {
+          const filesInput = $('mediaFiles');
+          const filesToUpload = filesInput && filesInput.files ? Array.from(filesInput.files) : [];
+          const media = tableMedia[table];
+          if (filesToUpload.length) {
+            const urls = [];
+            for (const file of filesToUpload) urls.push(await uploadOne(file,table,id));
+            if (media.array) payload[media.array] = (record && record[media.array] ? record[media.array] : []).concat(urls);
+            else if (media.single) payload[media.single] = urls[0];
+          } else {
+            if (media.array) payload[media.array] = record && record[media.array] ? record[media.array] : [];
+            if (media.single) payload[media.single] = record && record[media.single] ? record[media.single] : null;
+          }
+          const result = await client.from(table).upsert(payload).select().single();
+          if (result.error) throw result.error;
+          editing = null;
+          await loadAll();
+          renderEditor(null);
+          setMessage('Contenu enregistré et prêt à être affiché sur le site.', 'success');
+        } catch (error) {
+          setMessage('Enregistrement impossible : ' + error.message, 'error');
+        } finally {
+          $('saveButton').disabled = false;
+          $('saveButton').textContent = record ? 'Enregistrer les modifications' : 'Ajouter au portfolio';
+        }
+      });
+
+      async function saveProfile() {
+        const payload = {id:1};
+        fields.profile.forEach(function (field) {
+          const element = $('field_' + field.name);
+          if (element) payload[field.name] = element.value.trim() || null;
+        });
+        $('saveButton').disabled = true;
+        $('saveButton').textContent = 'Enregistrement…';
+        try {
+          const files = $('mediaFiles') && $('mediaFiles').files ? Array.from($('mediaFiles').files) : [];
+          if (files.length) payload.photo_url = await uploadOne(files[0],'profile','1');
+          else payload.photo_url = editing && editing.photo_url ? editing.photo_url : null;
+          const result = await client.from('profile').upsert(payload).select().single();
+          if (result.error) throw result.error;
+          editing = result.data;
+          setMessage('Profil principal mis à jour.', 'success');
+          await loadProfileEditor();
+        } catch (error) {
+          setMessage('Mise à jour du profil impossible : ' + error.message, 'error');
+        } finally {
+          $('saveButton').disabled = false;
+          $('saveButton').textContent = 'Enregistrer le profil';
+        }
+      }
+
+      client.auth.getSession().then(async function (result) {
+        if (result.data && result.data.session) {
+          try { await verifyOwner(); } catch (error) { authMessage('Erreur de vérification : ' + error.message,true); }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
