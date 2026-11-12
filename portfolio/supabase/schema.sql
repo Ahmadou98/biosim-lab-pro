@@ -84,7 +84,7 @@ alter table public.profile enable row level security;
 -- Anonymous visitors can only read published public content.
 -- The owner can read drafts and manage all rows.
 drop policy if exists "Public read published events" on public.events;
-create policy "Public read published events" on public.events for select to anon using(is_published = true);
+create policy "Public read published events" on public.events for select to anon, authenticated using(is_published = true);
 drop policy if exists "Portfolio admin read all events" on public.events;
 create policy "Portfolio admin read all events" on public.events for select to authenticated using(public.is_portfolio_admin());
 drop policy if exists "Portfolio admin insert events" on public.events;
@@ -95,7 +95,7 @@ drop policy if exists "Portfolio admin delete events" on public.events;
 create policy "Portfolio admin delete events" on public.events for delete to authenticated using(public.is_portfolio_admin());
 
 drop policy if exists "Public read published experiences" on public.experiences;
-create policy "Public read published experiences" on public.experiences for select to anon using(is_published = true);
+create policy "Public read published experiences" on public.experiences for select to anon, authenticated using(is_published = true);
 drop policy if exists "Portfolio admin read all experiences" on public.experiences;
 create policy "Portfolio admin read all experiences" on public.experiences for select to authenticated using(public.is_portfolio_admin());
 drop policy if exists "Portfolio admin insert experiences" on public.experiences;
@@ -106,7 +106,7 @@ drop policy if exists "Portfolio admin delete experiences" on public.experiences
 create policy "Portfolio admin delete experiences" on public.experiences for delete to authenticated using(public.is_portfolio_admin());
 
 drop policy if exists "Public read published diplomas" on public.diplomas;
-create policy "Public read published diplomas" on public.diplomas for select to anon using(is_published = true);
+create policy "Public read published diplomas" on public.diplomas for select to anon, authenticated using(is_published = true);
 drop policy if exists "Portfolio admin read all diplomas" on public.diplomas;
 create policy "Portfolio admin read all diplomas" on public.diplomas for select to authenticated using(public.is_portfolio_admin());
 drop policy if exists "Portfolio admin insert diplomas" on public.diplomas;
@@ -117,7 +117,7 @@ drop policy if exists "Portfolio admin delete diplomas" on public.diplomas;
 create policy "Portfolio admin delete diplomas" on public.diplomas for delete to authenticated using(public.is_portfolio_admin());
 
 drop policy if exists "Public read published initiatives" on public.initiatives;
-create policy "Public read published initiatives" on public.initiatives for select to anon using(is_published = true);
+create policy "Public read published initiatives" on public.initiatives for select to anon, authenticated using(is_published = true);
 drop policy if exists "Portfolio admin read all initiatives" on public.initiatives;
 create policy "Portfolio admin read all initiatives" on public.initiatives for select to authenticated using(public.is_portfolio_admin());
 drop policy if exists "Portfolio admin insert initiatives" on public.initiatives;
