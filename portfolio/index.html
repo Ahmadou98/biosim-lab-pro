@@ -80,6 +80,31 @@
       .portrait-placeholder::before { width: 190px; height: 190px; }
       .portrait-placeholder::after { width: 140px; height: 140px; }
     }
+    /* Opaque dropdown panel: links remain readable over the hero section. */
+    #mobileNav {
+      position: relative;
+      z-index: 60;
+      background: #0B1F3A;
+      border: 1px solid rgba(255,255,255,.16);
+      border-top-color: rgba(255,255,255,.12);
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0 18px 36px rgba(0,0,0,.28);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+    #mobileNav > div { gap: 0; padding: 3px 0; }
+    #mobileNav .mobile-link {
+      display: flex;
+      min-height: 46px;
+      align-items: center;
+      padding: 11px 8px;
+      color: rgba(255,255,255,.94);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      text-decoration: none;
+    }
+    #mobileNav .mobile-link:last-child { border-bottom: 0; }
+    #mobileNav .mobile-link:hover,
+    #mobileNav .mobile-link:focus-visible { color: #8ce0c4; }
   </style>
 </head>
 <body class="bg-white text-slate-800 antialiased selection:bg-emerald/20 selection:text-ink">
@@ -130,6 +155,10 @@
       <div class="absolute -left-48 bottom-0 h-[28rem] w-[28rem] rounded-full bg-gold/10 blur-3xl"></div>
       <div class="relative mx-auto grid min-h-[760px] max-w-7xl items-center gap-14 px-5 pb-20 pt-32 sm:px-8 lg:min-h-[790px] lg:grid-cols-[1.15fr_.85fr] lg:gap-20 lg:px-10 lg:pb-24 lg:pt-36">
         <div class="relative z-10 max-w-3xl">
+          <div class="mb-4 inline-flex max-w-full items-center gap-3 rounded-full border border-gold/35 bg-gold/10 px-4 py-2 text-[10px] font-bold tracking-[.08em] text-amber-100 sm:text-[11px]">
+            <span class="h-2 w-2 shrink-0 rounded-full bg-gold"></span>
+            <span data-i18n="hero_event_badge">Attending CPHIA 2026 · Addis Ababa (Nov 2026)</span>
+          </div>
           <div class="mb-7 inline-flex items-center gap-3 rounded-full border border-emerald/30 bg-emerald/10 px-4 py-2 text-[10px] font-semibold uppercase tracking-[.16em] text-emerald-100 sm:text-[11px]">
             <span class="h-2 w-2 rounded-full bg-emerald"></span>
             <span id="profileLocationHero" data-i18n="hero_location">Dakar, Senegal · African vaccine manufacturing</span>
@@ -265,7 +294,6 @@
           <h3 class="font-display text-xl font-bold text-ink sm:text-2xl" data-i18n="exp_diplomas_heading">Education & certifications</h3>
           <div id="diplomasGrid" class="mt-5 grid gap-5 md:grid-cols-2"><p class="text-sm text-slate-500">Loading certifications…</p></div>
         </div>
-        <p class="mt-6 text-xs leading-6 text-slate-500" data-i18n="exp_disclaimer">Training and practical exposure are presented as such; this profile does not imply independent authorisation to manufacture or release vaccines.</p>
       </div>
     </section>
 
@@ -347,7 +375,7 @@
               </div>
               <div class="flex items-start gap-4">
                 <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald/10 text-emerald"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.85-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.353V9h3.414v1.561h.05c.476-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286ZM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124ZM7.119 20.452H3.555V9h3.564v11.452Z"/></svg></span>
-                <div><p class="text-[10px] font-bold uppercase tracking-[.15em] text-slate-400" data-i18n="label_linkedin">LinkedIn</p><a class="focus-ring mt-1 inline-block rounded text-sm font-semibold text-ink hover:text-emerald" href="https://www.linkedin.com/in/ahmadou-lamine-diouf-003a98321/" target="_blank" rel="noopener noreferrer">linkedin.com/in/ahmadou-lamine-diouf</a></div>
+                <div><p class="text-[10px] font-bold uppercase tracking-[.15em] text-slate-400" data-i18n="label_linkedin">LinkedIn</p><a id="contactLinkedin" class="focus-ring mt-1 inline-block rounded text-sm font-semibold text-ink hover:text-emerald" href="https://linkedin.com" target="_blank" rel="noopener noreferrer">linkedin.com</a></div>
               </div>
             </div>
             <div class="mt-8 border-t border-slate-100 pt-6">
@@ -379,6 +407,7 @@
         exp_experiences_heading: 'Professional experience', exp_diplomas_heading: 'Education & certifications',
         events_kicker: '03 — EVENTS & CONFERENCES', events_title: 'Engagement across the African health ecosystem.', events_intro: 'Conferences, professional gatherings and opportunities to exchange ideas on vaccine manufacturing, public health and African scientific capacity.',
         dynamic_empty: 'New content will appear here as it is published.', event_upcoming: 'Upcoming', event_past: 'Past', current_role: 'Current role',
+        hero_event_badge: 'Attending CPHIA 2026 · Addis Ababa (Nov 2026)',
         hero_location: 'Dakar, Senegal · African vaccine manufacturing',
         hero_overline: 'SCIENCE · CAPACITY BUILDING · HEALTH SOVEREIGNTY',
         hero_title: 'Biomanufacturing Specialist | Advocating for African Vaccine Manufacturing',
@@ -405,7 +434,7 @@
         noa_title: 'NOA–NIBRT biopharma training', noa_org: 'Specialised training programme', noa_body: 'Training covering upstream and downstream operations, aseptic fill & finish, quality control and cleanroom behaviour in biopharmaceutical manufacturing.',
         qc_title: 'Quality control exposure', qc_org: 'Institut Pasteur de Dakar', qc_body: 'Immersion in a quality control environment, with exposure to analytical techniques and quality systems relevant to biological products.',
         hybrid_title: 'Hybrid scientific & digital skills', hybrid_org: 'UCAD · UNCHK · FORCE-N', hybrid_body: 'University studies in Physics and Chemistry at Cheikh Anta Diop University (UCAD), complemented by training and certifications in artificial intelligence, data analysis and software development through UNCHK and FORCE-N.',
-        tag_physics: 'Physics & Chemistry', tag_data: 'Data analysis', tag_dev: 'Software development', exp_disclaimer: 'Training and practical exposure are presented as such; this profile does not imply independent authorisation to manufacture or release vaccines.',
+        tag_physics: 'Physics & Chemistry', tag_data: 'Data analysis', tag_dev: 'Software development',
         impact_kicker: '04 — INITIATIVES & IMPACT', impact_title: 'Turning knowledge into shared momentum.', impact_intro: 'I believe that building a regional biomanufacturing ecosystem also means making knowledge accessible and bringing emerging talent into the conversation.',
         ambassador_label: 'Youth engagement', ambassador_title: 'Student Ambassador — MADIBA Programme', ambassador_body: 'Supporting skills development and awareness around vaccine biomanufacturing, and encouraging students to explore careers in this strategic field.',
         author_label: 'Knowledge sharing', book_status: 'IN PROGRESS', book_title: 'Author — “Introduction to Vaccine Biomanufacturing”', book_body: 'A forthcoming introductory book designed to make the fundamentals of vaccine biomanufacturing clearer and more accessible to French-speaking students and young professionals.', book_note: 'A work in finalisation · Publication forthcoming',
@@ -421,6 +450,7 @@
         exp_experiences_heading: 'Expériences professionnelles', exp_diplomas_heading: 'Formation et certifications',
         events_kicker: '03 — ÉVÉNEMENTS & CONFÉRENCES', events_title: 'Un engagement au sein de l’écosystème sanitaire africain.', events_intro: 'Conférences, rencontres professionnelles et occasions d’échanger sur la fabrication des vaccins, la santé publique et les capacités scientifiques africaines.',
         dynamic_empty: 'Les nouveaux contenus publiés apparaîtront ici.', event_upcoming: 'À venir', event_past: 'Passé', current_role: 'Poste actuel',
+        hero_event_badge: 'Participation à la CPHIA 2026 · Addis-Abeba (nov. 2026)',
         hero_location: 'Dakar, Sénégal · Fabrication de vaccins en Afrique',
         hero_overline: 'SCIENCE · RENFORCEMENT DES CAPACITÉS · SOUVERAINETÉ SANITAIRE',
         hero_title: 'Spécialiste en bioproduction | Engagé pour la fabrication de vaccins en Afrique',
@@ -447,7 +477,7 @@
         noa_title: 'Formation biopharmaceutique NOA–NIBRT', noa_org: 'Programme de formation spécialisé', noa_body: 'Formation couvrant les opérations upstream et downstream, le fill & finish aseptique, le contrôle qualité et les comportements en salle blanche dans l’industrie biopharmaceutique.',
         qc_title: 'Immersion en contrôle qualité', qc_org: 'Institut Pasteur de Dakar', qc_body: 'Immersion dans un environnement de contrôle qualité, avec une exposition à des techniques analytiques et à des systèmes qualité appliqués aux produits biologiques.',
         hybrid_title: 'Compétences scientifiques et numériques', hybrid_org: 'UCAD · UNCHK · FORCE-N', hybrid_body: 'Études universitaires en Physique-Chimie à l’Université Cheikh Anta Diop de Dakar (UCAD), complétées par des formations et certifications en intelligence artificielle, analyse de données et développement logiciel via l’UNCHK et FORCE-N.',
-        tag_physics: 'Physique-Chimie', tag_data: 'Analyse de données', tag_dev: 'Développement logiciel', exp_disclaimer: 'Les formations et immersions pratiques sont présentées comme telles ; ce profil ne sous-entend pas une autorisation autonome de fabriquer ou de libérer des vaccins.',
+        tag_physics: 'Physique-Chimie', tag_data: 'Analyse de données', tag_dev: 'Développement logiciel',
         impact_kicker: '04 — INITIATIVES & IMPACT', impact_title: 'Transformer les connaissances en dynamique collective.', impact_intro: 'Je suis convaincu que construire un écosystème régional de bioproduction passe aussi par l’accessibilité des connaissances et l’implication des jeunes talents.',
         ambassador_label: 'Engagement jeunesse', ambassador_title: 'Ambassadeur étudiant — Programme MADIBA', ambassador_body: 'Contribution à la sensibilisation et au développement des compétences autour de la bioproduction vaccinale, tout en encourageant les étudiants à découvrir les carrières de ce secteur stratégique.',
         author_label: 'Partage des connaissances', book_status: 'EN COURS', book_title: 'Auteur — « Introduction à la bioproduction des vaccins »', book_body: 'Un ouvrage d’introduction en cours de finalisation, conçu pour rendre les fondamentaux de la bioproduction vaccinale plus clairs et accessibles aux étudiants et jeunes professionnels francophones.', book_note: 'Ouvrage en cours de finalisation · Publication à venir',
@@ -693,6 +723,15 @@
             images + '</article>';
         }).join('') : dynamicEmpty();
       }
+
+      // Dynamic cards are inserted after the initial IntersectionObserver scan.
+      // Make them visible immediately so the reveal animation cannot leave them at opacity: 0.
+      ['eventsGrid','experiencesGrid','diplomasGrid','initiativesGrid'].forEach(function (id) {
+        const grid = document.getElementById(id);
+        if (grid) grid.querySelectorAll('.reveal').forEach(function (card) {
+          card.classList.add('is-visible');
+        });
+      });
     }
     function applyPortfolioProfile() {
       if (!portfolioProfile) return;
@@ -721,39 +760,38 @@
       if (phone && p.phone) { phone.textContent = p.phone; phone.href = 'tel:' + p.phone.replace(/[^\d+]/g,''); }
       const email = document.getElementById('contactEmail');
       if (email && p.email) { email.textContent = p.email; email.href = 'mailto:' + p.email; }
-      if (p.linkedin_url) document.querySelectorAll('a[href*="linkedin.com/in/"]').forEach(function (link) { link.href = p.linkedin_url; });
+      if (p.linkedin_url) document.querySelectorAll('a[href*="linkedin.com/in/"]:not(#contactLinkedin)').forEach(function (link) { link.href = p.linkedin_url; });
     }
     async function loadPortfolioContent() {
-      try {
-        const requests = await Promise.all([
-          portfolioDb.from('profile').select('*').eq('id',1).maybeSingle(),
-          portfolioDb.from('events').select('*').eq('is_published',true).order('start_date',{ascending:false}).order('sort_order',{ascending:true}),
-          portfolioDb.from('experiences').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('start_date',{ascending:false}),
-          portfolioDb.from('diplomas').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('year',{ascending:false}),
-          portfolioDb.from('initiatives').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('created_at',{ascending:false})
-        ]);
-        if (requests[0].error) throw requests[0].error;
-        if (requests[1].error) throw requests[1].error;
-        if (requests[2].error) throw requests[2].error;
-        if (requests[3].error) throw requests[3].error;
-        if (requests[4].error) throw requests[4].error;
-        portfolioProfile = requests[0].data || null;
-        portfolioEvents = requests[1].data || [];
-        portfolioExperiences = requests[2].data || [];
-        portfolioDiplomas = requests[3].data || [];
-        portfolioInitiatives = requests[4].data || [];
-        applyPortfolioProfile();
-        renderDynamicPortfolio();
-      } catch (error) {
-        console.error('Portfolio CMS could not be loaded:', error);
-        const message = currentLanguage === 'fr'
-          ? 'Les contenus dynamiques ne sont pas disponibles pour le moment.'
-          : 'Dynamic portfolio content is temporarily unavailable.';
-        ['eventsGrid','experiencesGrid','diplomasGrid','initiativesGrid'].forEach(function (id) {
-          const node = document.getElementById(id);
-          if (node) node.innerHTML = '<p class="rounded-xl border border-dashed border-slate-300 p-5 text-sm text-slate-500">' + escapeDynamic(message) + '</p>';
-        });
-      }
+      const requests = await Promise.all([
+        portfolioDb.from('profile').select('*').eq('id',1).maybeSingle(),
+        portfolioDb.from('events').select('*').eq('is_published',true).order('start_date',{ascending:false}).order('sort_order',{ascending:true}),
+        portfolioDb.from('experiences').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('start_date',{ascending:false}),
+        portfolioDb.from('diplomas').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('year',{ascending:false}),
+        portfolioDb.from('initiatives').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('created_at',{ascending:false})
+      ]);
+
+      // Load collections independently: a failure in one table must not blank every section.
+      const labels = ['profile','events','experiences','diplomas','initiatives'];
+      requests.forEach(function (result,index) {
+        if (result.error) console.error('Portfolio '+labels[index]+' query failed:',result.error);
+      });
+      portfolioProfile = requests[0].error ? null : (requests[0].data || null);
+      portfolioEvents = requests[1].error ? [] : (requests[1].data || []);
+      portfolioExperiences = requests[2].error ? [] : (requests[2].data || []);
+      portfolioDiplomas = requests[3].error ? [] : (requests[3].data || []);
+      portfolioInitiatives = requests[4].error ? [] : (requests[4].data || []);
+
+      applyPortfolioProfile();
+      renderDynamicPortfolio();
+
+      const gridIds = ['eventsGrid','experiencesGrid','diplomasGrid','initiativesGrid'];
+      requests.slice(1).forEach(function (result,index) {
+        if (!result.error) return;
+        const node = document.getElementById(gridIds[index]);
+        if (node) node.innerHTML = '<p class="rounded-xl border border-dashed border-amber-300 bg-amber-50 p-5 text-sm text-amber-800">'+
+          escapeDynamic(currentLanguage === 'fr' ? 'Impossible de charger cette section pour le moment.' : 'This section could not be loaded right now.')+'</p>';
+      });
     }
     setLanguage(currentLanguage);
     loadPortfolioContent();
