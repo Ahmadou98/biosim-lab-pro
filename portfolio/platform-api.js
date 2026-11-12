@@ -36,17 +36,14 @@
     return String(value || "").replace(/\\/g,"\\\\").replace(/\n/g,"\\n").replace(/,/g,"\\,").replace(/;/g,"\\;");
   }
   function downloadVcard(profile) {
-    const lines = [
-      "BEGIN:VCARD","VERSION:3.0",
-      "FN:" + vcardEscape(profile.full_name),
-      "ORG:" + vcardEscape(profile.organization),
-      "TITLE:" + vcardEscape(profile.title_en || profile.title_fr),
-      "TEL;TYPE=CELL:" + vcardEscape(profile.whatsapp),
-      "EMAIL;TYPE=INTERNET:" + vcardEscape(profile.email),
-      "URL:" + vcardEscape(profile.linkedin_url),
-      "END:VCARD"
-    ];
-    const blob = new Blob([lines.filter(x => !/^(TEL|EMAIL|URL|ORG|TITLE):?$/.test(x)).join("\r\n") + "\r\n"], {type:"text/vcard;charset=utf-8"});
+    const lines = ["BEGIN:VCARD", "VERSION:3.0", "FN:" + vcardEscape(profile.full_name)];
+    if (profile.organization) lines.push("ORG:" + vcardEscape(profile.organization));
+    if (profile.title_en || profile.title_fr) lines.push("TITLE:" + vcardEscape(profile.title_en || profile.title_fr));
+    if (profile.whatsapp) lines.push("TEL;TYPE=CELL:" + vcardEscape(profile.whatsapp));
+    if (profile.email) lines.push("EMAIL;TYPE=INTERNET:" + vcardEscape(profile.email));
+    if (profile.linkedin_url) lines.push("URL:" + vcardEscape(profile.linkedin_url));
+    lines.push("END:VCARD");
+    const blob = new Blob([lines.join("\r\n") + "\r\n"], {type:"text/vcard;charset=utf-8"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url; a.download = (String(profile.full_name || "contact").toLowerCase().replace(/[^a-z0-9]+/g,"-") || "contact") + ".vcf";
