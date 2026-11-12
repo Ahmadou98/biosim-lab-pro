@@ -19,6 +19,10 @@
     .card{background:#fff;border:1px solid #e2e8f0;border-radius:1rem}
     .pill{font-size:.68rem;font-weight:700;border-radius:999px;padding:.28rem .55rem;background:#e8f6f1;color:#087b5c}
     .thumb{width:70px;height:70px;object-fit:cover;border-radius:.6rem;background:#e2e8f0}
+    .contacts-table{width:100%;border-collapse:separate;border-spacing:0;min-width:760px}
+    .contacts-table th{padding:.75rem .8rem;background:#f8fafc;color:#64748b;font-size:.68rem;font-weight:800;text-align:left;white-space:nowrap}
+    .contacts-table td{padding:.85rem .8rem;border-top:1px solid #edf1f5;color:#334155;font-size:.78rem;vertical-align:middle}
+    .contacts-table tr:hover td{background:#fbfdfe}
   </style>
 </head>
 <body class="text-slate-800 antialiased">
@@ -68,10 +72,20 @@
         <button class="navbtn btn whitespace-nowrap" data-tab="diplomas">Diplômes</button>
         <button class="navbtn btn whitespace-nowrap" data-tab="initiatives">Initiatives</button>
         <button class="navbtn btn whitespace-nowrap" data-tab="profile">Profil principal</button>
+        <button class="navbtn btn whitespace-nowrap" data-tab="received_contacts">Contacts reçus <span id="receivedContactsCount" class="ml-1 rounded-full bg-white/15 px-2 py-0.5 text-[10px]">0</span></button>
       </nav>
 
+      <section id="receivedContactsPanel" class="card mb-5 hidden min-w-0 p-4 sm:p-5">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div><p class="text-[10px] font-bold uppercase tracking-[.18em] text-emerald-700">Réseau professionnel · CPHIA 2026</p><h2 class="mt-1 text-xl font-bold text-[#071a2d]">Contacts reçus</h2><p id="receivedContactsSummary" class="mt-1 text-xs text-slate-500">Chargement des contacts…</p></div>
+          <div class="flex flex-wrap gap-2"><button id="refreshReceivedContacts" class="btn btn-light" type="button">Actualiser</button><button id="exportReceivedContacts" class="btn btn-primary" type="button">Exporter en CSV</button></div>
+        </div>
+        <p class="mb-3 text-xs leading-5 text-slate-500">Les coordonnées sont privées et visibles uniquement depuis votre session propriétaire. Les nouveaux partages apparaissent automatiquement.</p>
+        <div id="receivedContactsList" class="overflow-x-auto rounded-xl border border-slate-200"><p class="p-4 text-sm text-slate-500">Chargement…</p></div>
+      </section>
+
       <div id="adminMessage" class="mb-4 hidden rounded-lg border px-4 py-3 text-sm" role="status"></div>
-      <div class="grid items-start gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(340px,.9fr)]">
+      <div id="contentManagerGrid" class="grid items-start gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(340px,.9fr)]">
         <section class="card min-w-0 p-4 sm:p-5">
           <div class="mb-4 flex items-center justify-between gap-3">
             <div><p id="listEyebrow" class="text-[10px] font-bold uppercase tracking-[.18em] text-emerald-700">Contenus</p><h2 id="listTitle" class="mt-1 text-xl font-bold text-[#071a2d]">Événements</h2></div>
@@ -117,7 +131,8 @@
         experiences: 'Expériences professionnelles',
         diplomas: 'Diplômes et certifications',
         initiatives: 'Initiatives et projets',
-        profile: 'Profil principal'
+        profile: 'Profil principal',
+        received_contacts: 'Contacts reçus'
       };
       const fields = {
         events: [
@@ -193,6 +208,8 @@
       let editing = null;
       let removedMediaPaths = [];
       let profilePhotoRemoved = false;
+      let receivedContactsChannel = null;
+      let receivedContacts = [];
 
       function escapeHtml(value) {
         return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
@@ -226,6 +243,8 @@
         $('appPanel').classList.remove('hidden');
         $('signedInEmail').textContent = user.email;
         await loadAll();
+        subscribeReceivedContacts();
+        updateReceivedContactsCount();
         return true;
       }
 
@@ -257,6 +276,7 @@
       });
       $('logoutButton').addEventListener('click', async function () {
         await client.auth.signOut();
+        if (receivedContactsChannel) { await client.removeChannel(receivedContactsChannel); receivedContactsChannel = null; }
         $('appPanel').classList.add('hidden');
         $('authPanel').classList.remove('hidden');
         $('authPassword').value = '';
@@ -290,6 +310,15 @@
           if (button.dataset.tab === tab) button.setAttribute('aria-current','page');
           else button.removeAttribute('aria-current');
         });
+        const contactsTab = tab === 'received_contacts';
+        $('receivedContactsPanel').classList.toggle('hidden', !contactsTab);
+        $('contentManagerGrid').classList.toggle('hidden', contactsTab);
+        if (contactsTab) {
+          loadReceivedContacts().catch(function (error) {
+            $('receivedContactsList').innerHTML = '<p class="p-4 text-sm text-red-700">Impossible de charger les contacts : ' + escapeHtml(error.message) + '</p>';
+          });
+          return;
+        }
         $('listTitle').textContent = labels[tab];
         $('editorPanel').classList.remove('hidden');
         $('newButton').classList.toggle('hidden', tab === 'profile');
@@ -303,7 +332,135 @@
       $('newButton').addEventListener('click', function () { editing = null; removedMediaPaths = []; renderEditor(null); });
       $('cancelEdit').addEventListener('click', async function () { editing = null; removedMediaPaths = []; profilePhotoRemoved = false; await loadAll(); if (activeTab === 'profile') loadProfileEditor(); else renderEditor(null); });
 
+
+      function receivedContactPhoneDigits(value) {
+        return String(value || '').replace(/[^\d]/g,'');
+      }
+      function receivedContactDate(value) {
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return '—';
+        return new Intl.DateTimeFormat('fr-FR',{
+          dateStyle:'medium',timeStyle:'short',timeZone:'Africa/Dakar'
+        }).format(date);
+      }
+      function updateReceivedContactsCount() {
+        return client.from('received_contacts').select('id',{count:'exact',head:true}).then(function (result) {
+          if (result.error) {
+            $('receivedContactsCount').textContent = '—';
+            return;
+          }
+          $('receivedContactsCount').textContent = String(result.count || 0);
+          if (activeTab === 'received_contacts') {
+            $('receivedContactsSummary').textContent = (result.count || 0) + ' contact(s) reçu(s)';
+          }
+        });
+      }
+      function subscribeReceivedContacts() {
+        if (receivedContactsChannel) return;
+        receivedContactsChannel = client.channel('received-contacts-owner-live')
+          .on('postgres_changes',{event:'INSERT',schema:'public',table:'received_contacts'},function () {
+            updateReceivedContactsCount();
+            if (activeTab === 'received_contacts') {
+              loadReceivedContacts().catch(function (error) {
+                $('receivedContactsList').innerHTML = '<p class="p-4 text-sm text-red-700">Actualisation impossible : ' + escapeHtml(error.message) + '</p>';
+              });
+            }
+          })
+          .subscribe(function (status) {
+            if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+              console.warn('Realtime contacts subscription status:',status);
+            }
+          });
+      }
+      async function fetchAllReceivedContacts() {
+        const all = [];
+        const pageSize = 500;
+        for (let offset = 0; ; offset += pageSize) {
+          const result = await client.from('received_contacts')
+            .select('id,full_name,phone,email,organization,share_method,created_at')
+            .order('created_at',{ascending:false})
+            .range(offset,offset + pageSize - 1);
+          if (result.error) throw result.error;
+          const page = result.data || [];
+          all.push.apply(all,page);
+          if (page.length < pageSize) break;
+        }
+        return all;
+      }
+      function renderReceivedContacts() {
+        const list = $('receivedContactsList');
+        $('receivedContactsSummary').textContent = receivedContacts.length + ' contact(s) reçu(s)';
+        if (!receivedContacts.length) {
+          list.innerHTML = '<p class="p-5 text-sm text-slate-500">Aucun contact reçu pour le moment. Les partages effectués depuis votre carte apparaîtront ici.</p>';
+          return;
+        }
+        const rows = receivedContacts.map(function (contact) {
+          const phoneDigits = receivedContactPhoneDigits(contact.phone);
+          const message = 'Bonjour ' + String(contact.full_name || '') + ', merci pour le partage de vos coordonnées. Ravi de rester en contact après la CPHIA 2026.';
+          const whatsappUrl = phoneDigits.length >= 7
+            ? 'https://wa.me/' + phoneDigits + '?text=' + encodeURIComponent(message)
+            : '';
+          const method = contact.share_method === 'contact_picker' ? 'Sélecteur natif' : 'AutoFill';
+          return '<tr>' +
+            '<td><div class="font-bold text-[#071a2d]">' + escapeHtml(contact.full_name) + '</div><div class="mt-1 text-xs text-slate-500">' + escapeHtml(contact.organization || 'Organisation non renseignée') + '</div></td>' +
+            '<td class="whitespace-nowrap">' + escapeHtml(contact.phone) + '</td>' +
+            '<td>' + escapeHtml(contact.email || '—') + '</td>' +
+            '<td class="whitespace-nowrap">' + escapeHtml(receivedContactDate(contact.created_at)) + '</td>' +
+            '<td><span class="pill">' + escapeHtml(method) + '</span></td>' +
+            '<td class="whitespace-nowrap">' + (whatsappUrl
+              ? '<a class="btn btn-light inline-flex items-center !min-h-9 !px-3 !py-1.5 text-xs" href="' + escapeHtml(whatsappUrl) + '" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a>'
+              : '<span class="text-xs text-slate-400">Numéro indisponible</span>') + '</td>' +
+            '</tr>';
+        }).join('');
+        list.innerHTML = '<table class="contacts-table"><thead><tr><th>Nom / organisation</th><th>Téléphone</th><th>E-mail</th><th>Date et heure</th><th>Source</th><th>Action</th></tr></thead><tbody>' + rows + '</tbody></table>';
+      }
+      async function loadReceivedContacts() {
+        $('receivedContactsList').innerHTML = '<p class="p-4 text-sm text-slate-500">Chargement des contacts…</p>';
+        receivedContacts = await fetchAllReceivedContacts();
+        renderReceivedContacts();
+        updateReceivedContactsCount();
+      }
+      function csvCell(value) {
+        return '"' + String(value == null ? '' : value).replace(/"/g,'""') + '"';
+      }
+      async function exportReceivedContactsCsv() {
+        const button = $('exportReceivedContacts');
+        button.disabled = true;
+        button.textContent = 'Préparation…';
+        try {
+          const all = await fetchAllReceivedContacts();
+          const headings = ['Nom complet','Téléphone','E-mail','Organisation','Source','Date et heure'];
+          const keys = ['full_name','phone','email','organization','share_method','created_at'];
+          const lines = [headings.map(csvCell).join(';')];
+          all.forEach(function (contact) {
+            lines.push(keys.map(function (key) { return csvCell(contact[key]); }).join(';'));
+          });
+          const blob = new Blob(['\ufeff' + lines.join('\r\n') + '\r\n'],{type:'text/csv;charset=utf-8;'});
+          const url = URL.createObjectURL(blob);
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.download = 'contacts-recus-cphia-' + new Date().toISOString().slice(0,10) + '.csv';
+          document.body.appendChild(anchor);
+          anchor.click();
+          anchor.remove();
+          window.setTimeout(function () { URL.revokeObjectURL(url); },2000);
+          setMessage(all.length + ' contact(s) exporté(s) au format CSV.','success');
+        } catch (error) {
+          setMessage('Export CSV impossible : ' + error.message,'error');
+        } finally {
+          button.disabled = false;
+          button.textContent = 'Exporter en CSV';
+        }
+      }
+      $('refreshReceivedContacts').addEventListener('click',function () {
+        loadReceivedContacts().catch(function (error) {
+          setMessage('Actualisation des contacts impossible : ' + error.message,'error');
+        });
+      });
+      $('exportReceivedContacts').addEventListener('click',exportReceivedContactsCsv);
+
       function renderList() {
+        if (activeTab === 'received_contacts') return;
         const list = $('recordsList');
         if (activeTab === 'profile') {
           list.innerHTML = '<div class="rounded-xl bg-slate-50 p-4 text-sm leading-6 text-slate-600">Modifiez ici vos coordonnées, votre titre et votre portrait principal. Les changements apparaîtront sur le site après enregistrement.</div>';
