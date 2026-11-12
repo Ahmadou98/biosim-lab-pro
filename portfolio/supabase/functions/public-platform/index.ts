@@ -220,6 +220,23 @@ async function login(req: Request, body: Record<string, unknown>) {
   const session = await issueSession(slug);
   return { profile: await safeProfile(slug), ...session };
 }
+async function loadAllContacts(slug: string) {
+  const all: any[] = [];
+  const pageSize = 1000;
+  let offset = 0;
+  while (true) {
+    const { data, error } = await db.from("public_contacts").select("*")
+      .eq("owner_slug", slug).order("created_at", { ascending: false })
+      .range(offset, offset + pageSize - 1);
+    if (error) throw error;
+    const batch = data || [];
+    all.push(...batch);
+    if (batch.length < pageSize) break;
+    offset += pageSize;
+  }
+  return all;
+}
+
 async function loadStudio(slug: string) {
   const [profile, experiences, diplomas, events, initiatives, contacts] = await Promise.all([
     db.from("public_profiles").select(PROFILE_FIELDS).eq("slug", slug).single(),
@@ -227,11 +244,15 @@ async function loadStudio(slug: string) {
     db.from("public_diplomas").select("*").eq("slug", slug).order("sort_order").order("year", { ascending: false }),
     db.from("public_events").select("*").eq("slug", slug).order("sort_order").order("start_date", { ascending: false }),
     db.from("public_initiatives").select("*").eq("slug", slug).order("sort_order").order("created_at", { ascending: false }),
-    db.from("public_contacts").select("*").eq("owner_slug", slug).order("created_at", { ascending: false }).limit(500)
+    loadAllContacts(slug)
   ]);
-  for (const result of [profile, experiences, diplomas, events, initiatives, contacts]) if (result.error) throw result.error;
-  return { profile: profile.data, experiences: experiences.data || [], diplomas: diplomas.data || [], events: events.data || [], initiatives: initiatives.data || [], contacts: contacts.data || [] };
+  for (const result of [profile, experiences, diplomas, events, initiatives]) if (result.error) throw result.error;
+  return {
+    profile: profile.data, experiences: experiences.data || [], diplomas: diplomas.data || [],
+    events: events.data || [], initiatives: initiatives.data || [], contacts
+  };
 }
+
 async function loadPublic(slug: string) {
   const profile = await safeProfile(slug);
   if (!profile) throw new Error("This portfolio could not be found.");
