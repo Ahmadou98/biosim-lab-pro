@@ -205,10 +205,10 @@
         <h2 id="contactModalTitle" class="contact-modal-title" data-t="contactShareTitle">Share your contact</h2>
         <p id="contactModalIntro" class="contact-modal-intro" data-t="contactShareIntro">Share your details with Ahmadou to stay connected after the conference.</p>
         <form id="contactShareForm" class="contact-form" autocomplete="on">
-          <label><span data-t="contactName">Full name</span><input id="visitorName" name="name" type="text" autocomplete="name" required minlength="2" maxlength="160" placeholder="Your full name"></label>
-          <label><span data-t="contactPhone">Phone number</span><input id="visitorPhone" name="tel" type="tel" autocomplete="tel" required maxlength="40" placeholder="+221 ..."></label>
-          <label><span data-t="contactEmail">Email (optional)</span><input id="visitorEmail" name="email" type="email" autocomplete="email" maxlength="254" placeholder="name@example.com"></label>
-          <label><span data-t="contactOrganization">Organization (optional)</span><input id="visitorOrganization" name="organization" type="text" autocomplete="organization" maxlength="180" placeholder="Organization / institution"></label>
+          <label><span data-t="contactName">Full name</span><input id="visitorName" name="name" type="text" autocomplete="name" data-t-placeholder="namePlaceholder" required minlength="2" maxlength="160" placeholder="Your full name"></label>
+          <label><span data-t="contactPhone">Phone number</span><input id="visitorPhone" name="tel" type="tel" autocomplete="tel" data-t-placeholder="phonePlaceholder" required maxlength="40" placeholder="+221 ..."></label>
+          <label><span data-t="contactEmail">Email (optional)</span><input id="visitorEmail" name="email" type="email" autocomplete="email" data-t-placeholder="emailPlaceholder" maxlength="254" placeholder="name@example.com"></label>
+          <label><span data-t="contactOrganization">Organization (optional)</span><input id="visitorOrganization" name="organization" type="text" autocomplete="organization" data-t-placeholder="organizationPlaceholder" maxlength="180" placeholder="Organization / institution"></label>
           <button id="submitContactShare" class="action-btn action-save" type="submit"><span data-t="contactSubmit">Share contact</span></button>
         </form>
         <p class="contact-privacy" data-t="contactPrivacy">By sharing, you agree that these details will be saved in Ahmadou’s private contact list.</p>
@@ -255,6 +255,7 @@
           contactShareIntro:'Share your details with Ahmadou to stay connected after the conference.',
           contactName:'Full name',contactPhone:'Phone number',contactEmail:'Email (optional)',
           contactOrganization:'Organization (optional)',contactSubmit:'Share contact',
+          namePlaceholder:'Your full name',phonePlaceholder:'+221 ...',emailPlaceholder:'name@example.com',organizationPlaceholder:'Organization / institution',
           contactPrivacy:'By sharing, you agree that these details will be saved in Ahmadou’s private contact list.',
           contactShared:'Contact shared with Ahmadou!',
           contactSharedCopy:'Your details have been saved. Stay in touch after CPHIA 2026.',
@@ -279,6 +280,7 @@
           contactShareIntro:'Partagez vos coordonnées avec Ahmadou pour rester en contact après la conférence.',
           contactName:'Nom complet',contactPhone:'Numéro de téléphone',contactEmail:'E-mail (facultatif)',
           contactOrganization:'Organisation (facultatif)',contactSubmit:'Partager le contact',
+          namePlaceholder:'Votre nom complet',phonePlaceholder:'+221 77 000 00 00',emailPlaceholder:'nom@exemple.com',organizationPlaceholder:'Organisation / institution',
           contactPrivacy:'En partageant ces informations, vous acceptez leur enregistrement dans le carnet de contacts privé d’Ahmadou.',
           contactShared:'Contact partagé avec Ahmadou !',
           contactSharedCopy:'Vos coordonnées ont été enregistrées. Restons en contact après la CPHIA 2026.',
@@ -363,6 +365,7 @@
         lang=next;
         document.documentElement.lang=lang;
         document.querySelectorAll('[data-t]').forEach(node=>{node.textContent=t(node.dataset.t);});
+        document.querySelectorAll('[data-t-placeholder]').forEach(node=>{node.placeholder=t(node.dataset.tPlaceholder);});
         $('langEn').setAttribute('aria-pressed',String(lang==='en'));
         $('langFr').setAttribute('aria-pressed',String(lang==='fr'));
         applyProfile();
