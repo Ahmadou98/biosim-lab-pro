@@ -23,6 +23,9 @@ Dans Supabase Dashboard, projet ALD-Portfolio :
 
 Seule l'adresse `ahmadoulaminediouf39@gmail.com` est reconnue comme propriétaire par la fonction SQL `public.is_portfolio_admin()`. Les règles RLS appliquent la même restriction dans PostgreSQL et Storage ; masquer le lien admin ne serait pas une mesure de sécurité suffisante.
 
+## Carte de visite numérique
+La carte publique se trouve à https://ahmadou-lamine-diouf.pages.dev/carte.html. Le QR code ouvre cette page interactive ; le téléphone, l’e-mail, WhatsApp et LinkedIn y sont cliquables. Vous pouvez télécharger une image PNG de la carte, la partager depuis le menu natif du téléphone ou enregistrer le contact au format vCard. Les informations sont chargées depuis la table `profile`.
+
 ## Utilisation quotidienne
 - Événements : nom, ville, pays, dates, statut à venir/passé, rôle, résumé EN/FR et galerie de photos.
 - Expériences : organisation, dates, rôle, description EN/FR, compétences et photos.
