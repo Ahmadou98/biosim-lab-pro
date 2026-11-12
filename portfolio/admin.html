@@ -361,24 +361,44 @@
         if (field.type === 'tags') return '<div class="sm:col-span-2"><label class="field-label" for="field_' + field.name + '">' + escapeHtml(field.label) + '</label><input class="field" type="text" ' + base + ' value="' + escapeHtml(Array.isArray(value) ? value.join(', ') : value) + '" placeholder="Upstream, Downstream, GMP…"></div>';
         return '<div' + (field.full ? ' class="sm:col-span-2"' : '') + '><label class="field-label" for="field_' + field.name + '">' + escapeHtml(field.label) + '</label><input class="field" type="' + escapeHtml(field.type || 'text') + '" ' + base + ' value="' + escapeHtml(value) + '" placeholder="' + escapeHtml(field.placeholder || '') + '"' + (field.required ? ' required' : '') + '></div>';
       }
+      let removedMediaPaths = [];
       function mediaPreview(record) {
         const media = tableMedia[activeTab];
         if (!media) return '';
-        const parts = [];
-        if (media.single && record && record[media.single]) parts.push('<img class="thumb" src="' + escapeHtml(record[media.single]) + '" alt="Image actuelle">');
-        if (media.array && record && Array.isArray(record[media.array])) record[media.array].forEach(function (url) { parts.push('<img class="thumb" src="' + escapeHtml(url) + '" alt="Image actuelle" loading="lazy">'); });
+        const images = [];
+        if (media.single && record && record[media.single]) images.push({key:media.single,index:-1,url:record[media.single]});
+        if (media.array && record && Array.isArray(record[media.array])) record[media.array].forEach(function (url,index) { images.push({key:media.array,index:index,url:url}); });
+        const parts = images.map(function (item) {
+          return '<div class="relative"><img class="thumb" src="' + escapeHtml(item.url) + '" alt="Image actuelle" loading="lazy"><button type="button" data-remove-media="' + item.key + '" data-media-index="' + item.index + '" class="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full border border-white bg-red-600 text-sm font-bold text-white shadow" aria-label="Retirer cette image">×</button></div>';
+        });
         const fileLabel = activeTab === 'diplomas' || activeTab === 'profile' ? 'Choisir une image' : 'Ajouter des photos';
         const multiple = media.array ? ' multiple' : '';
         return '<div class="rounded-xl border border-dashed border-slate-300 p-3"><label class="field-label">' + escapeHtml(media.arrayLabel || media.singleLabel) + '</label>' +
-          (parts.length ? '<div class="mb-3 flex flex-wrap gap-2">' + parts.join('') + '</div>' : '') +
+          (parts.length ? '<div class="mb-3 flex flex-wrap gap-3">' + parts.join('') + '</div>' : '') +
           '<input class="field" type="file" id="mediaFiles" accept="image/jpeg,image/png,image/webp" ' + multiple + '>' +
-          '<p class="mt-2 text-xs leading-5 text-slate-500">' + fileLabel + '. JPG, PNG ou WebP · 12 Mo maximum par image. Les photos sont optimisées avant l’envoi.</p></div>';
+          '<p class="mt-2 text-xs leading-5 text-slate-500">' + fileLabel + '. JPG, PNG ou WebP · 12 Mo maximum par image. Cliquez sur × pour retirer une photo existante. Les photos sont optimisées avant l’envoi.</p></div>';
+      }
+      function wireMediaRemoval(record) {
+        document.querySelectorAll('[data-remove-media]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            const key = button.dataset.removeMedia;
+            const index = Number(button.dataset.mediaIndex);
+            const url = index < 0 ? record[key] : (record[key] || [])[index];
+            const path = storagePath(url);
+            if (path) removedMediaPaths.push(path);
+            if (index < 0) record[key] = null;
+            else record[key].splice(index,1);
+            renderEditor(record);
+          });
+        });
       }
       function renderEditor(record) {
         if (activeTab === 'profile') return loadProfileEditor();
         $('editorTitle').textContent = (record ? 'Modifier : ' : 'Nouveau : ') + labels[activeTab];
         $('formFields').innerHTML = fields[activeTab].map(function (field) { return inputMarkup(field,record); }).join('');
+        removedMediaPaths = [];
         $('mediaEditor').innerHTML = mediaPreview(record);
+        if (record) wireMediaRemoval(record);
         $('saveButton').textContent = record ? 'Enregistrer les modifications' : 'Ajouter au portfolio';
       }
       async function loadProfileEditor() {
@@ -388,7 +408,10 @@
         $('editorTitle').textContent = 'Profil principal';
         $('formFields').innerHTML = fields.profile.map(function (field) { return inputMarkup(field,editing); }).join('');
         const existing = editing.photo_url ? '<div class="mb-3"><img class="h-28 w-28 rounded-xl object-cover" src="' + escapeHtml(editing.photo_url) + '" alt="Portrait actuel"></div>' : '';
-        $('mediaEditor').innerHTML = '<div class="rounded-xl border border-dashed border-slate-300 p-3"><label class="field-label">Photo de profil</label>' + existing + '<input class="field" type="file" id="mediaFiles" accept="image/jpeg,image/png,image/webp"><p class="mt-2 text-xs text-slate-500">Portrait principal · JPG, PNG ou WebP · 12 Mo maximum.</p></div>';
+        removedMediaPaths = [];
+        $('mediaEditor').innerHTML = '<div class="rounded-xl border border-dashed border-slate-300 p-3"><label class="field-label">Photo de profil</label>' + existing + (editing.photo_url ? '<button id="removeProfilePhoto" type="button" class="mb-3 rounded-lg bg-red-50 px-3 py-2 text-xs font-bold text-red-700">Retirer le portrait actuel</button>' : '') + '<input class="field" type="file" id="mediaFiles" accept="image/jpeg,image/png,image/webp"><p class="mt-2 text-xs text-slate-500">Portrait principal · JPG, PNG ou WebP · 12 Mo maximum.</p></div>';
+        const removeProfilePhoto = $('removeProfilePhoto');
+        if (removeProfilePhoto) removeProfilePhoto.addEventListener('click', function () { const oldPath = storagePath(editing.photo_url); if (oldPath) removedMediaPaths.push(oldPath); editing.photo_url = null; loadProfileEditor(); });
         $('saveButton').textContent = 'Enregistrer le profil';
       }
 
@@ -455,6 +478,8 @@
           }
           const result = await client.from(table).upsert(payload).select().single();
           if (result.error) throw result.error;
+          if (removedMediaPaths.length) await client.storage.from(BUCKET).remove(removedMediaPaths);
+          removedMediaPaths = [];
           editing = null;
           await loadAll();
           renderEditor(null);
@@ -481,6 +506,8 @@
           else payload.photo_url = editing && editing.photo_url ? editing.photo_url : null;
           const result = await client.from('profile').upsert(payload).select().single();
           if (result.error) throw result.error;
+          if (removedMediaPaths.length) await client.storage.from(BUCKET).remove(removedMediaPaths);
+          removedMediaPaths = [];
           editing = result.data;
           setMessage('Profil principal mis à jour.', 'success');
           await loadProfileEditor();
