@@ -763,13 +763,19 @@
       if (p.linkedin_url) document.querySelectorAll('a[href*="linkedin.com/in/"]:not(#contactLinkedin)').forEach(function (link) { link.href = p.linkedin_url; });
     }
     async function loadPortfolioContent() {
-      const requests = await Promise.all([
+      const queries = [
         portfolioDb.from('profile').select('*').eq('id',1).maybeSingle(),
         portfolioDb.from('events').select('*').eq('is_published',true).order('start_date',{ascending:false}).order('sort_order',{ascending:true}),
         portfolioDb.from('experiences').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('start_date',{ascending:false}),
         portfolioDb.from('diplomas').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('year',{ascending:false}),
         portfolioDb.from('initiatives').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('created_at',{ascending:false})
-      ]);
+      ];
+      const requests = await Promise.all(queries.map(function (query) {
+        return Promise.resolve(query).then(
+          function (result) { return result; },
+          function (error) { return {data:null,error:error}; }
+        );
+      }));
 
       // Load collections independently: a failure in one table must not blank every section.
       const labels = ['profile','events','experiences','diplomas','initiatives'];
