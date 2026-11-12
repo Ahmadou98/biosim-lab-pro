@@ -1,21 +1,11 @@
-import { createClient } from "npm:@supabase/supabase-js@2.119.0";
+import { withSupabase } from "npm:@supabase/server";
 
 const ORIGIN = "https://ahmadou-lamine-diouf.pages.dev";
 const ALLOWED_ORIGINS = new Set([ORIGIN, "http://localhost:8788", "http://127.0.0.1:8788"]);
 const BUCKET = "public-portfolios-media";
 const SESSION_HOURS = 8;
 const encoder = new TextEncoder();
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const secretKeys = JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS") || "{}");
-const SECRET_KEY = secretKeys.default || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-const publishableKeys = JSON.parse(Deno.env.get("SUPABASE_PUBLISHABLE_KEYS") || "{}");
-const PUBLISHABLE_KEY = publishableKeys.default || Deno.env.get("SUPABASE_ANON_KEY");
-
-if (!SUPABASE_URL || !SECRET_KEY) throw new Error("Missing server-side Supabase credentials.");
-
-const db = createClient(SUPABASE_URL, SECRET_KEY, {
-  auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
-});
+let db: any;
 
 const PROFILE_FIELDS = "slug,full_name,title_en,title_fr,bio_en,bio_fr,organization,location,photo_url,whatsapp,linkedin_url,email,is_demo,is_public,created_at,updated_at";
 const COLLECTIONS = {
@@ -326,14 +316,9 @@ async function shareContact(req: Request, body: Record<string, unknown>) {
   return { shared: true, owner_name: profile.full_name };
 }
 
-Deno.serve(async (req: Request) => {
-  const origin = req.headers.get("origin") || "";
-  if (!ALLOWED_ORIGINS.has(origin)) return new Response("Forbidden origin.", { status: 403 });
-  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders(origin) });
+const securedHandler = withSupabase({ auth: "publishable" }, async (req: Request, ctx: any) => {
+  db = ctx.supabaseAdmin;
   if (req.method !== "POST") return fail(req, "Method not allowed.", 405);
-  const apiKey = req.headers.get("apikey") || "";
-  if (PUBLISHABLE_KEY && apiKey !== PUBLISHABLE_KEY) return fail(req, "Invalid application key.", 401);
-
   try {
     const length = Number(req.headers.get("content-length") || 0);
     if (length > 8 * 1024 * 1024) return fail(req, "Request is too large.", 413);
@@ -382,4 +367,14 @@ Deno.serve(async (req: Request) => {
     console.error("public-platform request failed:", message);
     return fail(req, message, status);
   }
+});
+
+Deno.serve(async (req: Request) => {
+  const origin = req.headers.get("origin") || "";
+  if (!ALLOWED_ORIGINS.has(origin)) return new Response("Forbidden origin.", { status: 403 });
+  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders(origin) });
+  const response = await securedHandler(req);
+  const headers = new Headers(response.headers);
+  for (const [key, value] of Object.entries(corsHeaders(origin))) headers.set(key, value);
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 });
