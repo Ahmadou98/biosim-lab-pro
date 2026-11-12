@@ -7,111 +7,524 @@
   <meta name="description" content="Create your free bilingual BioPage executive portfolio and digital business card.">
   <title>Create your portfolio | BioPage</title>
   <link rel="stylesheet" href="platform.css">
+  <style>
+    :root{--bp-ink:#10243a;--bp-muted:#66788a;--bp-line:#e3eaf0;--bp-green:#059669;--bp-green2:#10b981;--bp-navy:#0b1f3a;--bp-soft:#f4f8f7;--bp-shadow:0 18px 50px rgba(16,36,58,.09)}
+    body{background:#f5f8fa;color:var(--bp-ink)}
+    .bp-shell{width:min(1320px,calc(100% - 44px));margin-inline:auto}
+    .pp-header{background:rgba(255,255,255,.94);border-bottom:1px solid #e9eef2;backdrop-filter:blur(14px)}
+    .pp-header-inner{min-height:76px}
+    .pp-brand{font-weight:900;letter-spacing:.07em}
+    .bp-hero{padding:48px 0 30px;max-width:900px}
+    .bp-eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:850;letter-spacing:.17em;color:#087b5b;text-transform:uppercase}
+    .bp-eyebrow:before{content:"";width:24px;height:2px;background:#10b981;border-radius:3px}
+    .bp-heading{font-size:clamp(34px,5vw,54px);line-height:1.04;letter-spacing:-.045em;font-weight:900;color:#10243a;margin:14px 0 13px}
+    .bp-intro{font-size:16px;line-height:1.75;color:#66788a;max-width:720px;margin:0}
+    .bp-workspace{display:grid;grid-template-columns:minmax(0,1.28fr) minmax(320px,.72fr);gap:26px;align-items:start;padding-bottom:72px}
+    .bp-main{min-width:0;display:grid;gap:18px}
+    .bp-card{background:#fff;border:1px solid #e5ebf0;border-radius:24px;box-shadow:0 9px 30px rgba(16,36,58,.045)}
+    .bp-import{padding:23px;position:relative;overflow:hidden;background:linear-gradient(135deg,#fff 0%,#f4fbf8 100%);border-color:#d9eee6}
+    .bp-import:after{content:"";position:absolute;width:190px;height:190px;right:-92px;top:-102px;border-radius:50%;background:rgba(16,185,129,.08);pointer-events:none}
+    .bp-import-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:17px;position:relative;z-index:1}
+    .bp-import-title{margin:0 0 5px;font-size:18px;letter-spacing:-.02em;font-weight:850;color:#10243a}
+    .bp-import-copy{margin:0;color:#687d8e;font-size:13px;line-height:1.55;max-width:550px}
+    .bp-ai-chip{flex:0 0 auto;padding:7px 10px;border-radius:999px;background:#e4f7ef;color:#087b5b;font-size:10px;letter-spacing:.08em;font-weight:900}
+    .bp-drop{position:relative;z-index:1;display:flex;align-items:center;gap:16px;min-height:112px;padding:18px;border:1.5px dashed #a8d9c4;border-radius:18px;background:rgba(255,255,255,.85);transition:border-color .2s,background .2s,transform .2s}
+    .bp-drop.is-over{border-color:#059669;background:#eafaf3;transform:translateY(-2px)}
+    .bp-drop-icon{display:grid;place-items:center;flex:0 0 52px;width:52px;height:52px;border-radius:16px;background:#e7f8f0;color:#07835f}
+    .bp-drop-content{min-width:0;flex:1}
+    .bp-drop-title{font-size:14px;font-weight:800;color:#203a4f;margin:0 0 4px}
+    .bp-drop-hint{font-size:12px;color:#718295;margin:0;line-height:1.5}
+    .bp-drop-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:11px}
+    .bp-file-name{font-size:12px;color:#087b5b;font-weight:750;overflow-wrap:anywhere}
+    .bp-privacy{display:flex;align-items:flex-start;gap:8px;color:#728394;font-size:11px;line-height:1.55;margin:13px 0 0;position:relative;z-index:1}
+    .bp-privacy svg{flex:0 0 14px;margin-top:1px;color:#0b8c66}
+    .bp-progress{display:none;align-items:center;gap:12px;margin-top:14px;padding:12px 14px;border-radius:14px;background:#edf8f3;color:#087b5b;font-size:12px;font-weight:750}
+    .bp-progress.show{display:flex}
+    .bp-spinner{width:17px;height:17px;border:2px solid #b9e4d0;border-top-color:#059669;border-radius:50%;animation:bp-spin .8s linear infinite;flex:0 0 auto}
+    @keyframes bp-spin{to{transform:rotate(360deg)}}
+    .bp-progress-track{height:4px;border-radius:9px;background:#d8eee4;overflow:hidden;margin-top:7px}
+    .bp-progress-track span{display:block;width:42%;height:100%;border-radius:9px;background:linear-gradient(90deg,#059669,#10b981);animation:bp-progress 1.2s ease-in-out infinite alternate}
+    @keyframes bp-progress{from{transform:translateX(-20%)}to{transform:translateX(150%)}}
+    .bp-form-card{padding:26px}
+    .bp-step{display:flex;align-items:center;gap:12px;margin:0 0 20px}
+    .bp-step-number{display:grid;place-items:center;width:32px;height:32px;border-radius:11px;background:#eaf8f2;color:#07835f;font-size:12px;font-weight:900}
+    .bp-step-heading{font-size:16px;font-weight:850;letter-spacing:-.02em;margin:0;color:#16314a}
+    .bp-step-sub{margin:3px 0 0;font-size:11px;color:#8493a1}
+    .bp-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .bp-field{display:block;min-width:0}
+    .bp-field.full{grid-column:1/-1}
+    .bp-label{display:block;margin:0 0 7px;color:#40566a;font-size:12px;font-weight:800}
+    .bp-control{position:relative}
+    .bp-control-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:17px;height:17px;color:#98a8b5;pointer-events:none;transition:color .2s}
+    .bp-control:focus-within .bp-control-icon{color:#059669}
+    .bp-input,.bp-textarea{width:100%;min-width:0;border:1px solid #dfe7ec;background:#fbfcfd;border-radius:13px;color:#10243a;box-shadow:0 2px 7px rgba(13,36,55,.025);font:inherit;font-size:13px;outline:0;transition:border-color .2s,box-shadow .2s,background .2s}
+    .bp-input{height:48px;padding:0 14px 0 43px}
+    .bp-textarea{min-height:112px;padding:13px 14px 13px 43px;line-height:1.6;resize:vertical}
+    .bp-input::placeholder,.bp-textarea::placeholder{color:#a3b0ba}
+    .bp-input:focus,.bp-textarea:focus{background:#fff;border-color:#19a879;box-shadow:0 0 0 4px rgba(16,185,129,.11),0 7px 18px rgba(11,31,58,.05)}
+    .bp-hint{display:block;color:#8593a0;font-size:11px;line-height:1.55;margin-top:7px}
+    .bp-divider{height:1px;background:#edf1f4;margin:26px 0}
+    .bp-photo-zone{display:flex;align-items:center;gap:14px;padding:13px;border:1px dashed #c8d5de;border-radius:16px;background:#fbfcfd;cursor:pointer;transition:.2s}
+    .bp-photo-zone:hover,.bp-photo-zone.is-over{border-color:#059669;background:#f1fbf6}
+    .bp-photo-thumb{width:62px;height:62px;flex:0 0 62px;display:grid;place-items:center;border-radius:50%;background:#e9f4f0;color:#087b5b;overflow:hidden;border:2px solid #fff;box-shadow:0 3px 12px rgba(16,36,58,.12)}
+    .bp-photo-thumb img{width:100%;height:100%;object-fit:cover}
+    .bp-photo-title{font-size:12px;color:#263e53;font-weight:800;margin:0 0 3px}
+    .bp-photo-hint{font-size:11px;color:#8493a1;margin:0;line-height:1.5}
+    .bp-file-hidden{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0,0,0,0);pointer-events:none}
+    .bp-checkline{display:flex;align-items:flex-start;gap:10px;margin:17px 0;color:#617386;font-size:11px;line-height:1.6}
+    .bp-checkline input{margin:2px 0 0;accent-color:#059669;flex:0 0 auto}
+    .bp-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .bp-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:0 19px;border:1px solid transparent;border-radius:13px;font-size:12px;font-weight:850;letter-spacing:.01em;text-decoration:none;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
+    .bp-btn:hover{transform:translateY(-2px)}
+    .bp-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+    .bp-btn-primary{color:#fff;background:linear-gradient(115deg,#059669,#10b981);box-shadow:0 9px 18px rgba(5,150,105,.2)}
+    .bp-btn-primary:hover{box-shadow:0 13px 24px rgba(5,150,105,.26)}
+    .bp-btn-secondary{background:#fff;border-color:#dfe7ec;color:#486074}
+    .bp-btn-secondary:hover{background:#f7fafb;border-color:#c5d4dd}
+    .bp-btn-small{min-height:37px;padding:0 13px;font-size:11px;border-radius:10px}
+    .bp-message{display:none;padding:12px 14px;margin-top:15px;border-radius:12px;background:#edf8f3;color:#087b5b;font-size:12px;line-height:1.6}
+    .bp-message.show{display:block}
+    .bp-message.error{background:#fff1f0;color:#b42318}
+    .bp-preview-wrap{position:sticky;top:24px;display:grid;gap:14px}
+    .bp-preview-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 3px}
+    .bp-preview-heading{font-size:13px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#354f64;margin:0}
+    .bp-live{display:inline-flex;align-items:center;gap:6px;color:#07835f;font-size:10px;font-weight:850;letter-spacing:.06em}
+    .bp-live:before{content:"";width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 0 4px #e4f7ef}
+    .bp-preview-card{position:relative;overflow:hidden;border-radius:25px;background:linear-gradient(155deg,#102b44 0%,#0b1f3a 63%,#103b3a 140%);padding:24px;color:#fff;box-shadow:0 23px 55px rgba(11,31,58,.2);min-height:370px}
+    .bp-preview-card:before{content:"";position:absolute;right:-85px;top:-95px;width:240px;height:240px;border:1px solid rgba(255,255,255,.12);border-radius:50%;box-shadow:0 0 0 24px rgba(255,255,255,.025),0 0 0 50px rgba(255,255,255,.02)}
+    .bp-preview-card:after{content:"";position:absolute;left:-80px;bottom:-145px;width:210px;height:210px;border-radius:50%;background:rgba(16,185,129,.12);filter:blur(12px)}
+    .bp-preview-brand{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;color:#b9d3dd;font-size:9px;font-weight:900;letter-spacing:.18em}
+    .bp-preview-mark{display:grid;place-items:center;width:29px;height:29px;border:1px solid rgba(255,255,255,.22);border-radius:9px;color:#6ee7b7;font-size:10px;letter-spacing:0}
+    .bp-preview-person{position:relative;z-index:1;padding-top:30px}
+    .bp-preview-avatar{display:grid;place-items:center;width:76px;height:76px;border-radius:23px;background:linear-gradient(145deg,#d7f5e8,#8ed8bd);color:#075b46;font-size:22px;font-weight:900;overflow:hidden;border:3px solid rgba(255,255,255,.16);box-shadow:0 10px 25px rgba(0,0,0,.13)}
+    .bp-preview-avatar img{width:100%;height:100%;object-fit:cover}
+    .bp-preview-name{font-size:24px;line-height:1.12;letter-spacing:-.04em;font-weight:900;margin:18px 0 8px;overflow-wrap:anywhere}
+    .bp-preview-title{font-size:13px;line-height:1.55;color:#a9eed1;font-weight:750;margin:0 0 7px}
+    .bp-preview-org{color:#d0dce4;font-size:11px;margin:0;line-height:1.5}
+    .bp-preview-location{display:flex;align-items:center;gap:6px;color:#9cb1c0;font-size:10px;margin-top:12px}
+    .bp-preview-bio{position:relative;z-index:1;margin:20px 0 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.14);color:#d9e5eb;font-size:11px;line-height:1.65;min-height:69px}
+    .bp-preview-foot{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px;color:#8ba2b1;font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+    .bp-preview-foot strong{color:#73e2b4;font-weight:850}
+    .bp-preview-lang{display:inline-flex;gap:3px;background:#fff;border:1px solid #e4ebef;border-radius:10px;padding:3px}
+    .bp-preview-lang button{border:0;background:transparent;color:#8a99a6;border-radius:7px;padding:6px 9px;font-size:10px;font-weight:850;cursor:pointer}
+    .bp-preview-lang button.active{background:#e9f8f1;color:#087b5b}
+    .bp-preview-tip{display:flex;gap:11px;padding:14px 15px;border:1px solid #e3eaf0;background:#fff;border-radius:16px}
+    .bp-tip-icon{display:grid;place-items:center;width:30px;height:30px;flex:0 0 30px;border-radius:10px;background:#edf7f3;color:#07835f}
+    .bp-preview-tip p{margin:0;color:#718294;font-size:11px;line-height:1.6}
+    .bp-preview-tip strong{color:#314d61}
+    .bp-detected{padding:20px}
+    .bp-detected-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:15px}
+    .bp-detected-title{font-size:15px;font-weight:850;letter-spacing:-.02em;margin:0;color:#16314a}
+    .bp-detected-sub{font-size:11px;line-height:1.5;color:#81909e;margin:4px 0 0}
+    .bp-count{padding:6px 9px;background:#eaf8f2;color:#087b5b;border-radius:9px;font-size:10px;font-weight:850;white-space:nowrap}
+    .bp-entry-list{display:grid;gap:12px}
+    .bp-entry{border:1px solid #e5ebef;border-radius:15px;padding:15px;background:#fcfdfd}
+    .bp-entry-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .bp-entry-type{font-size:10px;font-weight:900;color:#087b5b;text-transform:uppercase;letter-spacing:.1em}
+    .bp-remove{border:0;background:transparent;color:#9b6a6a;font-size:11px;font-weight:750;cursor:pointer;padding:4px 6px}
+    .bp-entry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+    .bp-entry .bp-input,.bp-entry .bp-textarea{font-size:12px}
+    .bp-entry .bp-input{height:42px;padding-left:12px}
+    .bp-entry .bp-textarea{min-height:65px;padding:10px 12px}
+    .bp-entry .bp-label{font-size:10px;margin-bottom:5px}
+    .bp-entry .full{grid-column:1/-1}
+    .bp-current-check{display:flex;align-items:center;gap:7px;color:#66788a;font-size:11px}
+    .bp-current-check input{accent-color:#059669}
+    .bp-recovery{padding:26px}
+    .bp-recovery h2{font-size:22px;margin:0 0 10px;color:#10243a}
+    .bp-recovery-copy{color:#66788a;font-size:13px;line-height:1.7;margin:0 0 18px}
+    .bp-recovery-code{width:100%;border:1px solid #dfe7ec;border-radius:13px;padding:14px;background:#f7fafb;color:#10243a;font:800 12px/1.7 ui-monospace,monospace;overflow-wrap:anywhere}
+    .bp-footer-inner{border-top:1px solid #e7edf1}
+    @media(max-width:980px){.bp-workspace{grid-template-columns:minmax(0,1fr) 320px;gap:18px}.bp-form-card{padding:22px}.bp-preview-card{padding:20px}}
+    @media(max-width:760px){.bp-shell{width:min(100% - 28px,620px)}.bp-hero{padding:34px 0 22px}.bp-workspace{grid-template-columns:1fr}.bp-preview-wrap{position:static;grid-row:1}.bp-main{grid-row:2}.bp-preview-card{min-height:0}.bp-preview-person{padding-top:23px}.bp-preview-name{font-size:22px}.bp-preview-bio{min-height:0}.bp-preview-wrap{gap:10px}.bp-import,.bp-form-card{padding:19px;border-radius:20px}}
+    @media(max-width:520px){.bp-form-grid,.bp-entry-grid{grid-template-columns:1fr}.bp-field.full,.bp-entry .full{grid-column:auto}.bp-import-top{display:block}.bp-ai-chip{display:inline-flex;margin-top:10px}.bp-drop{align-items:flex-start;flex-wrap:wrap}.bp-drop-actions{width:100%}.bp-drop-actions .bp-btn{width:100%}.bp-actions .bp-btn{width:100%}.bp-form-card{padding:17px}.bp-entry{padding:12px}.bp-heading{font-size:36px}.pp-header-inner{min-height:66px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+  </style>
 </head>
 <body>
-  <header class="pp-header"><div class="pp-shell pp-header-inner">
-    <a class="pp-brand" href="platform.html"><span class="pp-brand-mark">BP</span><span>BIOPAGE <span style="font-weight:500;color:#94a8bb">/ CREATE</span></span></a>
-    <div class="pp-header-actions"><div class="pp-lang"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="fr" aria-pressed="false">FR</button></div><a class="pp-btn pp-btn-dark-outline pp-btn-small" href="platform.html" data-en="← Back" data-fr="← Retour">← Back</a></div>
-  </div></header>
-
-  <main class="pp-shell pp-page">
-    <div style="max-width:800px;margin:0 auto 24px">
-      <p class="pp-eyebrow" data-en="START YOUR PROFESSIONAL PRESENCE" data-fr="LANCEZ VOTRE PRÉSENCE PROFESSIONNELLE">START YOUR PROFESSIONAL PRESENCE</p>
-      <h1 class="pp-page-heading" data-en="Create your portfolio & digital card." data-fr="Créez votre portfolio et votre carte numérique.">Create your portfolio & digital card.</h1>
-      <p class="pp-page-intro" data-en="Complete the short form below. Your public page will be created immediately, and you will be taken to your private studio to add your professional milestones." data-fr="Remplissez le formulaire ci-dessous. Votre page publique sera créée immédiatement, puis vous accéderez à votre espace privé pour ajouter vos étapes professionnelles.">Complete the short form below. Your public page will be created immediately, and you will be taken to your private studio to add your professional milestones.</p>
+  <header class="pp-header">
+    <div class="pp-shell pp-header-inner">
+      <a class="pp-brand" href="platform.html"><span class="pp-brand-mark">BP</span><span>BIOPAGE <span style="font-weight:500;color:#94a8bb">/ CREATE</span></span></a>
+      <div class="pp-header-actions">
+        <div class="pp-lang"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="fr" aria-pressed="false">FR</button></div>
+        <a class="pp-btn pp-btn-dark-outline pp-btn-small" href="platform.html" data-en="← Back" data-fr="← Retour">← Back</a>
+      </div>
     </div>
+  </header>
 
-    <section class="pp-panel" style="max-width:800px;margin:auto">
-      <form class="pp-form" id="createForm">
-        <h2 class="pp-form-section" data-en="01 — Your identity" data-fr="01 — Votre identité">01 — Your identity</h2>
-        <div class="pp-form-grid">
-          <label class="pp-field"><span class="pp-label" data-en="Full name *" data-fr="Nom complet *">Full name *</span><input class="pp-input" id="full_name" name="full_name" autocomplete="name" maxlength="160" required placeholder="Your first and last name"></label>
-          <label class="pp-field"><span class="pp-label" data-en="Organisation" data-fr="Organisation">Organisation</span><input class="pp-input" id="organization" name="organization" autocomplete="organization" maxlength="180" placeholder="Institution, company or initiative"></label>
-          <label class="pp-field"><span class="pp-label" data-en="Professional title (English) *" data-fr="Titre professionnel (anglais) *">Professional title (English) *</span><input class="pp-input" id="title_en" name="title_en" maxlength="180" required placeholder="Researcher, Public Health Specialist…"></label>
-          <label class="pp-field"><span class="pp-label" data-en="Titre professionnel (français)" data-fr="Titre professionnel (français)">Titre professionnel (français)</span><input class="pp-input" id="title_fr" name="title_fr" maxlength="180" placeholder="Chercheur, spécialiste en santé publique…"></label>
-          <label class="pp-field pp-field-full"><span class="pp-label" data-en="Short biography (English) *" data-fr="Courte biographie (anglais) *">Short biography (English) *</span><textarea class="pp-textarea" id="bio_en" name="bio_en" maxlength="2400" minlength="10" required placeholder="What do you do? What are you focused on?"></textarea></label>
-          <label class="pp-field pp-field-full"><span class="pp-label" data-en="Courte biographie (français) *" data-fr="Courte biographie (français) *">Courte biographie (français) *</span><textarea class="pp-textarea" id="bio_fr" name="bio_fr" maxlength="2400" minlength="10" required placeholder="Présentez votre activité et vos domaines d'intérêt."></textarea></label>
-          <label class="pp-field"><span class="pp-label" data-en="Location" data-fr="Localisation">Location</span><input class="pp-input" id="location" name="location" maxlength="160" placeholder="City, Country"></label>
-          <div class="pp-field"><span class="pp-label" data-en="Professional portrait" data-fr="Photo de portrait">Professional portrait</span><input class="pp-input" id="photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp"><span class="pp-hint" data-en="JPG, PNG or WebP. The image is resized before upload (max 5 MB)." data-fr="JPG, PNG ou WebP. La photo est redimensionnée avant l'envoi (5 Mo max.).">JPG, PNG or WebP. The image is resized before upload (max 5 MB).</span></div>
-        </div>
-
-        <div class="pp-divider"></div>
-        <h2 class="pp-form-section" data-en="02 — Your digital card" data-fr="02 — Votre carte numérique">02 — Your digital card</h2>
-        <div class="pp-form-grid">
-          <label class="pp-field"><span class="pp-label" data-en="WhatsApp number" data-fr="Numéro WhatsApp">WhatsApp number</span><input class="pp-input" id="whatsapp" name="whatsapp" autocomplete="tel" maxlength="40" placeholder="+221 …"></label>
-          <label class="pp-field"><span class="pp-label" data-en="Email address" data-fr="Adresse e-mail">Email address</span><input class="pp-input" id="email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="name@example.com"></label>
-          <label class="pp-field pp-field-full"><span class="pp-label" data-en="LinkedIn profile URL" data-fr="Lien de profil LinkedIn">LinkedIn profile URL</span><input class="pp-input" id="linkedin_url" name="linkedin_url" type="url" placeholder="https://www.linkedin.com/in/…"></label>
-        </div>
-
-        <div class="pp-divider"></div>
-        <h2 class="pp-form-section" data-en="03 — Secure access to your studio" data-fr="03 — Accès sécurisé à votre espace">03 — Secure access to your studio</h2>
-        <div class="pp-form-grid">
-          <label class="pp-field pp-field-full"><span class="pp-label" data-en="Choose your unique page address (slug) *" data-fr="Choisissez l'identifiant unique de votre page (slug) *">Choose your unique page address (slug) *</span><input class="pp-input" id="slug" name="slug" minlength="3" maxlength="32" pattern="[a-z0-9][a-z0-9-]{1,30}[a-z0-9]" required placeholder="your-name"><span class="pp-hint"><span data-en="Your public address:" data-fr="Votre adresse publique :">Your public address:</span> <strong id="slugPreview">u.html?id=your-name</strong> · <span data-en="Lowercase letters, numbers and hyphens only." data-fr="Lettres minuscules, chiffres et tirets uniquement.">Lowercase letters, numbers and hyphens only.</span></span></label>
-          <label class="pp-field"><span class="pp-label" data-en="Private 6-digit PIN *" data-fr="Code PIN privé à 6 chiffres *">Private 6-digit PIN *</span><input class="pp-input" id="pin" name="pin" type="password" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" autocomplete="new-password" required placeholder="••••••"></label>
-          <label class="pp-field"><span class="pp-label" data-en="Confirm your PIN *" data-fr="Confirmez votre code PIN *">Confirm your PIN *</span><input class="pp-input" id="pin_confirm" name="pin_confirm" type="password" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" autocomplete="new-password" required placeholder="••••••"></label>
-        </div>
-        <p class="pp-hint" data-en="Keep your PIN private. It is stored as a one-way salted hash, never as readable text. Because it has only six digits, do not reuse a banking or email PIN." data-fr="Gardez votre code PIN confidentiel. Il est conservé sous forme d'empreinte salée, jamais en clair. Comme il ne comporte que six chiffres, ne réutilisez pas le code de votre banque ou de votre messagerie.">Keep your PIN private. It is stored as a one-way salted hash, never as readable text. Because it has only six digits, do not reuse a banking or email PIN.</p>
-
-        <label class="pp-checkline"><input id="publicConsent" type="checkbox" required><span data-en="I understand that my portfolio and contact details I choose to publish will be visible to anyone with the link." data-fr="Je comprends que mon portfolio et les coordonnées que je choisis de publier seront visibles par toute personne disposant du lien.">I understand that my portfolio and contact details I choose to publish will be visible to anyone with the link.</span></label>
-        <div id="formMessage" class="pp-message" role="alert" aria-live="polite"></div>
-        <div class="pp-form-actions">
-          <button id="createButton" class="pp-btn pp-btn-primary" type="submit" data-en="Create my portfolio & card ↗" data-fr="Créer mon portfolio & ma carte ↗">Create my portfolio & card ↗</button>
-          <a class="pp-btn pp-btn-outline" href="platform.html" data-en="Cancel" data-fr="Annuler">Cancel</a>
-        </div>
-        <p class="pp-hint" data-en="Free to start. Your private studio is protected by your unique identifier and PIN." data-fr="Gratuit pour commencer. Votre espace privé est protégé par votre identifiant et votre code PIN.">Free to start. Your private studio is protected by your unique identifier and PIN.</p>
-      </form>
-      <section id="createRecoveryPanel" hidden>
-        <div class="pp-message show" style="margin-bottom:18px">
-          <strong data-en="Save your recovery code now" data-fr="Conservez votre code de récupération maintenant">Save your recovery code now</strong><br>
-          <span data-en="This code is the only way to recover your portfolio if you forget your identifier or PIN. It will not be shown again." data-fr="Ce code est le seul moyen de récupérer votre portfolio si vous oubliez votre identifiant ou votre PIN. Il ne sera plus affiché.">This code is the only way to recover your portfolio if you forget your identifier or PIN. It will not be shown again.</span>
-        </div>
-        <div class="pp-form" style="gap:14px">
-          <div class="pp-field"><span class="pp-label" data-en="Your portfolio identifier" data-fr="Identifiant de votre portfolio">Your portfolio identifier</span><div class="pp-input" id="createdSlug" style="font-weight:850;background:#f7fafb">—</div></div>
-          <div class="pp-field"><span class="pp-label" data-en="Your private recovery code" data-fr="Votre code de récupération privé">Your private recovery code</span><textarea id="createdRecoveryCode" class="pp-textarea" rows="3" readonly style="font-family:ui-monospace,monospace;font-size:12px;font-weight:850;letter-spacing:.05em"></textarea><span class="pp-hint" data-en="This is a unique 64-character code. Keep it private." data-fr="Il s'agit d'un code unique de 64 caractères. Gardez-le confidentiel.">This is a unique 64-character code. Keep it private.</span></div>
-          <div class="pp-form-actions">
-            <button id="downloadRecoveryBtn" class="pp-btn pp-btn-primary" type="button" data-en="Download recovery file ↓" data-fr="Télécharger le fichier de récupération ↓">Download recovery file ↓</button>
-            <button id="copyRecoveryBtn" class="pp-btn pp-btn-outline" type="button" data-en="Copy code" data-fr="Copier le code">Copy code</button>
-          </div>
-          <label class="pp-checkline"><input id="confirmRecoverySaved" type="checkbox"><span data-en="I have downloaded or securely saved my recovery code." data-fr="J'ai téléchargé ou enregistré mon code de récupération en lieu sûr.">I have downloaded or securely saved my recovery code.</span></label>
-          <div id="recoverySavedMessage" class="pp-message" role="status"></div>
-          <button id="continueToStudio" class="pp-btn pp-btn-primary" type="button" disabled data-en="Continue to my studio ↗" data-fr="Continuer vers mon espace ↗">Continue to my studio ↗</button>
-        </div>
-      </section>
+  <main class="bp-shell">
+    <section class="bp-hero">
+      <p class="bp-eyebrow" data-en="YOUR PROFESSIONAL PRESENCE, REIMAGINED" data-fr="VOTRE PRÉSENCE PROFESSIONNELLE, RÉINVENTÉE">YOUR PROFESSIONAL PRESENCE, REIMAGINED</p>
+      <h1 class="bp-heading" data-en="A portfolio that moves your career forward." data-fr="Un portfolio qui fait avancer votre parcours.">A portfolio that moves your career forward.</h1>
+      <p class="bp-intro" data-en="Build a bilingual professional profile and a digital business card designed to help your work get noticed. Start with your CV or complete the form yourself." data-fr="Créez un profil professionnel bilingue et une carte numérique conçus pour valoriser votre parcours. Importez votre CV ou remplissez directement le formulaire.">Build a bilingual professional profile and a digital business card designed to help your work get noticed. Start with your CV or complete the form yourself.</p>
     </section>
+
+    <div class="bp-workspace">
+      <div class="bp-main">
+        <section class="bp-card bp-import" aria-labelledby="cvImportTitle">
+          <div class="bp-import-top">
+            <div>
+              <h2 class="bp-import-title" id="cvImportTitle" data-en="Save time: Import your CV (PDF)" data-fr="Gagnez du temps : Importez votre CV (PDF)">Save time: Import your CV (PDF)</h2>
+              <p class="bp-import-copy" data-en="Let AI turn your CV into a polished bilingual profile. Your PDF is read in your browser; only the extracted text is sent for analysis." data-fr="Laissez l’IA transformer votre CV en un profil bilingue soigné. Le PDF est lu dans votre navigateur ; seul le texte extrait est envoyé pour analyse.">Let AI turn your CV into a polished bilingual profile. Your PDF is read in your browser; only the extracted text is sent for analysis.</p>
+            </div>
+            <span class="bp-ai-chip">AI-ASSISTED · GPT-4o mini</span>
+          </div>
+          <div class="bp-drop" id="cvDropzone" tabindex="0" role="button" aria-label="Select or drop a CV PDF">
+            <div class="bp-drop-icon" aria-hidden="true">
+              <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6m-3 3 3-3 3 3"/></svg>
+            </div>
+            <div class="bp-drop-content">
+              <p class="bp-drop-title" data-en="Drop your CV here or browse files" data-fr="Déposez votre CV ici ou parcourez vos fichiers">Drop your CV here or browse files</p>
+              <p class="bp-drop-hint" data-en="PDF only · Up to 10 MB · Maximum 25 pages" data-fr="PDF uniquement · 10 Mo maximum · 25 pages maximum">PDF only · Up to 10 MB · Maximum 25 pages</p>
+              <div class="bp-drop-actions">
+                <button type="button" class="bp-btn bp-btn-primary bp-btn-small" id="chooseCvBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 16V4m-4 4 4-4 4 4M4 20h16"/></svg><span data-en="Choose a PDF" data-fr="Choisir un PDF">Choose a PDF</span></button>
+                <span class="bp-file-name" id="cvFileName"></span>
+              </div>
+            </div>
+            <input class="bp-file-hidden" id="cvFile" type="file" accept="application/pdf,.pdf">
+          </div>
+          <p class="bp-privacy">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span data-en="By selecting Analyse, you agree that extracted CV text is sent to OpenAI to generate the profile. The PDF itself is not uploaded or stored by BioPage. Avoid including information you do not want processed." data-fr="En lançant l’analyse, vous acceptez que le texte extrait du CV soit transmis à OpenAI pour générer le profil. Le PDF lui-même n’est pas téléversé ni conservé par BioPage. Évitez d’inclure des informations que vous ne souhaitez pas faire traiter.">By selecting Analyse, you agree that extracted CV text is sent to OpenAI to generate the profile. The PDF itself is not uploaded or stored by BioPage. Avoid including information you do not want processed.</span>
+          </p>
+          <div class="bp-progress" id="cvProgress" role="status" aria-live="polite">
+            <span class="bp-spinner" aria-hidden="true"></span>
+            <div style="flex:1"><span id="cvProgressText" data-en="Analysing your CV…" data-fr="Analyse de votre CV en cours…">Analysing your CV…</span><div class="bp-progress-track"><span></span></div></div>
+          </div>
+          <div class="bp-message" id="cvMessage" role="status" aria-live="polite"></div>
+        </section>
+
+        <form class="bp-card bp-form-card" id="createForm">
+          <div class="bp-step">
+            <span class="bp-step-number">01</span>
+            <div><h2 class="bp-step-heading" data-en="Your professional identity" data-fr="Votre identité professionnelle">Your professional identity</h2><p class="bp-step-sub" data-en="The essentials visitors see first." data-fr="Les informations que vos visiteurs voient en premier.">The essentials visitors see first.</p></div>
+          </div>
+          <div class="bp-form-grid">
+            <label class="bp-field">
+              <span class="bp-label" data-en="Full name *" data-fr="Nom complet *">Full name *</span>
+              <div class="bp-control"><span class="bp-control-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><input class="bp-input" id="full_name" name="full_name" autocomplete="name" maxlength="160" required placeholder="Your first and last name"></div>
+            </label>
+            <label class="bp-field">
+              <span class="bp-label" data-en="Organisation" data-fr="Organisation">Organisation</span>
+              <div class="bp-control"><span class="bp-control-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 8h2m4 0h2M8 12h2m4 0h2M10 21v-5h4v5M9 4V2h6v2"/></svg></span><input class="bp-input" id="organization" name="organization" autocomplete="organization" maxlength="180" placeholder="Institution, company or initiative"></div>
+            </label>
+            <label class="bp-field">
+              <span class="bp-label" data-en="Location" data-fr="Localisation">Location</span>
+              <div class="bp-control"><span class="bp-control-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><input class="bp-input" id="location" name="location" maxlength="160" placeholder="City, Country"></div>
+            </label>
+            <label class="bp-field">
+              <span class="bp-label" data-en="Professional title (English) *" data-fr="Titre professionnel (anglais) *">Professional title (English) *</span>
+              <div class="bp-control"><span class="bp-control-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v18M5 8h14M7 16h10"/></svg></span><input class="bp-input" id="title_en" name="title_en" maxlength="180" required placeholder="Researcher, Public Health Specialist…"></div>
+            </label>
+            <label class="bp-field full">
+              <span class="bp-label" data-en="Professional title (French)" data-fr="Titre professionnel (français)">Professional title (French)</span>
+              <div class="bp-control"><span class="bp-control-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h13"/></svg></span><input class="bp-input" id="title_fr" name="title_fr" maxlength="180" placeholder="Chercheur, spécialiste en santé publique…"></div>
+            </label>
+            <label class="bp-field full">
+              <span class="bp-label" data-en="Short biography (English) *" data-fr="Courte biographie (anglais) *">Short biography (English) *</span>
+              <div class="bp-control"><span class="bp-control-icon" style="top:19px;transform:none"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 5h16M4 10h16M4 15h11M4 20h8"/></svg></span><textarea class="bp-textarea" id="bio_en" name="bio_en" maxlength="2400" minlength="10" required placeholder="What do you do? What are you focused on?"></textarea></div>
+            </label>
+            <label class="bp-field full">
+              <span class="bp-label" data-en="Short biography (French) *" data-fr="Courte biographie (français) *">Short biography (French) *</span>
+              <div class="bp-control"><span class="bp-control-icon" style="top:19px;transform:none"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 5h16M4 10h16M4 15h11M4 20h8"/></svg></span><textarea class="bp-textarea" id="bio_fr" name="bio_fr" maxlength="2400" minlength="10" required placeholder="Présentez votre activité et vos domaines d'intérêt."></textarea></div>
+            </label>
+            <div class="bp-field full">
+              <span class="bp-label" data-en="Professional portrait" data-fr="Photo de portrait">Professional portrait</span>
+              <label class="bp-photo-zone" id="photoDropzone" for="photo">
+                <span class="bp-photo-thumb" id="photoThumb"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h3l1.5-2h7L17 7h3v12H4z"/><circle cx="12" cy="13" r="4"/></svg></span>
+                <span><span class="bp-photo-title" data-en="Add a professional portrait" data-fr="Ajouter une photo professionnelle">Add a professional portrait</span><span class="bp-photo-hint" style="display:block" data-en="Click or drop an image · JPG, PNG or WebP · Up to 5 MB" data-fr="Cliquez ou déposez une image · JPG, PNG ou WebP · 5 Mo maximum">Click or drop an image · JPG, PNG or WebP · Up to 5 MB</span></span>
+                <input class="bp-file-hidden" id="photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp">
+              </label>
+              <span class="bp-hint" data-en="Your image is resized before upload." data-fr="Votre image est redimensionnée avant l’envoi.">Your image is resized before upload.</span>
+            </div>
+          </div>
+
+          <div class="bp-divider"></div>
+          <div class="bp-step">
+            <span class="bp-step-number">02</span>
+            <div><h2 class="bp-step-heading" data-en="Your digital business card" data-fr="Votre carte de visite numérique">Your digital business card</h2><p class="bp-step-sub" data-en="Choose how people can connect with you." data-fr="Choisissez comment les personnes peuvent vous contacter.">Choose how people can connect with you.</p></div>
+          </div>
+          <div class="bp-form-grid">
+            <label class="bp-field">
+              <span class="bp-label" data-en="WhatsApp number" data-fr="Numéro WhatsApp">WhatsApp number</span>
+              <div class="bp-control"><span class="bp-control-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 11.5a8.5 8.5 0 0 1-12.7 7.4L3 20l1.2-4.1A8.5 8.5 0 1 1 20 11.5Z"/><path d="M8.5 8.5c.4 2 2.1 3.7 4.1 4.1l1.2-1.2 2 .8-.2 1.7c-.1.6-.7 1-1.3.9-3.7-.7-6.5-3.5-7.2-7.2-.1-.6.3-1.2.9-1.3l1.7-.2.8 2z"/></svg></span><input class="bp-input" id="whatsapp" name="whatsapp" autocomplete="tel" maxlength="40" placeholder="+221 …"></div>
+            </label>
+            <label class="bp-field">
+              <span class="bp-label" data-en="Email address" data-fr="Adresse e-mail">Email address</span>
+              <div class="bp-control"><span class="bp-control-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg></span><input class="bp-input" id="email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="name@example.com"></div>
+            </label>
+            <label class="bp-field full">
+              <span class="bp-label" data-en="LinkedIn profile URL" data-fr="Lien de profil LinkedIn">LinkedIn profile URL</span>
+              <div class="bp-control"><span class="bp-control-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 9v10M5 5v.1M10 19v-6a3 3 0 0 1 6 0v6m0-6v6M10 9v10"/></svg></span><input class="bp-input" id="linkedin_url" name="linkedin_url" type="url" placeholder="https://www.linkedin.com/in/…"></div>
+            </label>
+          </div>
+
+          <section id="detectedContent" class="bp-card bp-detected" style="display:none;margin-top:25px;background:#fbfdfc">
+            <div class="bp-detected-head">
+              <div><h3 class="bp-detected-title" data-en="Your CV highlights" data-fr="Les éléments détectés dans votre CV">Your CV highlights</h3><p class="bp-detected-sub" data-en="Review and edit each item. They will be added to your private studio after account creation." data-fr="Vérifiez et modifiez chaque élément. Ils seront ajoutés à votre espace privé après la création du compte.">Review and edit each item. They will be added to your private studio after account creation.</p></div>
+              <span class="bp-count" id="detectedCount">0 items</span>
+            </div>
+            <div class="bp-entry-list" id="experienceEntries"></div>
+            <div class="bp-entry-list" id="diplomaEntries" style="margin-top:12px"></div>
+          </section>
+
+          <div class="bp-divider"></div>
+          <div class="bp-step">
+            <span class="bp-step-number">03</span>
+            <div><h2 class="bp-step-heading" data-en="Secure access to your studio" data-fr="Accès sécurisé à votre espace">Secure access to your studio</h2><p class="bp-step-sub" data-en="Your private workspace starts with a unique address and PIN." data-fr="Votre espace privé commence par une adresse unique et un code PIN.">Your private workspace starts with a unique address and PIN.</p></div>
+          </div>
+          <div class="bp-form-grid">
+            <label class="bp-field full">
+              <span class="bp-label" data-en="Choose your unique page address (slug) *" data-fr="Choisissez l’identifiant unique de votre page (slug) *">Choose your unique page address (slug) *</span>
+              <div class="bp-control"><span class="bp-control-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7.1-7.1l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7.1 7.1l1.7-1.7"/></svg></span><input class="bp-input" id="slug" name="slug" minlength="3" maxlength="32" pattern="[a-z0-9][a-z0-9-]{1,30}[a-z0-9]" required placeholder="your-name"></div>
+              <span class="bp-hint"><span data-en="Your public address:" data-fr="Votre adresse publique :">Your public address:</span> <strong id="slugPreview">u.html?id=your-name</strong> · <span data-en="Lowercase letters, numbers and hyphens only." data-fr="Lettres minuscules, chiffres et tirets uniquement.">Lowercase letters, numbers and hyphens only.</span></span>
+            </label>
+            <label class="bp-field">
+              <span class="bp-label" data-en="Private 6-digit PIN *" data-fr="Code PIN privé à 6 chiffres *">Private 6-digit PIN *</span>
+              <div class="bp-control"><span class="bp-control-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"/></svg></span><input class="bp-input" id="pin" name="pin" type="password" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" autocomplete="new-password" required placeholder="••••••"></div>
+            </label>
+            <label class="bp-field">
+              <span class="bp-label" data-en="Confirm your PIN *" data-fr="Confirmez votre code PIN *">Confirm your PIN *</span>
+              <div class="bp-control"><span class="bp-control-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"/></svg></span><input class="bp-input" id="pin_confirm" name="pin_confirm" type="password" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" autocomplete="new-password" required placeholder="••••••"></div>
+            </label>
+          </div>
+          <p class="bp-hint" data-en="Your PIN is stored as a one-way salted hash, never as readable text. Do not reuse a banking or email PIN." data-fr="Votre PIN est conservé sous forme d’empreinte salée, jamais en clair. Ne réutilisez pas le code de votre banque ou de votre messagerie.">Your PIN is stored as a one-way salted hash, never as readable text. Do not reuse a banking or email PIN.</p>
+          <label class="bp-checkline"><input id="publicConsent" type="checkbox" required><span data-en="I understand that my portfolio and the contact details I choose to publish will be visible to anyone with the link." data-fr="Je comprends que mon portfolio et les coordonnées que je choisis de publier seront visibles par toute personne disposant du lien.">I understand that my portfolio and the contact details I choose to publish will be visible to anyone with the link.</span></label>
+          <div id="formMessage" class="bp-message" role="alert" aria-live="polite"></div>
+          <div class="bp-actions">
+            <button id="createButton" class="bp-btn bp-btn-primary" type="submit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg><span data-en="Create my portfolio & card" data-fr="Créer mon portfolio et ma carte">Create my portfolio & card</span></button>
+            <a class="bp-btn bp-btn-secondary" href="platform.html" data-en="Cancel" data-fr="Annuler">Cancel</a>
+          </div>
+          <p class="bp-hint" data-en="Free to start. Your private studio is protected by your unique identifier and PIN." data-fr="Gratuit pour commencer. Votre espace privé est protégé par votre identifiant et votre code PIN.">Free to start. Your private studio is protected by your unique identifier and PIN.</p>
+        </form>
+
+        <section id="createRecoveryPanel" class="bp-card bp-recovery" hidden>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:17px">
+            <span class="bp-step-number">✓</span><div><h2 data-en="Your portfolio is ready" data-fr="Votre portfolio est prêt">Your portfolio is ready</h2><p class="bp-recovery-copy" style="margin:4px 0 0" data-en="One last thing: secure your recovery details before entering your studio." data-fr="Encore une étape : conservez vos informations de récupération avant d’ouvrir votre espace.">One last thing: secure your recovery details before entering your studio.</p></div>
+          </div>
+          <div class="bp-message show" style="margin-bottom:16px"><strong data-en="Save your recovery code now" data-fr="Conservez votre code de récupération maintenant">Save your recovery code now</strong><br><span data-en="This one-time code is the only way to recover your portfolio if you forget your identifier or PIN. It will not be shown again." data-fr="Ce code à usage unique est le seul moyen de récupérer votre portfolio si vous oubliez votre identifiant ou votre PIN. Il ne sera plus affiché.">This one-time code is the only way to recover your portfolio if you forget your identifier or PIN. It will not be shown again.</span></div>
+          <div class="bp-field"><span class="bp-label" data-en="Your portfolio identifier" data-fr="Identifiant de votre portfolio">Your portfolio identifier</span><div class="bp-recovery-code" id="createdSlug">—</div></div>
+          <div class="bp-field" style="margin-top:14px"><span class="bp-label" data-en="Your private recovery code" data-fr="Votre code de récupération privé">Your private recovery code</span><textarea id="createdRecoveryCode" class="bp-recovery-code" rows="3" readonly style="font-family:ui-monospace,monospace;font-size:12px;font-weight:850"></textarea><span class="bp-hint" data-en="This is a unique 64-character code. Keep it private." data-fr="Il s’agit d’un code unique de 64 caractères. Gardez-le confidentiel.">This is a unique 64-character code. Keep it private.</span></div>
+          <div class="bp-actions">
+            <button id="downloadRecoveryBtn" class="bp-btn bp-btn-primary" type="button" data-en="Download recovery file ↓" data-fr="Télécharger le fichier de récupération ↓">Download recovery file ↓</button>
+            <button id="copyRecoveryBtn" class="bp-btn bp-btn-secondary" type="button" data-en="Copy code" data-fr="Copier le code">Copy code</button>
+          </div>
+          <label class="bp-checkline"><input id="confirmRecoverySaved" type="checkbox"><span data-en="I have downloaded or securely saved my recovery code." data-fr="J’ai téléchargé ou enregistré mon code de récupération en lieu sûr.">I have downloaded or securely saved my recovery code.</span></label>
+          <div id="recoverySavedMessage" class="bp-message" role="status"></div>
+          <button id="continueToStudio" class="bp-btn bp-btn-primary" type="button" disabled data-en="Continue to my studio ↗" data-fr="Continuer vers mon espace ↗">Continue to my studio ↗</button>
+        </section>
+      </div>
+
+      <aside class="bp-preview-wrap" aria-label="Live portfolio preview">
+        <div class="bp-preview-header"><h2 class="bp-preview-heading" data-en="Live preview" data-fr="Aperçu en direct">Live preview</h2><span class="bp-live" data-en="LIVE" data-fr="EN DIRECT">LIVE</span></div>
+        <div class="bp-preview-lang"><button type="button" class="active" data-preview-lang="en">EN</button><button type="button" data-preview-lang="fr">FR</button></div>
+        <section class="bp-preview-card">
+          <div class="bp-preview-brand"><span>BIOPAGE · PROFESSIONAL</span><span class="bp-preview-mark">BP</span></div>
+          <div class="bp-preview-person">
+            <div class="bp-preview-avatar" id="previewAvatar">BP</div>
+            <h3 class="bp-preview-name" id="previewName">Your full name</h3>
+            <p class="bp-preview-title" id="previewTitle">Your professional title</p>
+            <p class="bp-preview-org" id="previewOrg">Your organisation</p>
+            <p class="bp-preview-location" id="previewLocation"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>City, Country</span></p>
+          </div>
+          <p class="bp-preview-bio" id="previewBio">Your short professional biography will appear here. Add a clear summary of your work, expertise and ambitions.</p>
+          <div class="bp-preview-foot"><span>YOUR STORY · YOUR IMPACT</span><strong>biopage</strong></div>
+        </section>
+        <div class="bp-preview-tip"><span class="bp-tip-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3a7 7 0 0 0-4 12.7c.7.5 1 1.1 1 1.8h6c0-.7.3-1.3 1-1.8A7 7 0 0 0 12 3Z"/><path d="M9 21h6m-5-3v3m4-3v3"/></svg></span><p><strong data-en="A strong first impression." data-fr="Une première impression forte.">A strong first impression.</strong> <span data-en="Your changes appear here as you type. You can edit every field before publishing." data-fr="Vos modifications apparaissent ici pendant la saisie. Vous pouvez modifier chaque champ avant la publication.">Your changes appear here as you type. You can edit every field before publishing.</span></p></div>
+      </aside>
+    </div>
   </main>
 
   <footer class="pp-footer"><div class="pp-shell pp-footer-inner"><span>© <span id="year"></span> BioPage Studio</span><a href="platform.html" data-en="About BioPage" data-fr="À propos de BioPage">About BioPage</a></div></footer>
   <script src="platform-api.js"></script>
   <script>
     (function(){
+      "use strict";
       const $=id=>document.getElementById(id);
-      let slugTouched=false;
-      let recoveryCodeStored=false;
-      function updateRecoveryContinue(){
-        $("continueToStudio").disabled=!(recoveryCodeStored && $("confirmRecoverySaved").checked);
-      }
+      const ANALYZE_URL="https://kjrgvpxmqrbhbejqedcm.supabase.co/functions/v1/analyze-cv";
+      const PUBLISHABLE_KEY="sb_publishable_LIE3gft788Rt0Y9szWBBbQ_9vW2rwZw";
+      const PDFJS_VERSION="6.5.438";
+      let lang="en",previewLang="en",slugTouched=false,recoveryCodeStored=false,photoPreviewUrl=null;
+      let cvExperiences=[],cvDiplomas=[];
+
       function normaliseSlug(value){return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,32).replace(/-+$/g,"");}
+      function esc(value){return String(value==null?"":value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
+      function initials(value){return String(value||"BP").trim().split(/\s+/).filter(Boolean).slice(0,2).map(s=>s.charAt(0)).join("").toUpperCase()||"BP";}
       function updateSlug(){const value=normaliseSlug($("slug").value);$("slugPreview").textContent="u.html?id="+(value||"your-name");}
-      $("full_name").addEventListener("input",function(){if(!slugTouched){$("slug").value=normaliseSlug(this.value);updateSlug();}});
+      $("full_name").addEventListener("input",function(){if(!slugTouched){$("slug").value=normaliseSlug(this.value);updateSlug();}updatePreview();});
       $("slug").addEventListener("input",function(){slugTouched=true;this.value=normaliseSlug(this.value);updateSlug();});
       $("year").textContent=new Date().getFullYear();
-      function setLang(lang){
-        document.documentElement.lang=lang;
-        document.querySelectorAll("[data-en][data-fr]").forEach(n=>{n.textContent=n.getAttribute(lang==="fr"?"data-fr":"data-en");});
-        document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===lang)));
+
+      function setLang(next){
+        lang=next==="fr"?"fr":"en";document.documentElement.lang=lang;
+        document.querySelectorAll("[data-en][data-fr]").forEach(node=>{node.textContent=node.getAttribute(lang==="fr"?"data-fr":"data-en");});
+        document.querySelectorAll("[data-lang]").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.lang===lang)));
         try{localStorage.setItem("biopage-language",lang);}catch(_){}
       }
-      document.querySelectorAll("[data-lang]").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));
-      let lang="en";try{lang=localStorage.getItem("biopage-language")||"en";}catch(_){}
+      document.querySelectorAll("[data-lang]").forEach(button=>button.addEventListener("click",()=>setLang(button.dataset.lang)));
+      try{lang=localStorage.getItem("biopage-language")||"en";}catch(_){}
       setLang(lang);
+      const say=(en,fr)=>lang==="fr"?fr:en;
+      function setMessage(node,message,error){node.textContent=message||"";node.classList.toggle("show",!!message);node.classList.toggle("error",!!error);}
+      function formHasContent(){return ["full_name","organization","location","title_en","title_fr","bio_en","bio_fr","whatsapp","email","linkedin_url"].some(id=>$(id).value.trim().length>0);}
+      function fillField(id,value){if(value!==undefined&&value!==null&&String(value).trim())$(id).value=String(value).trim();}
+      function updatePreview(){
+        const name=$("full_name").value.trim()||say("Your full name","Votre nom complet");
+        const title=$((previewLang==="fr"?"title_fr":"title_en")).value.trim()||$("title_en").value.trim()||say("Your professional title","Votre titre professionnel");
+        const bio=$((previewLang==="fr"?"bio_fr":"bio_en")).value.trim()||$("bio_en").value.trim()||say("Your short professional biography will appear here. Add a clear summary of your work, expertise and ambitions.","Votre courte biographie professionnelle apparaîtra ici. Présentez clairement votre activité, votre expertise et vos ambitions.");
+        $("previewName").textContent=name;$("previewTitle").textContent=title;
+        $("previewOrg").textContent=$("organization").value.trim()||say("Your organisation","Votre organisation");
+        $("previewLocation").querySelector("span").textContent=$("location").value.trim()||say("City, Country","Ville, pays");
+        $("previewBio").textContent=bio;
+        if(photoPreviewUrl){$("previewAvatar").innerHTML='<img src="'+photoPreviewUrl+'" alt="">';}
+        else{$("previewAvatar").textContent=initials($("full_name").value);}
+      }
+      document.querySelectorAll("#createForm input:not([type=file]),#createForm textarea").forEach(node=>node.addEventListener("input",updatePreview));
+      document.querySelectorAll("[data-preview-lang]").forEach(button=>button.addEventListener("click",()=>{
+        previewLang=button.dataset.previewLang;
+        document.querySelectorAll("[data-preview-lang]").forEach(b=>b.classList.toggle("active",b===button));
+        updatePreview();
+      }));
+      updatePreview();
+
+      function progress(show,message){
+        $("cvProgress").classList.toggle("show",show);
+        $("cvProgressText").textContent=message||say("Analysing your CV…","Analyse de votre CV en cours…");
+        $("chooseCvBtn").disabled=show;
+      }
+      async function getPdfText(file){
+        if(!file||file.type!=="application/pdf"&&!/\.pdf$/i.test(file.name))throw new Error(say("Please select a PDF file.","Veuillez sélectionner un fichier PDF."));
+        if(file.size>10*1024*1024)throw new Error(say("The PDF must be 10 MB or smaller.","Le PDF doit peser 10 Mo maximum."));
+        const bytes=new Uint8Array(await file.arrayBuffer());
+        if(new TextDecoder().decode(bytes.slice(0,5))!=="%PDF-")throw new Error(say("This file does not appear to be a valid PDF.","Ce fichier ne semble pas être un PDF valide."));
+        const pdfjs=await import("https://cdn.jsdelivr.net/npm/pdfjs-dist@"+PDFJS_VERSION+"/build/pdf.min.mjs");
+        pdfjs.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@"+PDFJS_VERSION+"/build/pdf.worker.min.mjs";
+        const pdf=await pdfjs.getDocument({data:bytes,isEvalSupported:false,useWorkerFetch:true}).promise;
+        if(pdf.numPages>25)throw new Error(say("Please use a PDF with 25 pages or fewer.","Veuillez utiliser un PDF de 25 pages maximum."));
+        const pageTexts=[];
+        for(let pageNumber=1;pageNumber<=pdf.numPages;pageNumber++){
+          const page=await pdf.getPage(pageNumber);
+          const content=await page.getTextContent();
+          const line=content.items.map(item=>item.str||"").filter(Boolean).join(" ");
+          if(line.trim())pageTexts.push(line);
+        }
+        const text=pageTexts.join("\n").replace(/[ \t]+/g," ").trim();
+        if(text.length<120)throw new Error(say("No selectable text was found. This may be a scanned PDF; use a text-based CV.","Aucun texte exploitable n’a été trouvé. Il s’agit peut-être d’un PDF scanné ; utilisez un CV contenant du texte."));
+        return text.slice(0,22000);
+      }
+      async function analyseCv(text){
+        const response=await fetch(ANALYZE_URL,{method:"POST",headers:{"Content-Type":"application/json","apikey":PUBLISHABLE_KEY},body:JSON.stringify({text})});
+        let result;try{result=await response.json();}catch(_){throw new Error(say("The analysis service returned an unreadable response.","Le service d’analyse a renvoyé une réponse illisible."));}
+        if(!response.ok||!result.ok)throw new Error(result.error||say("CV analysis failed. Please try again.","L’analyse du CV a échoué. Veuillez réessayer."));
+        return result.data;
+      }
+      function showDetected(){
+        const section=$("detectedContent");
+        const total=cvExperiences.length+cvDiplomas.length;
+        section.style.display=total?"block":"none";
+        $("detectedCount").textContent=total+" "+say("items detected","éléments détectés");
+        $("experienceEntries").innerHTML=cvExperiences.map((item,index)=>entryExperienceHtml(item,index)).join("");
+        $("diplomaEntries").innerHTML=cvDiplomas.map((item,index)=>entryDiplomaHtml(item,index)).join("");
+      }
+      function entryExperienceHtml(item,i){
+        return '<article class="bp-entry" data-experience="'+i+'"><div class="bp-entry-top"><span class="bp-entry-type">'+say("Professional experience","Expérience professionnelle")+' '+(i+1)+'</span><button type="button" class="bp-remove" data-remove-experience="'+i+'">'+say("Remove","Supprimer")+'</button></div><div class="bp-entry-grid">'+
+          entryInput("title_en",say("Role / title (English)","Poste / titre (anglais)"),item.title_en,true)+
+          entryInput("title_fr",say("Role / title (French)","Poste / titre (français)"),item.title_fr,true)+
+          entryInput("organization",say("Organisation / employer","Organisation / employeur"),item.organization,true)+
+          entryInput("location",say("Location","Localisation"),item.location,false)+
+          entryInput("start_date",say("Start date (YYYY-MM-DD)","Date de début (AAAA-MM-JJ)"),item.start_date||"",false)+
+          entryInput("end_date",say("End date (YYYY-MM-DD)","Date de fin (AAAA-MM-JJ)"),item.end_date||"",false)+
+          '<label class="bp-current-check"><input type="checkbox" data-edit-experience="'+i+'" data-entry-field="is_current" '+(item.is_current?"checked":"")+'> '+say("Current role","Poste actuel")+'</label>'+
+          entryArea("description_en",say("Description (English)","Description (anglais)"),item.description_en)+
+          entryArea("description_fr",say("Description (French)","Description (français)"),item.description_fr)+
+          entryInput("skills",say("Skills (comma-separated)","Compétences (séparées par des virgules)"),(item.skills||[]).join(", "),false,true)+
+          '</div></article>';
+      }
+      function entryDiplomaHtml(item,i){
+        return '<article class="bp-entry" data-diploma="'+i+'"><div class="bp-entry-top"><span class="bp-entry-type">'+say("Education & qualification","Diplôme et qualification")+' '+(i+1)+'</span><button type="button" class="bp-remove" data-remove-diploma="'+i+'">'+say("Remove","Supprimer")+'</button></div><div class="bp-entry-grid">'+
+          entryInput("title_en",say("Qualification (English)","Diplôme (anglais)"),item.title_en,true)+
+          entryInput("title_fr",say("Qualification (French)","Diplôme (français)"),item.title_fr,true)+
+          entryInput("institution",say("Institution","Établissement"),item.institution,true)+
+          entryInput("year",say("Year","Année"),item.year||"",false)+
+          entryArea("details_en",say("Details (English)","Détails (anglais)"),item.details_en)+
+          entryArea("details_fr",say("Details (French)","Détails (français)"),item.details_fr)+
+          '</div></article>';
+      }
+      function entryInput(field,label,value,full,skills){
+        return '<label class="bp-field '+(full?"full":"")+'"><span class="bp-label">'+esc(label)+'</span><input class="bp-input" type="text" data-entry-field="'+field+'" value="'+esc(skills?value:value==null?"":value)+'" data-full="'+(full?"1":"0")+'"></label>';
+      }
+      function entryArea(field,label,value){
+        return '<label class="bp-field full"><span class="bp-label">'+esc(label)+'</span><textarea class="bp-textarea" data-entry-field="'+field+'">'+esc(value||"")+'</textarea></label>';
+      }
+      $("detectedContent").addEventListener("input",function(event){
+        const target=event.target,field=target.dataset.entryField;if(!field)return;
+        const expCard=target.closest("[data-experience]"),dipCard=target.closest("[data-diploma]");
+        if(expCard){const item=cvExperiences[Number(expCard.dataset.experience)];if(!item)return;item[field]=field==="skills"?target.value.split(",").map(v=>v.trim()).filter(Boolean):target.value;}
+        if(dipCard){const item=cvDiplomas[Number(dipCard.dataset.diploma)];if(!item)return;item[field]=field==="year"?(target.value?Number(target.value):null):target.value;}
+      });
+      $("detectedContent").addEventListener("change",function(event){
+        const target=event.target;if(target.dataset.entryField!=="is_current")return;
+        const card=target.closest("[data-experience]");if(card&&cvExperiences[Number(card.dataset.experience)])cvExperiences[Number(card.dataset.experience)].is_current=target.checked;
+      });
+      $("detectedContent").addEventListener("click",function(event){
+        const exp=event.target.closest("[data-remove-experience]"),dip=event.target.closest("[data-remove-diploma]");
+        if(exp){cvExperiences.splice(Number(exp.dataset.removeExperience),1);showDetected();}
+        if(dip){cvDiplomas.splice(Number(dip.dataset.removeDiploma),1);showDetected();}
+      });
+
+      async function processCv(file){
+        setMessage($("cvMessage"),"");
+        if(formHasContent()&&!window.confirm(say("Importing this CV will replace the profile fields already entered. Continue?","Importer ce CV remplacera les informations de profil déjà saisies. Continuer ?")))return;
+        $("cvFileName").textContent=file.name;
+        progress(true,say("Reading your PDF in this browser…","Lecture de votre PDF dans le navigateur…"));
+        try{
+          const text=await getPdfText(file);
+          progress(true,say("Analysing your CV with AI…","Analyse de votre CV par l’IA…"));
+          const data=await analyseCv(text);
+          ["full_name","organization","location","title_en","title_fr","bio_en","bio_fr"].forEach(id=>$(id).value="");
+          fillField("full_name",data.full_name);fillField("organization",data.organization);fillField("location",data.location);
+          fillField("title_en",data.title_en);fillField("title_fr",data.title_fr);fillField("bio_en",data.bio_en);fillField("bio_fr",data.bio_fr);
+          if(!slugTouched){$("slug").value=normaliseSlug($("full_name").value);updateSlug();}
+          cvExperiences=(Array.isArray(data.experiences)?data.experiences:[]).slice(0,12);
+          cvDiplomas=(Array.isArray(data.diplomas)?data.diplomas:[]).slice(0,12);
+          showDetected();updatePreview();
+          setMessage($("cvMessage"),say("CV analysed. Review the pre-filled fields and detected experiences and qualifications below before creating your portfolio.","CV analysé. Vérifiez les champs préremplis ainsi que les expériences et diplômes détectés avant de créer votre portfolio."));
+        }catch(error){setMessage($("cvMessage"),error.message||say("The CV could not be analysed.","Le CV n’a pas pu être analysé."),true);}
+        finally{progress(false);}
+      }
+      $("chooseCvBtn").addEventListener("click",()=> $("cvFile").click());
+      $("cvDropzone").addEventListener("click",event=>{if(event.target.closest("button"))return;$("cvFile").click();});
+      $("cvDropzone").addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();$("cvFile").click();}});
+      $("cvFile").addEventListener("change",function(){if(this.files[0])processCv(this.files[0]);});
+      ["dragenter","dragover"].forEach(type=>$("cvDropzone").addEventListener(type,event=>{event.preventDefault();$("cvDropzone").classList.add("is-over");}));
+      ["dragleave","drop"].forEach(type=>$("cvDropzone").addEventListener(type,event=>{event.preventDefault();$("cvDropzone").classList.remove("is-over");}));
+      $("cvDropzone").addEventListener("drop",event=>{const file=event.dataTransfer.files[0];if(file)processCv(file);});
+
+      function showPhoto(file){
+        if(!file)return;
+        if(!/^image\/(jpeg|png|webp)$/.test(file.type)||file.size>5*1024*1024){setMessage($("formMessage"),say("Choose a JPG, PNG or WebP image under 5 MB.","Choisissez une image JPG, PNG ou WebP de moins de 5 Mo."),true);return;}
+        if(photoPreviewUrl)URL.revokeObjectURL(photoPreviewUrl);
+        photoPreviewUrl=URL.createObjectURL(file);
+        $("photoThumb").innerHTML='<img src="'+photoPreviewUrl+'" alt="">';
+        updatePreview();
+      }
+      $("photo").addEventListener("change",function(){showPhoto(this.files[0]);});
+      ["dragenter","dragover"].forEach(type=>$("photoDropzone").addEventListener(type,event=>{event.preventDefault();$("photoDropzone").classList.add("is-over");}));
+      ["dragleave","drop"].forEach(type=>$("photoDropzone").addEventListener(type,event=>{event.preventDefault();$("photoDropzone").classList.remove("is-over");}));
+      $("photoDropzone").addEventListener("drop",event=>{
+        const file=event.dataTransfer.files[0];if(!file)return;
+        const transfer=new DataTransfer();transfer.items.add(file);$("photo").files=transfer.files;showPhoto(file);
+      });
+
+      function updateRecoveryContinue(){$("continueToStudio").disabled=!(recoveryCodeStored&&$("confirmRecoverySaved").checked);}
       $("downloadRecoveryBtn").addEventListener("click",function(){
         PP.downloadRecoveryFile($("createdSlug").textContent,$("createdRecoveryCode").value);
         recoveryCodeStored=true;updateRecoveryContinue();
-        PP.setMessage($("recoverySavedMessage"),lang==="fr"?"Fichier téléchargé. Conservez-le en lieu sûr.":"File downloaded. Keep it in a secure place.");
+        setMessage($("recoverySavedMessage"),say("File downloaded. Keep it in a secure place.","Fichier téléchargé. Conservez-le en lieu sûr."));
       });
       $("copyRecoveryBtn").addEventListener("click",async function(){
-        try{await PP.copyText($("createdRecoveryCode").value);recoveryCodeStored=true;updateRecoveryContinue();PP.setMessage($("recoverySavedMessage"),lang==="fr"?"Code copié.":"Code copied.");}
-        catch(error){PP.setMessage($("recoverySavedMessage"),error.message,true);}
+        try{await PP.copyText($("createdRecoveryCode").value);recoveryCodeStored=true;updateRecoveryContinue();setMessage($("recoverySavedMessage"),say("Code copied.","Code copié."));}
+        catch(error){setMessage($("recoverySavedMessage"),error.message,true);}
       });
       $("confirmRecoverySaved").addEventListener("change",updateRecoveryContinue);
       $("continueToStudio").addEventListener("click",function(){
@@ -119,13 +532,13 @@
         sessionStorage.removeItem("biopage_pending_recovery");
         window.location.href="studio.html?welcome=1";
       });
+
+      function updateSubmitText(text,disabled){$("createButton").disabled=!!disabled;$("createButton").querySelector("span").textContent=text;}
       $("createForm").addEventListener("submit",async function(event){
-        event.preventDefault();
-        PP.setMessage($("formMessage"),"");
-        const button=$("createButton");
-        if($("pin").value!==$("pin_confirm").value){PP.setMessage($("formMessage"),lang==="fr"?"Les deux codes PIN ne correspondent pas.":"The two PIN entries do not match.",true);return;}
+        event.preventDefault();setMessage($("formMessage"),"");
+        if($("pin").value!==$("pin_confirm").value){setMessage($("formMessage"),say("The two PIN entries do not match.","Les deux codes PIN ne correspondent pas."),true);return;}
         if(!this.reportValidity())return;
-        button.disabled=true;button.textContent=lang==="fr"?"Création en cours…":"Creating your portfolio…";
+        updateSubmitText(say("Creating your portfolio…","Création de votre portfolio…"),true);
         try{
           const photoFile=$("photo").files[0]||null;
           const photo_data=photoFile?await PP.photoToDataUrl(photoFile):null;
@@ -133,20 +546,45 @@
             full_name:$("full_name").value,title_en:$("title_en").value,title_fr:$("title_fr").value,
             bio_en:$("bio_en").value,bio_fr:$("bio_fr").value,organization:$("organization").value,
             location:$("location").value,whatsapp:$("whatsapp").value,email:$("email").value,
-            linkedin_url:$("linkedin_url").value,slug:$("slug").value,pin:$("pin").value,photo_data
+            linkedin_url:$("linkedin_url").value,slug:$("slug").value,pin:$("pin").value,pin_confirm:$("pin_confirm").value,photo_data
           };
           const result=await PP.api("create",payload);
           sessionStorage.setItem("biopage_session",result.token);
           sessionStorage.setItem("biopage_slug",result.profile.slug);
           sessionStorage.setItem("biopage_pending_recovery",result.recovery_code);
-          $("createForm").hidden=true;
-          $("createRecoveryPanel").hidden=false;
-          $("createdSlug").textContent=result.profile.slug;
-          $("createdRecoveryCode").value=result.recovery_code;
+          let savedExperiences=0,savedDiplomas=0,entryErrors=0;
+          const token=result.token;
+          updateSubmitText(say("Saving CV highlights…","Enregistrement des éléments du CV…"),true);
+          for(let i=0;i<cvExperiences.length;i++){
+            const item=cvExperiences[i];
+            if(!String(item.title_en||"").trim())continue;
+            const entry={
+              title_en:item.title_en,title_fr:item.title_fr||"",organization:item.organization||"",
+              location:item.location||"",start_date:item.start_date||null,end_date:item.end_date||null,
+              is_current:!!item.is_current,description_en:item.description_en||"",description_fr:item.description_fr||"",
+              skills:Array.isArray(item.skills)?item.skills:[],sort_order:i,is_published:false
+            };
+            try{await PP.api("save-entry",{token,kind:"experiences",item:entry});savedExperiences++;}catch(_){entryErrors++;}
+          }
+          for(let i=0;i<cvDiplomas.length;i++){
+            const item=cvDiplomas[i];
+            if(!String(item.title_en||"").trim())continue;
+            const entry={
+              title_en:item.title_en,title_fr:item.title_fr||"",institution:item.institution||"",
+              year:item.year||null,details_en:item.details_en||"",details_fr:item.details_fr||"",
+              sort_order:i,is_published:false
+            };
+            try{await PP.api("save-entry",{token,kind:"diplomas",item:entry});savedDiplomas++;}catch(_){entryErrors++;}
+          }
+          $("createForm").hidden=true;$("createRecoveryPanel").hidden=false;
+          $("createdSlug").textContent=result.profile.slug;$("createdRecoveryCode").value=result.recovery_code;
+          const summary=savedExperiences+savedDiplomas;
+          $("recoverySavedMessage").textContent=summary?say(summary+" CV items have been saved to your private studio."," "+summary+" éléments du CV ont été enregistrés dans votre espace privé."):"";
+          if(entryErrors){setMessage($("recoverySavedMessage"),say("Your profile was created. Some CV items could not be saved; you can add them from your studio.","Votre profil a été créé. Certains éléments du CV n’ont pas pu être enregistrés ; vous pourrez les ajouter depuis votre espace."),true);}
           window.scrollTo({top:0,behavior:"smooth"});
         }catch(error){
-          PP.setMessage($("formMessage"),error.message||"Creation failed. Please try again.",true);
-          button.disabled=false;button.textContent=lang==="fr"?"Créer mon portfolio & ma carte ↗":"Create my portfolio & card ↗";
+          setMessage($("formMessage"),error.message||say("Creation failed. Please try again.","La création a échoué. Veuillez réessayer."),true);
+          updateSubmitText(say("Create my portfolio & card","Créer mon portfolio et ma carte"),false);
         }
       });
     })();
