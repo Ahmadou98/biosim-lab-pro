@@ -60,6 +60,23 @@
         </div>
         <p class="pp-hint" data-en="Free to start. Your private studio is protected by your unique identifier and PIN." data-fr="Gratuit pour commencer. Votre espace privé est protégé par votre identifiant et votre code PIN.">Free to start. Your private studio is protected by your unique identifier and PIN.</p>
       </form>
+      <section id="createRecoveryPanel" hidden>
+        <div class="pp-message show" style="margin-bottom:18px">
+          <strong data-en="Save your recovery code now" data-fr="Conservez votre code de récupération maintenant">Save your recovery code now</strong><br>
+          <span data-en="This code is the only way to recover your portfolio if you forget your identifier or PIN. It will not be shown again." data-fr="Ce code est le seul moyen de récupérer votre portfolio si vous oubliez votre identifiant ou votre PIN. Il ne sera plus affiché.">This code is the only way to recover your portfolio if you forget your identifier or PIN. It will not be shown again.</span>
+        </div>
+        <div class="pp-form" style="gap:14px">
+          <div class="pp-field"><span class="pp-label" data-en="Your portfolio identifier" data-fr="Identifiant de votre portfolio">Your portfolio identifier</span><div class="pp-input" id="createdSlug" style="font-weight:850;background:#f7fafb">—</div></div>
+          <div class="pp-field"><span class="pp-label" data-en="Your private recovery code" data-fr="Votre code de récupération privé">Your private recovery code</span><textarea id="createdRecoveryCode" class="pp-textarea" rows="3" readonly style="font-family:ui-monospace,monospace;font-size:12px;font-weight:850;letter-spacing:.05em"></textarea><span class="pp-hint" data-en="This is a unique 64-character code. Keep it private." data-fr="Il s'agit d'un code unique de 64 caractères. Gardez-le confidentiel.">This is a unique 64-character code. Keep it private.</span></div>
+          <div class="pp-form-actions">
+            <button id="downloadRecoveryBtn" class="pp-btn pp-btn-primary" type="button" data-en="Download recovery file ↓" data-fr="Télécharger le fichier de récupération ↓">Download recovery file ↓</button>
+            <button id="copyRecoveryBtn" class="pp-btn pp-btn-outline" type="button" data-en="Copy code" data-fr="Copier le code">Copy code</button>
+          </div>
+          <label class="pp-checkline"><input id="confirmRecoverySaved" type="checkbox"><span data-en="I have downloaded or securely saved my recovery code." data-fr="J'ai téléchargé ou enregistré mon code de récupération en lieu sûr.">I have downloaded or securely saved my recovery code.</span></label>
+          <div id="recoverySavedMessage" class="pp-message" role="status"></div>
+          <button id="continueToStudio" class="pp-btn pp-btn-primary" type="button" disabled data-en="Continue to my studio ↗" data-fr="Continuer vers mon espace ↗">Continue to my studio ↗</button>
+        </div>
+      </section>
     </section>
   </main>
 
@@ -83,6 +100,20 @@
       document.querySelectorAll("[data-lang]").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));
       let lang="en";try{lang=localStorage.getItem("biopage-language")||"en";}catch(_){}
       setLang(lang);
+      $("downloadRecoveryBtn").addEventListener("click",function(){
+        PP.downloadRecoveryFile($("createdSlug").textContent,$("createdRecoveryCode").value);
+        PP.setMessage($("recoverySavedMessage"),lang==="fr"?"Fichier téléchargé. Conservez-le en lieu sûr.":"File downloaded. Keep it in a secure place.");
+      });
+      $("copyRecoveryBtn").addEventListener("click",async function(){
+        try{await PP.copyText($("createdRecoveryCode").value);PP.setMessage($("recoverySavedMessage"),lang==="fr"?"Code copié.":"Code copied.");}
+        catch(error){PP.setMessage($("recoverySavedMessage"),error.message,true);}
+      });
+      $("confirmRecoverySaved").addEventListener("change",function(){$("continueToStudio").disabled=!this.checked;});
+      $("continueToStudio").addEventListener("click",function(){
+        if(!$("confirmRecoverySaved").checked)return;
+        sessionStorage.removeItem("biopage_pending_recovery");
+        window.location.href="studio.html?welcome=1";
+      });
       $("createForm").addEventListener("submit",async function(event){
         event.preventDefault();
         PP.setMessage($("formMessage"),"");
@@ -102,7 +133,12 @@
           const result=await PP.api("create",payload);
           sessionStorage.setItem("biopage_session",result.token);
           sessionStorage.setItem("biopage_slug",result.profile.slug);
-          window.location.href="studio.html?welcome=1";
+          sessionStorage.setItem("biopage_pending_recovery",result.recovery_code);
+          $("createForm").hidden=true;
+          $("createRecoveryPanel").hidden=false;
+          $("createdSlug").textContent=result.profile.slug;
+          $("createdRecoveryCode").value=result.recovery_code;
+          window.scrollTo({top:0,behavior:"smooth"});
         }catch(error){
           PP.setMessage($("formMessage"),error.message||"Creation failed. Please try again.",true);
           button.disabled=false;button.textContent=lang==="fr"?"Créer mon portfolio & ma carte ↗":"Create my portfolio & card ↗";
