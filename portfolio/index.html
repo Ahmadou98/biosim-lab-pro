@@ -63,6 +63,7 @@
     .portrait-placeholder::before { width: 255px; height: 255px; top: 26px; right: -65px; }
     .portrait-placeholder::after { width: 185px; height: 185px; bottom: -58px; left: -55px; }
     .portrait-img { object-fit: cover; object-position: center 35%; }
+    .hero-intro { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
     .card-line { position: relative; }
     .card-line::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 3px; border-radius: 8px; background: #16a078; opacity: .9; }
     .nav-link { transition: color .2s ease; }
@@ -148,71 +149,40 @@
   </header>
 
   <main id="main">
-    <!-- Hero -->
+    <!-- Executive hero -->
     <section id="home" class="relative isolate overflow-hidden bg-ink text-white">
       <div class="hero-grid absolute inset-0 opacity-60"></div>
       <div class="absolute -right-48 top-20 h-[34rem] w-[34rem] rounded-full bg-emerald/10 blur-3xl"></div>
       <div class="absolute -left-48 bottom-0 h-[28rem] w-[28rem] rounded-full bg-gold/10 blur-3xl"></div>
-      <div class="relative mx-auto grid min-h-[760px] max-w-7xl items-center gap-14 px-5 pb-20 pt-32 sm:px-8 lg:min-h-[790px] lg:grid-cols-[1.15fr_.85fr] lg:gap-20 lg:px-10 lg:pb-24 lg:pt-36">
-        <div class="relative z-10 max-w-3xl">
-          <div class="mb-4 inline-flex max-w-full items-center gap-3 rounded-full border border-gold/35 bg-gold/10 px-4 py-2 text-[10px] font-bold tracking-[.08em] text-amber-100 sm:text-[11px]">
-            <span class="h-2 w-2 shrink-0 rounded-full bg-gold"></span>
-            <span data-i18n="hero_event_badge">Attending CPHIA 2026 · Addis Ababa (Nov 2026)</span>
-          </div>
-          <div class="mb-7 inline-flex items-center gap-3 rounded-full border border-emerald/30 bg-emerald/10 px-4 py-2 text-[10px] font-semibold uppercase tracking-[.16em] text-emerald-100 sm:text-[11px]">
-            <span class="h-2 w-2 rounded-full bg-emerald"></span>
-            <span id="profileLocationHero" data-i18n="hero_location">Dakar, Senegal · African vaccine manufacturing</span>
-          </div>
-          <p class="eyebrow mb-5 text-[10px] font-semibold uppercase text-gold sm:text-xs" data-i18n="hero_overline">SCIENCE · CAPACITY BUILDING · HEALTH SOVEREIGNTY</p>
-          <h1 class="display max-w-3xl text-4xl font-extrabold leading-[1.08] tracking-[-.045em] sm:text-5xl md:text-6xl lg:text-[4.2rem]"><span id="profileName">Ahmadou Lamine Diouf</span></h1>
-          <p id="profileTitle" class="mt-6 max-w-2xl text-lg font-semibold leading-snug text-white sm:text-xl md:text-2xl" data-i18n="hero_title">Biomanufacturing Specialist | Advocating for African Vaccine Manufacturing</p>
-          <p id="profileIntro" class="mt-5 max-w-xl text-sm leading-7 text-slate-300 sm:text-base sm:leading-8" data-i18n="hero_intro">Working at the intersection of biomanufacturing, scientific solutions and advocacy to help strengthen Africa’s capacity to develop and produce vaccines.</p>
-          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <button id="vcardHero" class="focus-ring inline-flex min-h-12 items-center justify-center gap-3 rounded-lg bg-emerald px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald/20 transition hover:-translate-y-0.5 hover:bg-[#118765]" type="button">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4M8.7 13.3l6.6 4.4"/></svg>
-              <span data-i18n="hero_vcard">Download Contact (vCard)</span>
-            </button>
-            <a href="https://www.linkedin.com/in/ahmadou-lamine-diouf-003a98321/" target="_blank" rel="noopener noreferrer" class="focus-ring inline-flex min-h-12 items-center justify-center gap-3 rounded-lg border border-white/25 bg-white/[.06] px-6 py-3 text-sm font-semibold text-white transition hover:border-white/50 hover:bg-white/10">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.85-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.353V9h3.414v1.561h.05c.476-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286ZM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124ZM7.119 20.452H3.555V9h3.564v11.452Z"/></svg>
-              <span data-i18n="hero_linkedin">Connect on LinkedIn</span>
-            </a>
-          </div>
-          <div class="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-white/10 pt-6 text-xs text-slate-300">
-            <span class="inline-flex items-center gap-2"><span class="text-gold">✳</span><span id="profileSignatureHero" data-i18n="hero_signature">Advocating for African Vaccine Manufacturing</span></span>
-            <span class="inline-flex items-center gap-2"><span class="h-1 w-1 rounded-full bg-emerald"></span><span data-i18n="hero_based">Based in Dakar, Senegal</span></span>
+      <div class="relative mx-auto flex max-w-5xl flex-col items-center px-5 pb-12 pt-28 text-center sm:px-8 sm:pb-16 sm:pt-32 lg:px-10">
+        <div class="inline-flex max-w-full items-center gap-3 rounded-full border border-gold/35 bg-gold/10 px-4 py-2 text-[10px] font-bold tracking-[.08em] text-amber-100 sm:text-[11px]">
+          <span class="h-2 w-2 shrink-0 rounded-full bg-gold"></span>
+          <span data-i18n="hero_event_badge">Attending CPHIA 2026 · Addis Ababa (Nov 2026)</span>
+        </div>
+        <div class="hero-photo-ring portrait-frame relative mt-5 h-32 w-32 shrink-0 rounded-full p-[5px] shadow-navy sm:mt-6 sm:h-36 sm:w-36">
+          <div class="relative h-full w-full overflow-hidden rounded-full border-2 border-white/90 bg-[#102b44]">
+            <img id="profilePhoto" src="https://avatars.githubusercontent.com/u/189660768?v=4" alt="Ahmadou Lamine Diouf — profile photograph" class="portrait-img absolute inset-0 h-full w-full" />
+            <div id="photoFallback" class="absolute inset-0 hidden place-items-center bg-[#102b44] font-display text-3xl font-extrabold tracking-tight text-white">ALD</div>
           </div>
         </div>
-
-        <div class="relative mx-auto w-full max-w-[420px] lg:mr-2">
-          <div class="portrait-frame absolute -inset-3 rounded-[2rem] blur-xl"></div>
-          <div class="relative overflow-hidden rounded-[1.65rem] border border-white/15 bg-[#102b44] p-2 shadow-navy">
-            <div class="portrait-placeholder relative flex aspect-[4/4.65] items-center justify-center overflow-hidden rounded-[1.25rem]">
-              <!-- Public GitHub profile photo; replace the image URL with a dedicated professional portrait when available. -->
-              <img id="profilePhoto" src="https://avatars.githubusercontent.com/u/189660768?v=4" alt="Ahmadou Lamine Diouf — profile photograph" class="portrait-img absolute inset-0 h-full w-full" />
-              <div id="photoFallback" class="relative z-10 px-8 text-center">
-                <div class="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-full border border-white/20 bg-white/10 font-display text-3xl font-bold text-white/90">ALD</div>
-                <p class="text-[10px] font-bold uppercase tracking-[.22em] text-emerald-200" data-i18n="photo_label">Professional portrait</p>
-                <p class="mt-2 text-xs leading-5 text-slate-300" data-i18n="photo_hint">Profile photo from the public GitHub account. Replace with a dedicated professional portrait when available.</p>
-              </div>
-              <div class="absolute bottom-5 left-5 right-5 z-20 rounded-xl border border-white/15 bg-ink/75 px-4 py-3 backdrop-blur-md">
-                <p class="text-[10px] font-semibold uppercase tracking-[.18em] text-emerald-200" data-i18n="portrait_caption">Biomanufacturing · Advocacy · Africa</p>
-                <p class="mt-1 font-display text-sm font-bold text-white">Ahmadou Lamine Diouf</p>
-              </div>
-            </div>
-          </div>
-          <div class="absolute -bottom-7 -left-7 hidden rounded-2xl border border-white/15 bg-[#102b44] p-4 shadow-navy sm:block">
-            <p class="font-mono text-[10px] uppercase tracking-[.15em] text-slate-400" data-i18n="hero_focus_label">FOCUS</p>
-            <p class="mt-1 text-sm font-semibold text-white" data-i18n="hero_focus">African vaccine capacity</p>
-          </div>
-          <div class="absolute -right-4 top-10 h-16 w-1 rounded-full bg-gold/80"></div>
+        <h1 class="display mt-5 max-w-4xl text-4xl font-extrabold leading-[1.06] tracking-[-.045em] sm:mt-6 sm:text-5xl md:text-6xl"><span id="profileName">Ahmadou Lamine Diouf</span></h1>
+        <p id="profileTitle" class="mt-3 max-w-3xl text-base font-bold leading-snug text-emerald-200 sm:mt-4 sm:text-xl md:text-2xl" data-i18n="hero_title">Biomanufacturing Specialist · Advocating for African Vaccine Manufacturing</p>
+        <p id="profileIntro" class="hero-intro mt-4 max-w-2xl text-sm leading-6 text-slate-300 sm:mt-5 sm:text-base sm:leading-7" data-i18n="hero_intro">Focused on vaccine biomanufacturing, quality practices and stronger African production capacity.</p>
+        <div class="mt-6 flex w-full max-w-xl flex-col justify-center gap-3 sm:mt-7 sm:flex-row">
+          <button id="vcardHero" class="focus-ring inline-flex min-h-12 flex-1 items-center justify-center gap-3 rounded-lg bg-emerald px-5 py-3 text-sm font-bold text-white shadow-lg shadow-emerald/20 transition hover:-translate-y-0.5 hover:bg-[#118765]" type="button">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4M8.7 13.3l6.6 4.4"/></svg>
+            <span data-i18n="hero_vcard">Share my contact card</span>
+          </button>
+          <a id="heroLinkedin" href="https://www.linkedin.com/in/ahmadou-lamine-diouf-003a98321/" target="_blank" rel="noopener noreferrer" class="focus-ring inline-flex min-h-12 flex-1 items-center justify-center gap-3 rounded-lg border border-white/30 bg-white/[.06] px-5 py-3 text-sm font-semibold text-white transition hover:border-white/60 hover:bg-white/10">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.85-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.353V9h3.414v1.561h.05c.476-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286ZM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124ZM7.119 20.452H3.555V9h3.564v11.452Z"/></svg>
+            <span data-i18n="hero_linkedin">Connect on LinkedIn</span>
+          </a>
         </div>
-      </div>
-      <div class="relative border-t border-white/10 bg-white/[.025]">
-        <div class="mx-auto grid max-w-7xl grid-cols-2 gap-5 px-5 py-6 sm:px-8 md:grid-cols-4 lg:px-10">
-          <div><p class="font-display text-sm font-bold text-white" data-i18n="proof_1_title">Biomanufacturing</p><p class="mt-1 text-xs text-slate-400" data-i18n="proof_1_desc">Technical training & exposure</p></div>
-          <div><p class="font-display text-sm font-bold text-white" data-i18n="proof_2_title">Quality & GMP</p><p class="mt-1 text-xs text-slate-400" data-i18n="proof_2_desc">Quality control foundations</p></div>
-          <div><p class="font-display text-sm font-bold text-white" data-i18n="proof_3_title">MADIBA Programme</p><p class="mt-1 text-xs text-slate-400" data-i18n="proof_3_desc">Student ambassador</p></div>
-          <div><p class="font-display text-sm font-bold text-white" data-i18n="proof_4_title">Science & technology</p><p class="mt-1 text-xs text-slate-400" data-i18n="proof_4_desc">Hybrid scientific and digital skills</p></div>
+        <div class="mt-9 grid w-full max-w-2xl grid-cols-2 gap-3 sm:mt-10 sm:gap-4">
+          <article class="rounded-xl border border-white/15 bg-white/[.045] px-3 py-4 text-left sm:px-5"><p class="font-display text-sm font-bold text-white sm:text-base" data-i18n="proof_1_title">Biomanufacturing</p><p class="mt-1 text-[11px] leading-5 text-slate-400 sm:text-xs" data-i18n="proof_1_desc">Technical training & exposure</p></article>
+          <article class="rounded-xl border border-white/15 bg-white/[.045] px-3 py-4 text-left sm:px-5"><p class="font-display text-sm font-bold text-white sm:text-base" data-i18n="proof_2_title">Quality & GMP</p><p class="mt-1 text-[11px] leading-5 text-slate-400 sm:text-xs" data-i18n="proof_2_desc">Quality control foundations</p></article>
+          <article class="rounded-xl border border-white/15 bg-white/[.045] px-3 py-4 text-left sm:px-5"><p class="font-display text-sm font-bold text-white sm:text-base" data-i18n="proof_3_title">MADIBA Programme</p><p class="mt-1 text-[11px] leading-5 text-slate-400 sm:text-xs" data-i18n="proof_3_desc">Student ambassador</p></article>
+          <article class="rounded-xl border border-white/15 bg-white/[.045] px-3 py-4 text-left sm:px-5"><p class="font-display text-sm font-bold text-white sm:text-base" data-i18n="proof_4_title">Science & technology</p><p class="mt-1 text-[11px] leading-5 text-slate-400 sm:text-xs" data-i18n="proof_4_desc">Hybrid scientific and digital skills</p></article>
         </div>
       </div>
     </section>
@@ -375,7 +345,7 @@
               </div>
               <div class="flex items-start gap-4">
                 <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald/10 text-emerald"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.85-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.353V9h3.414v1.561h.05c.476-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286ZM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124ZM7.119 20.452H3.555V9h3.564v11.452Z"/></svg></span>
-                <div><p class="text-[10px] font-bold uppercase tracking-[.15em] text-slate-400" data-i18n="label_linkedin">LinkedIn</p><a id="contactLinkedin" class="focus-ring mt-1 inline-block rounded text-sm font-semibold text-ink hover:text-emerald" href="https://linkedin.com" target="_blank" rel="noopener noreferrer">linkedin.com</a></div>
+                <div><p class="text-[10px] font-bold uppercase tracking-[.15em] text-slate-400" data-i18n="label_linkedin">LinkedIn</p><a id="contactLinkedin" class="focus-ring mt-1 inline-block rounded text-sm font-semibold text-ink hover:text-emerald" href="https://www.linkedin.com/in/ahmadou-lamine-diouf-003a98321/" target="_blank" rel="noopener noreferrer">://linkedin.com</a></div>
               </div>
             </div>
             <div class="mt-8 border-t border-slate-100 pt-6">
@@ -410,8 +380,8 @@
         hero_event_badge: 'Attending CPHIA 2026 · Addis Ababa (Nov 2026)',
         hero_location: 'Dakar, Senegal · African vaccine manufacturing',
         hero_overline: 'SCIENCE · CAPACITY BUILDING · HEALTH SOVEREIGNTY',
-        hero_title: 'Biomanufacturing Specialist | Advocating for African Vaccine Manufacturing',
-        hero_intro: 'Working at the intersection of biomanufacturing, scientific solutions and advocacy to help strengthen Africa’s capacity to develop and produce vaccines.',
+        hero_title: 'Biomanufacturing Specialist · Advocating for African Vaccine Manufacturing',
+        hero_intro: 'Focused on vaccine biomanufacturing, quality practices and stronger African production capacity.',
         hero_vcard: 'Share my contact card', hero_linkedin: 'Connect on LinkedIn',
         hero_signature: 'Advocating for African Vaccine Manufacturing', hero_based: 'Based in Dakar, Senegal',
         photo_label: 'Professional portrait', photo_hint: 'Add your portrait as “portrait.jpg” beside this file.', portrait_caption: 'Biomanufacturing · Advocacy · Africa',
@@ -453,8 +423,8 @@
         hero_event_badge: 'Participation à la CPHIA 2026 · Addis-Abeba (nov. 2026)',
         hero_location: 'Dakar, Sénégal · Fabrication de vaccins en Afrique',
         hero_overline: 'SCIENCE · RENFORCEMENT DES CAPACITÉS · SOUVERAINETÉ SANITAIRE',
-        hero_title: 'Spécialiste en bioproduction | Engagé pour la fabrication de vaccins en Afrique',
-        hero_intro: 'À la croisée de la bioproduction, des solutions scientifiques et du plaidoyer, je contribue à promouvoir le renforcement des capacités africaines de développement et de fabrication des vaccins.',
+        hero_title: 'Spécialiste en bioproduction · Engagé pour la fabrication de vaccins en Afrique',
+        hero_intro: 'Engagé dans la bioproduction vaccinale, les pratiques qualité et le renforcement des capacités de production en Afrique.',
         hero_vcard: 'Partager ma carte de visite', hero_linkedin: 'Se connecter sur LinkedIn',
         hero_signature: 'Engagé pour la fabrication de vaccins en Afrique', hero_based: 'Basé à Dakar, Sénégal',
         photo_label: 'Portrait professionnel', photo_hint: 'Photo issue du profil GitHub public. À remplacer par un portrait professionnel dédié dès que disponible.', portrait_caption: 'Bioproduction · Plaidoyer · Afrique',
@@ -572,7 +542,10 @@
     const profilePhoto = document.getElementById('profilePhoto');
     const photoFallback = document.getElementById('photoFallback');
     profilePhoto.addEventListener('load', () => { photoFallback.style.display = 'none'; });
-    profilePhoto.addEventListener('error', () => { profilePhoto.style.display = 'none'; });
+    profilePhoto.addEventListener('error', () => {
+      profilePhoto.style.display = 'none';
+      photoFallback.style.display = 'grid';
+    });
 
     // Mobile navigation.
     const menuButton = document.getElementById('menuButton');
@@ -647,9 +620,24 @@
     function mediaStrip(urls, alt) {
       const cleaned = (urls || []).map(safeImageUrl).filter(Boolean).slice(0,8);
       if (!cleaned.length) return '';
-      return '<div class="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4">' + cleaned.map(function (url) {
-        return '<a href="' + escapeDynamic(url) + '" target="_blank" rel="noopener noreferrer" class="block overflow-hidden rounded-lg bg-slate-100"><img src="' + escapeDynamic(url) + '" alt="' + escapeDynamic(alt) + '" class="h-24 w-full object-cover transition hover:scale-105" loading="lazy"></a>';
+      return '<div data-media-strip class="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4">' + cleaned.map(function (url) {
+        return '<a data-media-item href="' + escapeDynamic(url) + '" target="_blank" rel="noopener noreferrer" class="block overflow-hidden rounded-lg bg-slate-100"><img data-dynamic-image src="' + escapeDynamic(url) + '" alt="' + escapeDynamic(alt) + '" class="h-24 w-full object-cover transition hover:scale-105" loading="lazy"></a>';
       }).join('') + '</div>';
+    }
+    function bindDynamicImageErrors(root) {
+      (root || document).querySelectorAll('img[data-dynamic-image]').forEach(function (image) {
+        if (image.dataset.errorBound === 'true') return;
+        image.dataset.errorBound = 'true';
+        image.addEventListener('error', function () {
+          image.dataset.imageFailed = 'true';
+          const item = image.closest('[data-media-item]');
+          if (item) item.style.display = 'none';
+          else image.style.display = 'none';
+          const strip = image.closest('[data-media-strip]');
+          if (strip && !strip.querySelector('img[data-dynamic-image]:not([data-image-failed])')) strip.style.display = 'none';
+        }, {once:true});
+        if (image.complete && image.naturalWidth === 0) image.dispatchEvent(new Event('error'));
+      });
     }
     function dynamicEmpty() {
       return '<p class="rounded-xl border border-dashed border-slate-300 bg-white/70 p-5 text-sm text-slate-500">' + escapeDynamic(translations[currentLanguage].dynamic_empty) + '</p>';
@@ -679,8 +667,8 @@
           const image = safeImageUrl(item.image_url);
           return '<article class="reveal rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-7">' +
             '<div class="flex items-start gap-4">' +
-            (image ? '<a href="' + escapeDynamic(image) + '" target="_blank" rel="noopener noreferrer" class="shrink-0"><img src="' + escapeDynamic(image) + '" alt="' + escapeDynamic(item.title) + '" class="h-20 w-20 rounded-xl object-cover"></a>' : '<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#c9a76a]/15 text-2xl text-[#9a783d]">✦</div>') +
-            '<div class="min-w-0"><h3 class="font-display text-lg font-bold text-ink">' + escapeDynamic(item.title) + '</h3><p class="mt-1 text-sm font-semibold text-slate-500">' + escapeDynamic(item.institution) + '</p>' +
+            (image ? '<a data-media-item href="' + escapeDynamic(image) + '" target="_blank" rel="noopener noreferrer" class="block h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-slate-100"><img data-dynamic-image src="' + escapeDynamic(image) + '" alt="' + escapeDynamic(item.title) + '" class="h-full w-full object-cover"></a>' : '') +
+            '<div class="min-w-0 w-full flex-1"><h3 class="font-display text-lg font-bold text-ink">' + escapeDynamic(item.title) + '</h3><p class="mt-1 text-sm font-semibold text-slate-500">' + escapeDynamic(item.institution) + '</p>' +
             (item.year ? '<p class="mt-1 text-xs text-slate-400">' + escapeDynamic(item.year) + '</p>' : '') + '</div></div>' +
             (details ? '<p class="mt-4 text-sm leading-7 text-slate-600">' + escapeDynamic(details) + '</p>' : '') + '</article>';
         }).join('') : dynamicEmpty();
@@ -692,17 +680,15 @@
           const role = currentLanguage === 'fr' ? (item.role_fr || item.role_en) : (item.role_en || item.role_fr);
           const summary = localisedText(item,'summary_en','summary_fr');
           const dates = formatDateRange(item.start_date,item.end_date,false);
-          const cover = safeImageUrl(item.cover_image);
           const gallery = (item.gallery_urls || []).map(safeImageUrl).filter(Boolean);
-          const photos = mediaStrip((cover ? [cover] : []).concat(gallery),item.title);
-          return '<article class="reveal overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">' +
-            (cover ? '<a href="' + escapeDynamic(cover) + '" target="_blank" rel="noopener noreferrer"><img src="' + escapeDynamic(cover) + '" alt="' + escapeDynamic(item.title) + '" class="h-52 w-full object-cover" loading="lazy"></a>' : '') +
+          const photos = mediaStrip(gallery,item.title);
+          return '<article class="reveal rounded-2xl border border-slate-200 bg-white shadow-soft">' +
             '<div class="p-6 sm:p-7"><div class="flex flex-wrap items-center gap-2"><span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider ' + (upcoming ? 'bg-emerald/10 text-emerald' : 'bg-slate-100 text-slate-500') + '">' + escapeDynamic(statusLabel) + '</span>' +
             (role ? '<span class="rounded-full bg-[#c9a76a]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#8c6b36]">' + escapeDynamic(role) + '</span>' : '') +
             '</div><h3 class="mt-4 font-display text-xl font-bold text-ink">' + escapeDynamic(item.title) + '</h3>' +
             '<p class="mt-2 text-xs font-semibold text-slate-500">' + escapeDynamic([item.location,item.country,dates].filter(Boolean).join(' · ')) + '</p>' +
             (summary ? '<p class="mt-4 text-sm leading-7 text-slate-600">' + escapeDynamic(summary) + '</p>' : '') +
-            (gallery.length ? mediaStrip(gallery,item.title) : '') + '</div></article>';
+            photos + '</div></article>';
         }).join('') : dynamicEmpty();
       }
       if (initiativeGrid) {
@@ -724,19 +710,25 @@
         }).join('') : dynamicEmpty();
       }
 
-      // Dynamic cards are inserted after the initial IntersectionObserver scan.
-      // Make them visible immediately so the reveal animation cannot leave them at opacity: 0.
+      // Dynamic cards are inserted after the initial observer scan.
+      // Bind image failures so broken image elements and their wrappers never occupy space.
       ['eventsGrid','experiencesGrid','diplomasGrid','initiativesGrid'].forEach(function (id) {
         const grid = document.getElementById(id);
-        if (grid) grid.querySelectorAll('.reveal').forEach(function (card) {
-          card.classList.add('is-visible');
-        });
+        if (grid) {
+          bindDynamicImageErrors(grid);
+          grid.querySelectorAll('.reveal').forEach(function (card) {
+            card.classList.add('is-visible');
+          });
+        }
       });
     }
     function applyPortfolioProfile() {
       if (!portfolioProfile) return;
       const p = portfolioProfile;
-      const title = currentLanguage === 'fr' ? (p.title_fr || p.title_en) : (p.title_en || p.title_fr);
+      const rawTitle = currentLanguage === 'fr' ? (p.title_fr || p.title_en || '') : (p.title_en || p.title_fr || '');
+      const tagline = currentLanguage === 'fr' ? 'Engagé pour la fabrication de vaccins en Afrique' : 'Advocating for African Vaccine Manufacturing';
+      const fallbackTitle = currentLanguage === 'fr' ? 'Spécialiste en bioproduction' : 'Biomanufacturing Specialist';
+      const escapedTagline = tagline.replace(/[.*+?^${}()|[\]\\]/g, '\\      const title = currentLanguage === 'fr' ? (p.title_fr || p.title_en) : (p.title_en || p.title_fr);
       const intro = currentLanguage === 'fr' ? (p.intro_fr || p.intro_en) : (p.intro_en || p.intro_fr);
       const signature = currentLanguage === 'fr' ? (p.signature_fr || p.signature_en) : (p.signature_en || p.signature_fr);
       const name = document.getElementById('profileName');
@@ -748,7 +740,68 @@
       if (titleNode && title) titleNode.textContent = title;
       if (introNode && intro) introNode.textContent = intro;
       if (signatureNode && signature) signatureNode.textContent = signature;
-      if (locationHero && p.location) locationHero.textContent = p.location + ' · ' + (currentLanguage === 'fr' ? 'Fabrication de vaccins en Afrique' : 'African vaccine manufacturing');
+      if (locationHero && p.location) locationHero.textContent = p.location + ' · ' + (currentLanguage === 'fr' ? 'Fabrication de vaccins en Afrique' : 'African vaccine manufacturing');');
+      const cleanTitle = String(rawTitle || fallbackTitle).replace(new RegExp('\\s*[|·–—-]\\s*' + escapedTagline + '\\s*
+      const photo = document.getElementById('profilePhoto');
+      const fallback = document.getElementById('photoFallback');
+      const photoUrl = safeImageUrl(p.photo_url);
+      if (photo && photoUrl) { photo.src = photoUrl; photo.style.display = ''; }
+      if (photo && fallback && photoUrl) photo.addEventListener('load', function () { fallback.style.display = 'none'; }, {once:true});
+      const location = document.getElementById('contactLocation');
+      if (location && p.location) location.textContent = p.location;
+      const phone = document.getElementById('contactPhone');
+      if (phone && p.phone) { phone.textContent = p.phone; phone.href = 'tel:' + p.phone.replace(/[^\d+]/g,''); }
+      const email = document.getElementById('contactEmail');
+      if (email && p.email) { email.textContent = p.email; email.href = 'mailto:' + p.email; }
+      if (p.linkedin_url) document.querySelectorAll('a[href*="linkedin.com/in/"]:not(#contactLinkedin)').forEach(function (link) { link.href = p.linkedin_url; });
+    }
+    async function loadPortfolioContent() {
+      const queries = [
+        portfolioDb.from('profile').select('*').eq('id',1).maybeSingle(),
+        portfolioDb.from('events').select('*').eq('is_published',true).order('start_date',{ascending:false}).order('sort_order',{ascending:true}),
+        portfolioDb.from('experiences').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('start_date',{ascending:false}),
+        portfolioDb.from('diplomas').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('year',{ascending:false}),
+        portfolioDb.from('initiatives').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('created_at',{ascending:false})
+      ];
+      const requests = await Promise.all(queries.map(function (query) {
+        return Promise.resolve(query).then(
+          function (result) { return result; },
+          function (error) { return {data:null,error:error}; }
+        );
+      }));
+
+      // Load collections independently: a failure in one table must not blank every section.
+      const labels = ['profile','events','experiences','diplomas','initiatives'];
+      requests.forEach(function (result,index) {
+        if (result.error) console.error('Portfolio '+labels[index]+' query failed:',result.error);
+      });
+      portfolioProfile = requests[0].error ? null : (requests[0].data || null);
+      portfolioEvents = requests[1].error ? [] : (requests[1].data || []);
+      portfolioExperiences = requests[2].error ? [] : (requests[2].data || []);
+      portfolioDiplomas = requests[3].error ? [] : (requests[3].data || []);
+      portfolioInitiatives = requests[4].error ? [] : (requests[4].data || []);
+
+      applyPortfolioProfile();
+      renderDynamicPortfolio();
+
+      const gridIds = ['eventsGrid','experiencesGrid','diplomasGrid','initiativesGrid'];
+      requests.slice(1).forEach(function (result,index) {
+        if (!result.error) return;
+        const node = document.getElementById(gridIds[index]);
+        if (node) node.innerHTML = '<p class="rounded-xl border border-dashed border-amber-300 bg-amber-50 p-5 text-sm text-amber-800">'+
+          escapeDynamic(currentLanguage === 'fr' ? 'Impossible de charger cette section pour le moment.' : 'This section could not be loaded right now.')+'</p>';
+      });
+    }
+    setLanguage(currentLanguage);
+    loadPortfolioContent();
+  </script>
+</body>
+</html>, 'i'), '').trim();
+      const title = (cleanTitle || fallbackTitle) + ' · ' + tagline;
+      const name = document.getElementById('profileName');
+      const titleNode = document.getElementById('profileTitle');
+      if (name && p.full_name) name.textContent = p.full_name;
+      if (titleNode) titleNode.textContent = title;
       const photo = document.getElementById('profilePhoto');
       const fallback = document.getElementById('photoFallback');
       const photoUrl = safeImageUrl(p.photo_url);
