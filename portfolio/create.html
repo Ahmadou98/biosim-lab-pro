@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1f3a">
+  <meta name="description" content="Create your free bilingual BioPage executive portfolio and digital business card.">
+  <title>Create your portfolio | BioPage</title>
+  <link rel="stylesheet" href="platform.css">
+</head>
+<body>
+  <header class="pp-header"><div class="pp-shell pp-header-inner">
+    <a class="pp-brand" href="platform.html"><span class="pp-brand-mark">BP</span><span>BIOPAGE <span style="font-weight:500;color:#94a8bb">/ CREATE</span></span></a>
+    <div class="pp-header-actions"><div class="pp-lang"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="fr" aria-pressed="false">FR</button></div><a class="pp-btn pp-btn-dark-outline pp-btn-small" href="platform.html" data-en="← Back" data-fr="← Retour">← Back</a></div>
+  </div></header>
+
+  <main class="pp-shell pp-page">
+    <div style="max-width:800px;margin:0 auto 24px">
+      <p class="pp-eyebrow" data-en="START YOUR PROFESSIONAL PRESENCE" data-fr="LANCEZ VOTRE PRÉSENCE PROFESSIONNELLE">START YOUR PROFESSIONAL PRESENCE</p>
+      <h1 class="pp-page-heading" data-en="Create your portfolio & digital card." data-fr="Créez votre portfolio et votre carte numérique.">Create your portfolio & digital card.</h1>
+      <p class="pp-page-intro" data-en="Complete the short form below. Your public page will be created immediately, and you will be taken to your private studio to add your professional milestones." data-fr="Remplissez le formulaire ci-dessous. Votre page publique sera créée immédiatement, puis vous accéderez à votre espace privé pour ajouter vos étapes professionnelles.">Complete the short form below. Your public page will be created immediately, and you will be taken to your private studio to add your professional milestones.</p>
+    </div>
+
+    <section class="pp-panel" style="max-width:800px;margin:auto">
+      <form class="pp-form" id="createForm">
+        <h2 class="pp-form-section" data-en="01 — Your identity" data-fr="01 — Votre identité">01 — Your identity</h2>
+        <div class="pp-form-grid">
+          <label class="pp-field"><span class="pp-label" data-en="Full name *" data-fr="Nom complet *">Full name *</span><input class="pp-input" id="full_name" name="full_name" autocomplete="name" maxlength="160" required placeholder="Your first and last name"></label>
+          <label class="pp-field"><span class="pp-label" data-en="Organisation" data-fr="Organisation">Organisation</span><input class="pp-input" id="organization" name="organization" autocomplete="organization" maxlength="180" placeholder="Institution, company or initiative"></label>
+          <label class="pp-field"><span class="pp-label" data-en="Professional title (English) *" data-fr="Titre professionnel (anglais) *">Professional title (English) *</span><input class="pp-input" id="title_en" name="title_en" maxlength="180" required placeholder="Researcher, Public Health Specialist…"></label>
+          <label class="pp-field"><span class="pp-label" data-en="Titre professionnel (français)" data-fr="Titre professionnel (français)">Titre professionnel (français)</span><input class="pp-input" id="title_fr" name="title_fr" maxlength="180" placeholder="Chercheur, spécialiste en santé publique…"></label>
+          <label class="pp-field pp-field-full"><span class="pp-label" data-en="Short biography (English) *" data-fr="Courte biographie (anglais) *">Short biography (English) *</span><textarea class="pp-textarea" id="bio_en" name="bio_en" maxlength="2400" minlength="10" required placeholder="What do you do? What are you focused on?"></textarea></label>
+          <label class="pp-field pp-field-full"><span class="pp-label" data-en="Courte biographie (français) *" data-fr="Courte biographie (français) *">Courte biographie (français) *</span><textarea class="pp-textarea" id="bio_fr" name="bio_fr" maxlength="2400" minlength="10" required placeholder="Présentez votre activité et vos domaines d'intérêt."></textarea></label>
+          <label class="pp-field"><span class="pp-label" data-en="Location" data-fr="Localisation">Location</span><input class="pp-input" id="location" name="location" maxlength="160" placeholder="City, Country"></label>
+          <div class="pp-field"><span class="pp-label" data-en="Professional portrait" data-fr="Photo de portrait">Professional portrait</span><input class="pp-input" id="photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp"><span class="pp-hint" data-en="JPG, PNG or WebP. The image is resized before upload (max 5 MB)." data-fr="JPG, PNG ou WebP. La photo est redimensionnée avant l'envoi (5 Mo max.).">JPG, PNG or WebP. The image is resized before upload (max 5 MB).</span></div>
+        </div>
+
+        <div class="pp-divider"></div>
+        <h2 class="pp-form-section" data-en="02 — Your digital card" data-fr="02 — Votre carte numérique">02 — Your digital card</h2>
+        <div class="pp-form-grid">
+          <label class="pp-field"><span class="pp-label" data-en="WhatsApp number" data-fr="Numéro WhatsApp">WhatsApp number</span><input class="pp-input" id="whatsapp" name="whatsapp" autocomplete="tel" maxlength="40" placeholder="+221 …"></label>
+          <label class="pp-field"><span class="pp-label" data-en="Email address" data-fr="Adresse e-mail">Email address</span><input class="pp-input" id="email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="name@example.com"></label>
+          <label class="pp-field pp-field-full"><span class="pp-label" data-en="LinkedIn profile URL" data-fr="Lien de profil LinkedIn">LinkedIn profile URL</span><input class="pp-input" id="linkedin_url" name="linkedin_url" type="url" placeholder="https://www.linkedin.com/in/…"></label>
+        </div>
+
+        <div class="pp-divider"></div>
+        <h2 class="pp-form-section" data-en="03 — Secure access to your studio" data-fr="03 — Accès sécurisé à votre espace">03 — Secure access to your studio</h2>
+        <div class="pp-form-grid">
+          <label class="pp-field pp-field-full"><span class="pp-label" data-en="Choose your unique page address (slug) *" data-fr="Choisissez l'identifiant unique de votre page (slug) *">Choose your unique page address (slug) *</span><input class="pp-input" id="slug" name="slug" minlength="3" maxlength="32" pattern="[a-z0-9][a-z0-9-]{1,30}[a-z0-9]" required placeholder="your-name"><span class="pp-hint"><span data-en="Your public address:" data-fr="Votre adresse publique :">Your public address:</span> <strong id="slugPreview">u.html?id=your-name</strong> · <span data-en="Lowercase letters, numbers and hyphens only." data-fr="Lettres minuscules, chiffres et tirets uniquement.">Lowercase letters, numbers and hyphens only.</span></span></label>
+          <label class="pp-field"><span class="pp-label" data-en="Private 6-digit PIN *" data-fr="Code PIN privé à 6 chiffres *">Private 6-digit PIN *</span><input class="pp-input" id="pin" name="pin" type="password" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" autocomplete="new-password" required placeholder="••••••"></label>
+          <label class="pp-field"><span class="pp-label" data-en="Confirm your PIN *" data-fr="Confirmez votre code PIN *">Confirm your PIN *</span><input class="pp-input" id="pin_confirm" name="pin_confirm" type="password" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" autocomplete="new-password" required placeholder="••••••"></label>
+        </div>
+        <p class="pp-hint" data-en="Keep your PIN private. It is stored as a one-way salted hash, never as readable text. Because it has only six digits, do not reuse a banking or email PIN." data-fr="Gardez votre code PIN confidentiel. Il est conservé sous forme d'empreinte salée, jamais en clair. Comme il ne comporte que six chiffres, ne réutilisez pas le code de votre banque ou de votre messagerie.">Keep your PIN private. It is stored as a one-way salted hash, never as readable text. Because it has only six digits, do not reuse a banking or email PIN.</p>
+
+        <label class="pp-checkline"><input id="publicConsent" type="checkbox" required><span data-en="I understand that my portfolio and contact details I choose to publish will be visible to anyone with the link." data-fr="Je comprends que mon portfolio et les coordonnées que je choisis de publier seront visibles par toute personne disposant du lien.">I understand that my portfolio and contact details I choose to publish will be visible to anyone with the link.</span></label>
+        <div id="formMessage" class="pp-message" role="alert" aria-live="polite"></div>
+        <div class="pp-form-actions">
+          <button id="createButton" class="pp-btn pp-btn-primary" type="submit" data-en="Create my portfolio & card ↗" data-fr="Créer mon portfolio & ma carte ↗">Create my portfolio & card ↗</button>
+          <a class="pp-btn pp-btn-outline" href="platform.html" data-en="Cancel" data-fr="Annuler">Cancel</a>
+        </div>
+        <p class="pp-hint" data-en="Free to start. Your private studio is protected by your unique identifier and PIN." data-fr="Gratuit pour commencer. Votre espace privé est protégé par votre identifiant et votre code PIN.">Free to start. Your private studio is protected by your unique identifier and PIN.</p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="pp-footer"><div class="pp-shell pp-footer-inner"><span>© <span id="year"></span> BioPage Studio</span><a href="platform.html" data-en="About BioPage" data-fr="À propos de BioPage">About BioPage</a></div></footer>
+  <script src="platform-api.js"></script>
+  <script>
+    (function(){
+      const $=id=>document.getElementById(id);
+      let slugTouched=false;
+      function normaliseSlug(value){return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,32).replace(/-+$/g,"");}
+      function updateSlug(){const value=normaliseSlug($("slug").value);$("slugPreview").textContent="u.html?id="+(value||"your-name");}
+      $("full_name").addEventListener("input",function(){if(!slugTouched){$("slug").value=normaliseSlug(this.value);updateSlug();}});
+      $("slug").addEventListener("input",function(){slugTouched=true;this.value=normaliseSlug(this.value);updateSlug();});
+      $("year").textContent=new Date().getFullYear();
+      function setLang(lang){
+        document.documentElement.lang=lang;
+        document.querySelectorAll("[data-en][data-fr]").forEach(n=>{n.textContent=n.getAttribute(lang==="fr"?"data-fr":"data-en");});
+        document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===lang)));
+        try{localStorage.setItem("biopage-language",lang);}catch(_){}
+      }
+      document.querySelectorAll("[data-lang]").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));
+      let lang="en";try{lang=localStorage.getItem("biopage-language")||"en";}catch(_){}
+      setLang(lang);
+      $("createForm").addEventListener("submit",async function(event){
+        event.preventDefault();
+        PP.setMessage($("formMessage"),"");
+        const button=$("createButton");
+        if($("pin").value!==$("pin_confirm").value){PP.setMessage($("formMessage"),lang==="fr"?"Les deux codes PIN ne correspondent pas.":"The two PIN entries do not match.",true);return;}
+        if(!this.reportValidity())return;
+        button.disabled=true;button.textContent=lang==="fr"?"Création en cours…":"Creating your portfolio…";
+        try{
+          const photoFile=$("photo").files[0]||null;
+          const photo_data=photoFile?await PP.photoToDataUrl(photoFile):null;
+          const payload={
+            full_name:$("full_name").value,title_en:$("title_en").value,title_fr:$("title_fr").value,
+            bio_en:$("bio_en").value,bio_fr:$("bio_fr").value,organization:$("organization").value,
+            location:$("location").value,whatsapp:$("whatsapp").value,email:$("email").value,
+            linkedin_url:$("linkedin_url").value,slug:$("slug").value,pin:$("pin").value,photo_data
+          };
+          const result=await PP.api("create",payload);
+          sessionStorage.setItem("biopage_session",result.token);
+          sessionStorage.setItem("biopage_slug",result.profile.slug);
+          window.location.href="studio.html?welcome=1";
+        }catch(error){
+          PP.setMessage($("formMessage"),error.message||"Creation failed. Please try again.",true);
+          button.disabled=false;button.textContent=lang==="fr"?"Créer mon portfolio & ma carte ↗":"Create my portfolio & card ↗";
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
