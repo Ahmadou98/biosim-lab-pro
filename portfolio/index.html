@@ -725,35 +725,50 @@
     function applyPortfolioProfile() {
       if (!portfolioProfile) return;
       const p = portfolioProfile;
-      const rawTitle = currentLanguage === 'fr' ? (p.title_fr || p.title_en || '') : (p.title_en || p.title_fr || '');
-      const tagline = currentLanguage === 'fr' ? 'Engagé pour la fabrication de vaccins en Afrique' : 'Advocating for African Vaccine Manufacturing';
-      const fallbackTitle = currentLanguage === 'fr' ? 'Spécialiste en bioproduction' : 'Biomanufacturing Specialist';
-      const escapedTagline = tagline.replace(/[.*+?^${}()|[\]\\]/g, '\\      const title = currentLanguage === 'fr' ? (p.title_fr || p.title_en) : (p.title_en || p.title_fr);
-      const intro = currentLanguage === 'fr' ? (p.intro_fr || p.intro_en) : (p.intro_en || p.intro_fr);
-      const signature = currentLanguage === 'fr' ? (p.signature_fr || p.signature_en) : (p.signature_en || p.signature_fr);
-      const name = document.getElementById('profileName');
+      const isFrench = currentLanguage === 'fr';
+      const tagline = isFrench
+        ? 'Engagé pour la fabrication de vaccins en Afrique'
+        : 'Advocating for African Vaccine Manufacturing';
+      const defaultTitle = isFrench ? 'Spécialiste en bioproduction' : 'Biomanufacturing Specialist';
+      let baseTitle = String((isFrench ? (p.title_fr || p.title_en) : (p.title_en || p.title_fr)) || defaultTitle).trim();
+
+      // The CMS title sometimes already contains the advocacy signature: keep it only once.
+      if (baseTitle.toLowerCase().endsWith(tagline.toLowerCase())) {
+        baseTitle = baseTitle.slice(0, baseTitle.length - tagline.length).trim();
+        while (baseTitle && ['|', '·', '–', '—', '-'].includes(baseTitle.slice(-1))) {
+          baseTitle = baseTitle.slice(0, -1).trim();
+        }
+      }
+      if (!baseTitle) baseTitle = defaultTitle;
+
+      const nameNode = document.getElementById('profileName');
       const titleNode = document.getElementById('profileTitle');
-      const introNode = document.getElementById('profileIntro');
-      const signatureNode = document.getElementById('profileSignatureHero');
-      const locationHero = document.getElementById('profileLocationHero');
-      if (name && p.full_name) name.textContent = p.full_name;
-      if (titleNode && title) titleNode.textContent = title;
-      if (introNode && intro) introNode.textContent = intro;
-      if (signatureNode && signature) signatureNode.textContent = signature;
-      if (locationHero && p.location) locationHero.textContent = p.location + ' · ' + (currentLanguage === 'fr' ? 'Fabrication de vaccins en Afrique' : 'African vaccine manufacturing');');
-      const cleanTitle = String(rawTitle || fallbackTitle).replace(new RegExp('\\s*[|·–—-]\\s*' + escapedTagline + '\\s*
+      if (nameNode && p.full_name) nameNode.textContent = p.full_name;
+      if (titleNode) titleNode.textContent = baseTitle + ' · ' + tagline;
+
       const photo = document.getElementById('profilePhoto');
-      const fallback = document.getElementById('photoFallback');
       const photoUrl = safeImageUrl(p.photo_url);
-      if (photo && photoUrl) { photo.src = photoUrl; photo.style.display = ''; }
-      if (photo && fallback && photoUrl) photo.addEventListener('load', function () { fallback.style.display = 'none'; }, {once:true});
+      if (photo && photoUrl && photo.src !== photoUrl) photo.src = photoUrl;
+
       const location = document.getElementById('contactLocation');
       if (location && p.location) location.textContent = p.location;
       const phone = document.getElementById('contactPhone');
-      if (phone && p.phone) { phone.textContent = p.phone; phone.href = 'tel:' + p.phone.replace(/[^\d+]/g,''); }
+      if (phone && p.phone) {
+        phone.textContent = p.phone;
+        phone.href = 'tel:' + p.phone.replace(/[^\\d+]/g, '');
+      }
       const email = document.getElementById('contactEmail');
-      if (email && p.email) { email.textContent = p.email; email.href = 'mailto:' + p.email; }
-      if (p.linkedin_url) document.querySelectorAll('a[href*="linkedin.com/in/"]:not(#contactLinkedin)').forEach(function (link) { link.href = p.linkedin_url; });
+      if (email && p.email) {
+        email.textContent = p.email;
+        email.href = 'mailto:' + p.email;
+      }
+      if (p.linkedin_url) {
+        document.querySelectorAll('a[href*="linkedin.com/in/"]:not(#contactLinkedin)').forEach(function (link) {
+          link.href = p.linkedin_url;
+        });
+        const contactLinkedin = document.getElementById('contactLinkedin');
+        if (contactLinkedin) contactLinkedin.href = p.linkedin_url;
+      }
     }
     async function loadPortfolioContent() {
       const queries = [
