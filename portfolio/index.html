@@ -96,6 +96,7 @@
       <nav id="desktopNav" class="hidden items-center gap-7 text-xs font-semibold uppercase tracking-[.12em] lg:flex" aria-label="Primary navigation">
         <a class="nav-link" href="#advocacy" data-i18n="nav_advocacy">Advocacy</a>
         <a class="nav-link" href="#expertise" data-i18n="nav_expertise">Expertise</a>
+        <a class="nav-link" href="#events" data-i18n="nav_events">Events</a>
         <a class="nav-link" href="#impact" data-i18n="nav_impact">Initiatives</a>
         <a class="nav-link" href="#contact" data-i18n="nav_contact">Contact</a>
       </nav>
@@ -114,6 +115,7 @@
       <div class="mx-auto flex max-w-7xl flex-col gap-4 text-sm font-semibold">
         <a class="mobile-link" href="#advocacy" data-i18n="nav_advocacy">Advocacy</a>
         <a class="mobile-link" href="#expertise" data-i18n="nav_expertise">Expertise</a>
+        <a class="mobile-link" href="#events" data-i18n="nav_events">Events</a>
         <a class="mobile-link" href="#impact" data-i18n="nav_impact">Initiatives</a>
         <a class="mobile-link" href="#contact" data-i18n="nav_contact">Contact</a>
       </div>
@@ -130,14 +132,12 @@
         <div class="relative z-10 max-w-3xl">
           <div class="mb-7 inline-flex items-center gap-3 rounded-full border border-emerald/30 bg-emerald/10 px-4 py-2 text-[10px] font-semibold uppercase tracking-[.16em] text-emerald-100 sm:text-[11px]">
             <span class="h-2 w-2 rounded-full bg-emerald"></span>
-            <span data-i18n="hero_location">Dakar, Senegal · African vaccine manufacturing</span>
+            <span id="profileLocationHero" data-i18n="hero_location">Dakar, Senegal · African vaccine manufacturing</span>
           </div>
           <p class="eyebrow mb-5 text-[10px] font-semibold uppercase text-gold sm:text-xs" data-i18n="hero_overline">SCIENCE · CAPACITY BUILDING · HEALTH SOVEREIGNTY</p>
-          <h1 class="display max-w-3xl text-4xl font-extrabold leading-[1.08] tracking-[-.045em] sm:text-5xl md:text-6xl lg:text-[4.2rem]">
-            Ahmadou Lamine <span class="text-emerald-300">Diouf</span>
-          </h1>
-          <p class="mt-6 max-w-2xl text-lg font-semibold leading-snug text-white sm:text-xl md:text-2xl" data-i18n="hero_title">Biomanufacturing Specialist | Advocating for African Vaccine Manufacturing</p>
-          <p class="mt-5 max-w-xl text-sm leading-7 text-slate-300 sm:text-base sm:leading-8" data-i18n="hero_intro">Working at the intersection of biomanufacturing, scientific solutions and advocacy to help strengthen Africa’s capacity to develop and produce vaccines.</p>
+          <h1 class="display max-w-3xl text-4xl font-extrabold leading-[1.08] tracking-[-.045em] sm:text-5xl md:text-6xl lg:text-[4.2rem]"><span id="profileName">Ahmadou Lamine Diouf</span></h1>
+          <p id="profileTitle" class="mt-6 max-w-2xl text-lg font-semibold leading-snug text-white sm:text-xl md:text-2xl" data-i18n="hero_title">Biomanufacturing Specialist | Advocating for African Vaccine Manufacturing</p>
+          <p id="profileIntro" class="mt-5 max-w-xl text-sm leading-7 text-slate-300 sm:text-base sm:leading-8" data-i18n="hero_intro">Working at the intersection of biomanufacturing, scientific solutions and advocacy to help strengthen Africa’s capacity to develop and produce vaccines.</p>
           <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <button id="vcardHero" class="focus-ring inline-flex min-h-12 items-center justify-center gap-3 rounded-lg bg-emerald px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald/20 transition hover:-translate-y-0.5 hover:bg-[#118765]" type="button">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3m0 12 4-4m-4 4-4-4"/><path d="M5 17v3h14v-3"/></svg>
@@ -149,7 +149,7 @@
             </a>
           </div>
           <div class="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-white/10 pt-6 text-xs text-slate-300">
-            <span class="inline-flex items-center gap-2"><span class="text-gold">✳</span><span data-i18n="hero_signature">Advocating for African Vaccine Manufacturing</span></span>
+            <span class="inline-flex items-center gap-2"><span class="text-gold">✳</span><span id="profileSignatureHero" data-i18n="hero_signature">Advocating for African Vaccine Manufacturing</span></span>
             <span class="inline-flex items-center gap-2"><span class="h-1 w-1 rounded-full bg-emerald"></span><span data-i18n="hero_based">Based in Dakar, Senegal</span></span>
           </div>
         </div>
@@ -257,85 +257,29 @@
           <p class="mt-5 text-sm leading-8 text-slate-600 sm:text-base" data-i18n="exp_intro">My pathway combines university-level scientific studies, specialised biomanufacturing training and practical exposure to laboratory and technical environments.</p>
         </div>
 
-        <div class="mt-12 grid gap-5 lg:grid-cols-2">
-          <article class="reveal rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8">
-            <div class="flex items-start justify-between gap-4">
-              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald/10 text-emerald">
-                <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/><path d="M8 9h2m-2 4h2m-2 4h2m6-2h1"/></svg>
-              </div>
-              <span class="rounded-full bg-emerald/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald" data-i18n="current_role_badge">Current role</span>
-            </div>
-            <h3 class="mt-6 font-display text-xl font-bold text-ink" data-i18n="role_title">Technical Sales Representative</h3>
-            <p class="mt-1 text-sm font-semibold text-emerald">DISLAB West Africa</p>
-            <p class="mt-4 text-sm leading-7 text-slate-600" data-i18n="role_body">Scientific needs assessment and technical support for laboratories, helping connect users with relevant products, equipment and solutions.</p>
-            <div class="mt-6 border-t border-slate-100 pt-5 text-xs text-slate-500" data-i18n="role_note">A customer-facing role at the interface of science, laboratory operations and technical solutions.</div>
-          </article>
-
-          <article class="reveal rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8">
-            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#c9a76a]/15 text-[#9a783d]">
-              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6m-5 0v6.2L4.7 18a2 2 0 0 0 1.7 3h11.2a2 2 0 0 0 1.7-3L14 9.2V3"/><path d="M7 15h10M9 18h.01M15 18h.01"/></svg>
-            </div>
-            <h3 class="mt-6 font-display text-xl font-bold text-ink" data-i18n="bioman_title">Vaccine biomanufacturing</h3>
-            <p class="mt-1 text-sm font-semibold text-slate-500" data-i18n="bioman_org">Institut Pasteur de Dakar · Université Rose Dieng</p>
-            <p class="mt-4 text-sm leading-7 text-slate-600" data-i18n="bioman_body">Certificate in Vaccine Bioproduction, combining theoretical foundations and practical exposure to vaccine manufacturing environments and processes.</p>
-            <div class="mt-5 flex flex-wrap gap-2">
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">Upstream</span>
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">Downstream</span>
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">AKTA systems</span>
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">LAL · ELISA</span>
-            </div>
-          </article>
-
-          <article class="reveal rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8">
-            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald/10 text-emerald">
-              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5m0 14h16M7 15l3-4 3 2 5-7"/><path d="M16 6h2v2"/></svg>
-            </div>
-            <h3 class="mt-6 font-display text-xl font-bold text-ink" data-i18n="noa_title">NOA–NIBRT biopharma training</h3>
-            <p class="mt-1 text-sm font-semibold text-slate-500" data-i18n="noa_org">Specialised training programme</p>
-            <p class="mt-4 text-sm leading-7 text-slate-600" data-i18n="noa_body">Training covering upstream and downstream operations, aseptic fill & finish, quality control and cleanroom behaviour in biopharmaceutical manufacturing.</p>
-            <div class="mt-5 flex flex-wrap gap-2">
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">Fill & Finish</span>
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">Aseptic practices</span>
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">Cleanroom</span>
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">GMP / BPF</span>
-            </div>
-          </article>
-
-          <article class="reveal rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8">
-            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#c9a76a]/15 text-[#9a783d]">
-              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l4 4v14H4V3h4Z"/><path d="M8 3v5h8V3M8 13h8m-8 4h5"/></svg>
-            </div>
-            <h3 class="mt-6 font-display text-xl font-bold text-ink" data-i18n="qc_title">Quality control exposure</h3>
-            <p class="mt-1 text-sm font-semibold text-slate-500" data-i18n="qc_org">Institut Pasteur de Dakar</p>
-            <p class="mt-4 text-sm leading-7 text-slate-600" data-i18n="qc_body">Immersion in a quality control environment, with exposure to analytical techniques and quality systems relevant to biological products.</p>
-            <div class="mt-5 flex flex-wrap gap-2">
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">ELISA</span>
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">HPLC</span>
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">PCR</span>
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">GMP / BPF</span>
-            </div>
-          </article>
-
-          <article class="reveal rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8 lg:col-span-2">
-            <div class="flex flex-col gap-6 md:flex-row md:items-start">
-              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-ink text-white">
-                <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4M7 9h3m-3 4h7"/></svg>
-              </div>
-              <div class="flex-1">
-                <h3 class="font-display text-xl font-bold text-ink" data-i18n="hybrid_title">Hybrid scientific & digital skills</h3>
-                <p class="mt-1 text-sm font-semibold text-slate-500" data-i18n="hybrid_org">UCAD · UNCHK · FORCE-N</p>
-                <p class="mt-4 max-w-4xl text-sm leading-7 text-slate-600" data-i18n="hybrid_body">University studies in Physics and Chemistry at Cheikh Anta Diop University (UCAD), complemented by training and certifications in artificial intelligence, data analysis and software development through UNCHK and FORCE-N.</p>
-                <div class="mt-5 flex flex-wrap gap-2">
-                  <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600" data-i18n="tag_physics">Physics & Chemistry</span>
-                  <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">Artificial Intelligence</span>
-                  <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600" data-i18n="tag_data">Data analysis</span>
-                  <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600" data-i18n="tag_dev">Software development</span>
-                </div>
-              </div>
-            </div>
-          </article>
+        <div class="mt-12">
+          <h3 class="font-display text-xl font-bold text-ink sm:text-2xl" data-i18n="exp_experiences_heading">Professional experience</h3>
+          <div id="experiencesGrid" class="mt-5 grid gap-5 lg:grid-cols-2"><p class="text-sm text-slate-500">Loading professional experience…</p></div>
+        </div>
+        <div class="mt-14">
+          <h3 class="font-display text-xl font-bold text-ink sm:text-2xl" data-i18n="exp_diplomas_heading">Education & certifications</h3>
+          <div id="diplomasGrid" class="mt-5 grid gap-5 md:grid-cols-2"><p class="text-sm text-slate-500">Loading certifications…</p></div>
         </div>
         <p class="mt-6 text-xs leading-6 text-slate-500" data-i18n="exp_disclaimer">Training and practical exposure are presented as such; this profile does not imply independent authorisation to manufacture or release vaccines.</p>
+      </div>
+    </section>
+
+    <!-- Events and conferences: managed from admin.html -->
+    <section id="events" class="scroll-mt-20 bg-[#f3f6f8]">
+      <div class="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-28">
+        <div class="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <div>
+            <p class="section-kicker text-[10px] font-bold uppercase" data-i18n="events_kicker">03 — EVENTS & CONFERENCES</p>
+            <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl" data-i18n="events_title">Engagement across the African health ecosystem.</h2>
+          </div>
+          <p class="max-w-xl text-sm leading-7 text-slate-500" data-i18n="events_intro">Conferences, professional gatherings and opportunities to exchange ideas on vaccine manufacturing, public health and African scientific capacity.</p>
+        </div>
+        <div id="eventsGrid" class="grid gap-5 md:grid-cols-2"><p class="text-sm text-slate-500">Loading events…</p></div>
       </div>
     </section>
 
@@ -348,25 +292,7 @@
             <h2 class="mt-4 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl" data-i18n="impact_title">Turning knowledge into shared momentum.</h2>
             <p class="mt-5 text-sm leading-8 text-slate-600" data-i18n="impact_intro">I believe that building a regional biomanufacturing ecosystem also means making knowledge accessible and bringing emerging talent into the conversation.</p>
           </div>
-          <div class="space-y-5">
-            <article class="reveal rounded-2xl border border-slate-200 p-6 sm:p-8">
-              <div class="flex flex-wrap items-center justify-between gap-3">
-                <span class="rounded-full bg-emerald/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald" data-i18n="ambassador_label">Youth engagement</span>
-                <span class="font-mono text-[10px] text-slate-400">MADIBA</span>
-              </div>
-              <h3 class="mt-5 font-display text-xl font-bold text-ink" data-i18n="ambassador_title">Student Ambassador — MADIBA Programme</h3>
-              <p class="mt-3 text-sm leading-7 text-slate-600" data-i18n="ambassador_body">Supporting skills development and awareness around vaccine biomanufacturing, and encouraging students to explore careers in this strategic field.</p>
-            </article>
-            <article class="reveal rounded-2xl border border-slate-200 p-6 sm:p-8">
-              <div class="flex flex-wrap items-center justify-between gap-3">
-                <span class="rounded-full bg-[#c9a76a]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#8c6b36]" data-i18n="author_label">Knowledge sharing</span>
-                <span class="font-mono text-[10px] text-slate-400" data-i18n="book_status">IN PROGRESS</span>
-              </div>
-              <h3 class="mt-5 font-display text-xl font-bold text-ink" data-i18n="book_title">Author — “Introduction to Vaccine Biomanufacturing”</h3>
-              <p class="mt-3 text-sm leading-7 text-slate-600" data-i18n="book_body">A forthcoming introductory book designed to make the fundamentals of vaccine biomanufacturing clearer and more accessible to French-speaking students and young professionals.</p>
-              <p class="mt-5 border-t border-slate-100 pt-4 text-xs font-semibold text-slate-500" data-i18n="book_note">A work in finalisation · Publication forthcoming</p>
-            </article>
-          </div>
+          <div id="initiativesGrid" class="space-y-5"><p class="text-sm text-slate-500">Loading initiatives…</p></div>
         </div>
       </div>
     </section>
@@ -409,11 +335,11 @@
             <div class="space-y-6">
               <div class="flex items-start gap-4">
                 <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald/10 text-emerald"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-                <div><p class="text-[10px] font-bold uppercase tracking-[.15em] text-slate-400" data-i18n="label_location">Location</p><p class="mt-1 text-sm font-semibold text-ink">Dakar, Senegal</p></div>
+                <div><p class="text-[10px] font-bold uppercase tracking-[.15em] text-slate-400" data-i18n="label_location">Location</p><p id="contactLocation" class="mt-1 text-sm font-semibold text-ink">Dakar, Senegal</p></div>
               </div>
               <div class="flex items-start gap-4">
                 <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald/10 text-emerald"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.8a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.84.58 2.8.7A2 2 0 0 1 22 16.92Z"/></svg></span>
-                <div><p class="text-[10px] font-bold uppercase tracking-[.15em] text-slate-400" data-i18n="label_phone">Phone / WhatsApp</p><a class="focus-ring mt-1 inline-block rounded text-sm font-semibold text-ink hover:text-emerald" href="tel:+221771018290">+221 77 101 82 90</a></div>
+                <div><p class="text-[10px] font-bold uppercase tracking-[.15em] text-slate-400" data-i18n="label_phone">Phone / WhatsApp</p><a id="contactPhone" class="focus-ring mt-1 inline-block rounded text-sm font-semibold text-ink hover:text-emerald" href="tel:+221771018290">+221 77 101 82 90</a></div>
               </div>
               <div class="flex items-start gap-4">
                 <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald/10 text-emerald"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
@@ -439,16 +365,20 @@
 
   <footer class="bg-[#051321] text-slate-400">
     <div class="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-7 text-xs sm:px-8 md:flex-row md:items-center md:justify-between lg:px-10">
-      <p>© <span id="year"></span> Ahmadou Lamine Diouf. <span data-i18n="footer_rights">All rights reserved.</span></p>
+      <p>© <span id="year"></span> Ahmadou Lamine Diouf. <span data-i18n="footer_rights">All rights reserved.</span> · <a href="/admin.html" class="hover:text-white">Admin</a></p>
       <p class="font-mono uppercase tracking-[.15em] text-slate-500" data-i18n="footer_signature">Advocating for African Vaccine Manufacturing</p>
       <a href="#home" class="focus-ring rounded text-slate-300 transition hover:text-white" data-i18n="back_top">Back to top ↑</a>
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0"></script>
   <script>
     const translations = {
       en: {
-        nav_advocacy: 'Advocacy', nav_expertise: 'Expertise', nav_impact: 'Initiatives', nav_contact: 'Contact',
+        nav_advocacy: 'Advocacy', nav_expertise: 'Expertise', nav_events: 'Events', nav_impact: 'Initiatives', nav_contact: 'Contact',
+        exp_experiences_heading: 'Professional experience', exp_diplomas_heading: 'Education & certifications',
+        events_kicker: '03 — EVENTS & CONFERENCES', events_title: 'Engagement across the African health ecosystem.', events_intro: 'Conferences, professional gatherings and opportunities to exchange ideas on vaccine manufacturing, public health and African scientific capacity.',
+        dynamic_empty: 'New content will appear here as it is published.', event_upcoming: 'Upcoming', event_past: 'Past', current_role: 'Current role',
         hero_location: 'Dakar, Senegal · African vaccine manufacturing',
         hero_overline: 'SCIENCE · CAPACITY BUILDING · HEALTH SOVEREIGNTY',
         hero_title: 'Biomanufacturing Specialist | Advocating for African Vaccine Manufacturing',
@@ -476,18 +406,21 @@
         qc_title: 'Quality control exposure', qc_org: 'Institut Pasteur de Dakar', qc_body: 'Immersion in a quality control environment, with exposure to analytical techniques and quality systems relevant to biological products.',
         hybrid_title: 'Hybrid scientific & digital skills', hybrid_org: 'UCAD · UNCHK · FORCE-N', hybrid_body: 'University studies in Physics and Chemistry at Cheikh Anta Diop University (UCAD), complemented by training and certifications in artificial intelligence, data analysis and software development through UNCHK and FORCE-N.',
         tag_physics: 'Physics & Chemistry', tag_data: 'Data analysis', tag_dev: 'Software development', exp_disclaimer: 'Training and practical exposure are presented as such; this profile does not imply independent authorisation to manufacture or release vaccines.',
-        impact_kicker: '03 — INITIATIVES & IMPACT', impact_title: 'Turning knowledge into shared momentum.', impact_intro: 'I believe that building a regional biomanufacturing ecosystem also means making knowledge accessible and bringing emerging talent into the conversation.',
+        impact_kicker: '04 — INITIATIVES & IMPACT', impact_title: 'Turning knowledge into shared momentum.', impact_intro: 'I believe that building a regional biomanufacturing ecosystem also means making knowledge accessible and bringing emerging talent into the conversation.',
         ambassador_label: 'Youth engagement', ambassador_title: 'Student Ambassador — MADIBA Programme', ambassador_body: 'Supporting skills development and awareness around vaccine biomanufacturing, and encouraging students to explore careers in this strategic field.',
         author_label: 'Knowledge sharing', book_status: 'IN PROGRESS', book_title: 'Author — “Introduction to Vaccine Biomanufacturing”', book_body: 'A forthcoming introductory book designed to make the fundamentals of vaccine biomanufacturing clearer and more accessible to French-speaking students and young professionals.', book_note: 'A work in finalisation · Publication forthcoming',
         closing_kicker: 'A SHARED AFRICAN AMBITION', closing_title: 'A stronger vaccine manufacturing ecosystem begins with knowledge, capability and collaboration.', closing_cta: 'Start a conversation',
-        contact_kicker: '04 — CONTACT', contact_title: 'Let’s connect around Africa’s biomanufacturing future.', contact_intro: 'Open to professional exchanges, scientific discussions, youth engagement and partnerships that advance vaccine manufacturing capabilities in Africa.', contact_whatsapp: 'Message on WhatsApp', contact_linkedin: 'Connect on LinkedIn',
+        contact_kicker: '05 — CONTACT', contact_title: 'Let’s connect around Africa’s biomanufacturing future.', contact_intro: 'Open to professional exchanges, scientific discussions, youth engagement and partnerships that advance vaccine manufacturing capabilities in Africa.', contact_whatsapp: 'Message on WhatsApp', contact_linkedin: 'Connect on LinkedIn',
         label_location: 'Location', label_phone: 'Phone / WhatsApp', label_email: 'Email', label_linkedin: 'LinkedIn', contact_vcard: 'Download Contact (vCard)',
         footer_rights: 'All rights reserved.', footer_signature: 'Advocating for African Vaccine Manufacturing', back_top: 'Back to top ↑',
         vcard_success: 'Your contact card is ready to save.', vcard_error: 'Unable to generate the contact card in this browser.',
         whatsapp_message: 'Hello Ahmadou, I would like to connect with you.'
       },
       fr: {
-        nav_advocacy: 'Plaidoyer', nav_expertise: 'Expertise', nav_impact: 'Initiatives', nav_contact: 'Contact',
+        nav_advocacy: 'Plaidoyer', nav_expertise: 'Expertise', nav_events: 'Événements', nav_impact: 'Initiatives', nav_contact: 'Contact',
+        exp_experiences_heading: 'Expériences professionnelles', exp_diplomas_heading: 'Formation et certifications',
+        events_kicker: '03 — ÉVÉNEMENTS & CONFÉRENCES', events_title: 'Un engagement au sein de l’écosystème sanitaire africain.', events_intro: 'Conférences, rencontres professionnelles et occasions d’échanger sur la fabrication des vaccins, la santé publique et les capacités scientifiques africaines.',
+        dynamic_empty: 'Les nouveaux contenus publiés apparaîtront ici.', event_upcoming: 'À venir', event_past: 'Passé', current_role: 'Poste actuel',
         hero_location: 'Dakar, Sénégal · Fabrication de vaccins en Afrique',
         hero_overline: 'SCIENCE · RENFORCEMENT DES CAPACITÉS · SOUVERAINETÉ SANITAIRE',
         hero_title: 'Spécialiste en bioproduction | Engagé pour la fabrication de vaccins en Afrique',
@@ -515,11 +448,11 @@
         qc_title: 'Immersion en contrôle qualité', qc_org: 'Institut Pasteur de Dakar', qc_body: 'Immersion dans un environnement de contrôle qualité, avec une exposition à des techniques analytiques et à des systèmes qualité appliqués aux produits biologiques.',
         hybrid_title: 'Compétences scientifiques et numériques', hybrid_org: 'UCAD · UNCHK · FORCE-N', hybrid_body: 'Études universitaires en Physique-Chimie à l’Université Cheikh Anta Diop de Dakar (UCAD), complétées par des formations et certifications en intelligence artificielle, analyse de données et développement logiciel via l’UNCHK et FORCE-N.',
         tag_physics: 'Physique-Chimie', tag_data: 'Analyse de données', tag_dev: 'Développement logiciel', exp_disclaimer: 'Les formations et immersions pratiques sont présentées comme telles ; ce profil ne sous-entend pas une autorisation autonome de fabriquer ou de libérer des vaccins.',
-        impact_kicker: '03 — INITIATIVES & IMPACT', impact_title: 'Transformer les connaissances en dynamique collective.', impact_intro: 'Je suis convaincu que construire un écosystème régional de bioproduction passe aussi par l’accessibilité des connaissances et l’implication des jeunes talents.',
+        impact_kicker: '04 — INITIATIVES & IMPACT', impact_title: 'Transformer les connaissances en dynamique collective.', impact_intro: 'Je suis convaincu que construire un écosystème régional de bioproduction passe aussi par l’accessibilité des connaissances et l’implication des jeunes talents.',
         ambassador_label: 'Engagement jeunesse', ambassador_title: 'Ambassadeur étudiant — Programme MADIBA', ambassador_body: 'Contribution à la sensibilisation et au développement des compétences autour de la bioproduction vaccinale, tout en encourageant les étudiants à découvrir les carrières de ce secteur stratégique.',
         author_label: 'Partage des connaissances', book_status: 'EN COURS', book_title: 'Auteur — « Introduction à la bioproduction des vaccins »', book_body: 'Un ouvrage d’introduction en cours de finalisation, conçu pour rendre les fondamentaux de la bioproduction vaccinale plus clairs et accessibles aux étudiants et jeunes professionnels francophones.', book_note: 'Ouvrage en cours de finalisation · Publication à venir',
         closing_kicker: 'UNE AMBITION AFRICAINE COMMUNE', closing_title: 'Un écosystème de fabrication vaccinale plus fort commence par le savoir, les compétences et la collaboration.', closing_cta: 'Entrer en contact',
-        contact_kicker: '04 — CONTACT', contact_title: 'Échangeons autour de l’avenir de la bioproduction en Afrique.', contact_intro: 'Ouvert aux échanges professionnels, discussions scientifiques, initiatives jeunesse et partenariats qui contribuent au développement des capacités africaines de fabrication des vaccins.', contact_whatsapp: 'Écrire sur WhatsApp', contact_linkedin: 'Se connecter sur LinkedIn',
+        contact_kicker: '05 — CONTACT', contact_title: 'Échangeons autour de l’avenir de la bioproduction en Afrique.', contact_intro: 'Ouvert aux échanges professionnels, discussions scientifiques, initiatives jeunesse et partenariats qui contribuent au développement des capacités africaines de fabrication des vaccins.', contact_whatsapp: 'Écrire sur WhatsApp', contact_linkedin: 'Se connecter sur LinkedIn',
         label_location: 'Localisation', label_phone: 'Téléphone / WhatsApp', label_email: 'E-mail', label_linkedin: 'LinkedIn', contact_vcard: 'Télécharger le contact (vCard)',
         footer_rights: 'Tous droits réservés.', footer_signature: 'Engagé pour la fabrication de vaccins en Afrique', back_top: 'Retour en haut ↑',
         vcard_success: 'Votre fiche contact est prête à être enregistrée.', vcard_error: 'Impossible de générer la fiche contact dans ce navigateur.',
@@ -546,27 +479,44 @@
         const isActive = button.dataset.lang === language;
         button.setAttribute('aria-pressed', String(isActive));
       });
-      whatsappLink.href = 'https://wa.me/221771018290?text=' + encodeURIComponent(translations[language].whatsapp_message);
+      const waPhone = portfolioProfile && portfolioProfile.phone ? portfolioProfile.phone.replace(/\D/g, '') : '221771018290';
+      whatsappLink.href = 'https://wa.me/' + waPhone + '?text=' + encodeURIComponent(translations[language].whatsapp_message);
+      if (portfolioProfile) applyPortfolioProfile();
+      renderDynamicPortfolio();
       vcardStatus.textContent = '';
     }
 
     languageButtons.forEach((button) => button.addEventListener('click', () => setLanguage(button.dataset.lang)));
 
+    let portfolioProfile = null;
     function downloadVCard() {
+      const p = portfolioProfile || {
+        full_name: 'Ahmadou Lamine Diouf',
+        title_en: 'Biomanufacturing Specialist | Advocating for African Vaccine Manufacturing',
+        title_fr: 'Spécialiste en bioproduction | Engagé pour la fabrication de vaccins en Afrique',
+        location: 'Dakar, Senegal',
+        phone: '+221 77 101 82 90',
+        email: 'ahmadoulaminediouf39@gmail.com',
+        linkedin_url: 'https://www.linkedin.com/in/ahmadou-lamine-diouf-003a98321/',
+        signature_en: 'Advocating for African Vaccine Manufacturing',
+        signature_fr: 'Engagé pour la fabrication de vaccins en Afrique'
+      };
+      const cleanPhone = (p.phone || '').replace(/[^\d+]/g, '');
+      const title = currentLanguage === 'fr' ? (p.title_fr || p.title_en || '') : (p.title_en || p.title_fr || '');
+      const signature = currentLanguage === 'fr' ? (p.signature_fr || p.signature_en || '') : (p.signature_en || p.signature_fr || '');
       const vcard = [
         'BEGIN:VCARD',
         'VERSION:3.0',
-        'N:Diouf;Ahmadou Lamine;;;',
-        'FN:Ahmadou Lamine Diouf',
-        'TITLE:Biomanufacturing Specialist | Advocating for African Vaccine Manufacturing',
-        'TEL;TYPE=CELL,VOICE:+221771018290',
-        'EMAIL;TYPE=INTERNET:ahmadoulaminediouf39@gmail.com',
-        'URL:https://www.linkedin.com/in/ahmadou-lamine-diouf-003a98321/',
-        'ADR;TYPE=WORK:;;Dakar;;;Senegal',
-        'NOTE:Advocating for African Vaccine Manufacturing',
+        'N:;' + (p.full_name || 'Ahmadou Lamine Diouf') + ';;;',
+        'FN:' + (p.full_name || 'Ahmadou Lamine Diouf'),
+        'TITLE:' + title,
+        'TEL;TYPE=CELL,VOICE:' + cleanPhone,
+        'EMAIL;TYPE=INTERNET:' + (p.email || ''),
+        'URL:' + (p.linkedin_url || ''),
+        'ADR;TYPE=WORK:;;' + (p.location || 'Dakar, Senegal'),
+        'NOTE:' + signature,
         'END:VCARD'
       ].join('\r\n');
-
       try {
         const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
         const url = URL.createObjectURL(blob);
@@ -627,6 +577,186 @@
       }, { threshold: 0.12 });
       document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
     }
+
+    // Live portfolio CMS — only the publishable key is used in this public page.
+    const PORTFOLIO_SUPABASE_URL = 'https://kjrgvpxmqrbhbejqedcm.supabase.co';
+    const PORTFOLIO_SUPABASE_KEY = 'sb_publishable_LIE3gft788Rt0Y9szWBBbQ_9vW2rwZw';
+    const portfolioDb = window.supabase.createClient(PORTFOLIO_SUPABASE_URL, PORTFOLIO_SUPABASE_KEY);
+    let portfolioEvents = [];
+    let portfolioExperiences = [];
+    let portfolioDiplomas = [];
+    let portfolioInitiatives = [];
+
+    function escapeDynamic(value) {
+      return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
+        return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]);
+      });
+    }
+    function safeImageUrl(value) {
+      try {
+        const url = new URL(value, window.location.href);
+        return (url.protocol === 'https:' || url.protocol === 'http:') ? url.href : '';
+      } catch (error) { return ''; }
+    }
+    function localisedText(record, englishKey, frenchKey) {
+      const primary = currentLanguage === 'fr' ? record[frenchKey] : record[englishKey];
+      const secondary = currentLanguage === 'fr' ? record[englishKey] : record[frenchKey];
+      return primary || secondary || '';
+    }
+    function formatPortfolioDate(value) {
+      if (!value) return '';
+      const date = new Date(value + 'T12:00:00Z');
+      if (Number.isNaN(date.getTime())) return '';
+      return new Intl.DateTimeFormat(currentLanguage === 'fr' ? 'fr-FR' : 'en-GB', {month:'short',year:'numeric',timeZone:'UTC'}).format(date);
+    }
+    function formatDateRange(start, end, current) {
+      const a = formatPortfolioDate(start);
+      const b = current ? (currentLanguage === 'fr' ? 'Aujourd’hui' : 'Present') : formatPortfolioDate(end);
+      return [a,b].filter(Boolean).join(' — ');
+    }
+    function mediaStrip(urls, alt) {
+      const cleaned = (urls || []).map(safeImageUrl).filter(Boolean).slice(0,8);
+      if (!cleaned.length) return '';
+      return '<div class="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4">' + cleaned.map(function (url) {
+        return '<a href="' + escapeDynamic(url) + '" target="_blank" rel="noopener noreferrer" class="block overflow-hidden rounded-lg bg-slate-100"><img src="' + escapeDynamic(url) + '" alt="' + escapeDynamic(alt) + '" class="h-24 w-full object-cover transition hover:scale-105" loading="lazy"></a>';
+      }).join('') + '</div>';
+    }
+    function dynamicEmpty() {
+      return '<p class="rounded-xl border border-dashed border-slate-300 bg-white/70 p-5 text-sm text-slate-500">' + escapeDynamic(translations[currentLanguage].dynamic_empty) + '</p>';
+    }
+    function renderDynamicPortfolio() {
+      const expGrid = document.getElementById('experiencesGrid');
+      const diplomaGrid = document.getElementById('diplomasGrid');
+      const eventGrid = document.getElementById('eventsGrid');
+      const initiativeGrid = document.getElementById('initiativesGrid');
+      if (expGrid) {
+        expGrid.innerHTML = portfolioExperiences.length ? portfolioExperiences.map(function (item) {
+          const description = localisedText(item,'description_en','description_fr');
+          const tags = (item.skills || []).map(function (tag) { return '<span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-medium text-slate-600">' + escapeDynamic(tag) + '</span>'; }).join('');
+          const dates = formatDateRange(item.start_date,item.end_date,item.is_current);
+          const images = mediaStrip(item.image_urls,item.title);
+          return '<article class="reveal rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8">' +
+            '<div class="flex flex-wrap items-start justify-between gap-3"><div><h3 class="font-display text-xl font-bold text-ink">' + escapeDynamic(item.title) + '</h3><p class="mt-1 text-sm font-semibold text-emerald">' + escapeDynamic(item.organization) + '</p></div>' +
+            (item.is_current ? '<span class="rounded-full bg-emerald/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald">' + escapeDynamic(translations[currentLanguage].current_role) + '</span>' : '') +
+            '</div>' + (dates ? '<p class="mt-3 text-xs font-medium text-slate-400">' + escapeDynamic(dates) + '</p>' : '') +
+            (description ? '<p class="mt-4 text-sm leading-7 text-slate-600">' + escapeDynamic(description) + '</p>' : '') +
+            (tags ? '<div class="mt-5 flex flex-wrap gap-2">' + tags + '</div>' : '') + images + '</article>';
+        }).join('') : dynamicEmpty();
+      }
+      if (diplomaGrid) {
+        diplomaGrid.innerHTML = portfolioDiplomas.length ? portfolioDiplomas.map(function (item) {
+          const details = localisedText(item,'details_en','details_fr');
+          const image = safeImageUrl(item.image_url);
+          return '<article class="reveal rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-7">' +
+            '<div class="flex items-start gap-4">' +
+            (image ? '<a href="' + escapeDynamic(image) + '" target="_blank" rel="noopener noreferrer" class="shrink-0"><img src="' + escapeDynamic(image) + '" alt="' + escapeDynamic(item.title) + '" class="h-20 w-20 rounded-xl object-cover"></a>' : '<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#c9a76a]/15 text-2xl text-[#9a783d]">✦</div>') +
+            '<div class="min-w-0"><h3 class="font-display text-lg font-bold text-ink">' + escapeDynamic(item.title) + '</h3><p class="mt-1 text-sm font-semibold text-slate-500">' + escapeDynamic(item.institution) + '</p>' +
+            (item.year ? '<p class="mt-1 text-xs text-slate-400">' + escapeDynamic(item.year) + '</p>' : '') + '</div></div>' +
+            (details ? '<p class="mt-4 text-sm leading-7 text-slate-600">' + escapeDynamic(details) + '</p>' : '') + '</article>';
+        }).join('') : dynamicEmpty();
+      }
+      if (eventGrid) {
+        eventGrid.innerHTML = portfolioEvents.length ? portfolioEvents.map(function (item) {
+          const upcoming = item.status === 'upcoming';
+          const statusLabel = upcoming ? translations[currentLanguage].event_upcoming : translations[currentLanguage].event_past;
+          const role = currentLanguage === 'fr' ? (item.role_fr || item.role_en) : (item.role_en || item.role_fr);
+          const summary = localisedText(item,'summary_en','summary_fr');
+          const dates = formatDateRange(item.start_date,item.end_date,false);
+          const cover = safeImageUrl(item.cover_image);
+          const gallery = (item.gallery_urls || []).map(safeImageUrl).filter(Boolean);
+          const photos = mediaStrip((cover ? [cover] : []).concat(gallery),item.title);
+          return '<article class="reveal overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">' +
+            (cover ? '<a href="' + escapeDynamic(cover) + '" target="_blank" rel="noopener noreferrer"><img src="' + escapeDynamic(cover) + '" alt="' + escapeDynamic(item.title) + '" class="h-52 w-full object-cover" loading="lazy"></a>' : '') +
+            '<div class="p-6 sm:p-7"><div class="flex flex-wrap items-center gap-2"><span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider ' + (upcoming ? 'bg-emerald/10 text-emerald' : 'bg-slate-100 text-slate-500') + '">' + escapeDynamic(statusLabel) + '</span>' +
+            (role ? '<span class="rounded-full bg-[#c9a76a]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#8c6b36]">' + escapeDynamic(role) + '</span>' : '') +
+            '</div><h3 class="mt-4 font-display text-xl font-bold text-ink">' + escapeDynamic(item.title) + '</h3>' +
+            '<p class="mt-2 text-xs font-semibold text-slate-500">' + escapeDynamic([item.location,item.country,dates].filter(Boolean).join(' · ')) + '</p>' +
+            (summary ? '<p class="mt-4 text-sm leading-7 text-slate-600">' + escapeDynamic(summary) + '</p>' : '') +
+            (gallery.length ? mediaStrip(gallery,item.title) : '') + '</div></article>';
+        }).join('') : dynamicEmpty();
+      }
+      if (initiativeGrid) {
+        initiativeGrid.innerHTML = portfolioInitiatives.length ? portfolioInitiatives.map(function (item) {
+          const description = localisedText(item,'description_en','description_fr');
+          const status = item.status === 'completed' ? (currentLanguage === 'fr' ? 'Terminé' : 'Completed')
+            : item.status === 'paused' ? (currentLanguage === 'fr' ? 'En pause' : 'Paused')
+            : item.status === 'in_progress' ? (currentLanguage === 'fr' ? 'En préparation' : 'In progress')
+            : (currentLanguage === 'fr' ? 'En cours' : 'Ongoing');
+          const images = mediaStrip(item.image_urls,item.title);
+          const link = safeImageUrl(item.link_url);
+          return '<article class="reveal rounded-2xl border border-slate-200 p-6 sm:p-8"><div class="flex flex-wrap items-center justify-between gap-3">' +
+            '<span class="rounded-full bg-emerald/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald">' + escapeDynamic(item.category || (currentLanguage === 'fr' ? 'Initiative' : 'Initiative')) + '</span>' +
+            '<span class="font-mono text-[10px] text-slate-400">' + escapeDynamic(status) + '</span></div>' +
+            '<h3 class="mt-5 font-display text-xl font-bold text-ink">' + escapeDynamic(item.title) + '</h3>' +
+            (description ? '<p class="mt-3 text-sm leading-7 text-slate-600">' + escapeDynamic(description) + '</p>' : '') +
+            (link ? '<a class="mt-4 inline-flex text-sm font-semibold text-emerald hover:underline" href="' + escapeDynamic(link) + '" target="_blank" rel="noopener noreferrer">' + (currentLanguage === 'fr' ? 'En savoir plus ↗' : 'Learn more ↗') + '</a>' : '') +
+            images + '</article>';
+        }).join('') : dynamicEmpty();
+      }
+    }
+    function applyPortfolioProfile() {
+      if (!portfolioProfile) return;
+      const p = portfolioProfile;
+      const title = currentLanguage === 'fr' ? (p.title_fr || p.title_en) : (p.title_en || p.title_fr);
+      const intro = currentLanguage === 'fr' ? (p.intro_fr || p.intro_en) : (p.intro_en || p.intro_fr);
+      const signature = currentLanguage === 'fr' ? (p.signature_fr || p.signature_en) : (p.signature_en || p.signature_fr);
+      const name = document.getElementById('profileName');
+      const titleNode = document.getElementById('profileTitle');
+      const introNode = document.getElementById('profileIntro');
+      const signatureNode = document.getElementById('profileSignatureHero');
+      const locationHero = document.getElementById('profileLocationHero');
+      if (name && p.full_name) name.textContent = p.full_name;
+      if (titleNode && title) titleNode.textContent = title;
+      if (introNode && intro) introNode.textContent = intro;
+      if (signatureNode && signature) signatureNode.textContent = signature;
+      if (locationHero && p.location) locationHero.textContent = p.location + ' · ' + (currentLanguage === 'fr' ? 'Fabrication de vaccins en Afrique' : 'African vaccine manufacturing');
+      const photo = document.getElementById('profilePhoto');
+      const fallback = document.getElementById('photoFallback');
+      const photoUrl = safeImageUrl(p.photo_url);
+      if (photo && photoUrl) { photo.src = photoUrl; photo.style.display = ''; }
+      if (photo && fallback && photoUrl) photo.addEventListener('load', function () { fallback.style.display = 'none'; }, {once:true});
+      const location = document.getElementById('contactLocation');
+      if (location && p.location) location.textContent = p.location;
+      const phone = document.getElementById('contactPhone');
+      if (phone && p.phone) { phone.textContent = p.phone; phone.href = 'tel:' + p.phone.replace(/[^\d+]/g,''); }
+      const email = document.getElementById('contactEmail');
+      if (email && p.email) { email.textContent = p.email; email.href = 'mailto:' + p.email; }
+      if (p.linkedin_url) document.querySelectorAll('a[href*="linkedin.com/in/"]').forEach(function (link) { link.href = p.linkedin_url; });
+    }
+    async function loadPortfolioContent() {
+      try {
+        const requests = await Promise.all([
+          portfolioDb.from('profile').select('*').eq('id',1).maybeSingle(),
+          portfolioDb.from('events').select('*').eq('is_published',true).order('start_date',{ascending:false}).order('sort_order',{ascending:true}),
+          portfolioDb.from('experiences').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('start_date',{ascending:false}),
+          portfolioDb.from('diplomas').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('year',{ascending:false}),
+          portfolioDb.from('initiatives').select('*').eq('is_published',true).order('sort_order',{ascending:true}).order('created_at',{ascending:false})
+        ]);
+        if (requests[0].error) throw requests[0].error;
+        if (requests[1].error) throw requests[1].error;
+        if (requests[2].error) throw requests[2].error;
+        if (requests[3].error) throw requests[3].error;
+        if (requests[4].error) throw requests[4].error;
+        portfolioProfile = requests[0].data || null;
+        portfolioEvents = requests[1].data || [];
+        portfolioExperiences = requests[2].data || [];
+        portfolioDiplomas = requests[3].data || [];
+        portfolioInitiatives = requests[4].data || [];
+        applyPortfolioProfile();
+        renderDynamicPortfolio();
+      } catch (error) {
+        console.error('Portfolio CMS could not be loaded:', error);
+        const message = currentLanguage === 'fr'
+          ? 'Les contenus dynamiques ne sont pas disponibles pour le moment.'
+          : 'Dynamic portfolio content is temporarily unavailable.';
+        ['eventsGrid','experiencesGrid','diplomasGrid','initiativesGrid'].forEach(function (id) {
+          const node = document.getElementById(id);
+          if (node) node.innerHTML = '<p class="rounded-xl border border-dashed border-slate-300 p-5 text-sm text-slate-500">' + escapeDynamic(message) + '</p>';
+        });
+      }
+    }
+    setLanguage(currentLanguage);
+    loadPortfolioContent();
   </script>
 </body>
 </html>
