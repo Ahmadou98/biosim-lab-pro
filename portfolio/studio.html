@@ -96,7 +96,7 @@
       const $=id=>document.getElementById(id);
       const storeTokenKey="biopage_session", storeSlugKey="biopage_slug";
       let token=sessionStorage.getItem(storeTokenKey)||"";
-      let data=null, activeTab="profile", editing=null;
+      let data=null, activeTab="profile", editing=null, recoveryCodeStored=false;
 
       const tabMeta={
         profile:["Mon profil","Gérez les informations et les coordonnées de votre carte."],
@@ -330,24 +330,29 @@
         }catch(error){PP.setMessage($("recoveryFormMessage"),error.message,true);}
         finally{btn.disabled=false;btn.textContent="Récupérer mon compte ↗";}
       });
+      function updateRecoveryContinue(){
+        $("continueAfterRecoveryBtn").disabled=!(recoveryCodeStored && $("confirmNewRecoverySaved").checked);
+      }
       function showRecoveryResult(slug,code,nextToken){
         token=nextToken||token;
         sessionStorage.setItem(storeTokenKey,token);
         sessionStorage.setItem(storeSlugKey,slug);
         $("loginPanel").hidden=true;$("studioApp").hidden=true;$("recoveryResultPanel").hidden=false;
         $("recoveredSlug").textContent=slug;$("recoveredCode").value=code;
+        recoveryCodeStored=false;
         $("confirmNewRecoverySaved").checked=false;$("continueAfterRecoveryBtn").disabled=true;
         window.scrollTo({top:0,behavior:"smooth"});
       }
       $("downloadNewRecoveryBtn").addEventListener("click",function(){
         PP.downloadRecoveryFile($("recoveredSlug").textContent,$("recoveredCode").value);
+        recoveryCodeStored=true;updateRecoveryContinue();
         PP.setMessage($("recoveryResultMessage"),"Fichier téléchargé. Conservez-le en lieu sûr.");
       });
       $("copyNewRecoveryBtn").addEventListener("click",async function(){
-        try{await PP.copyText($("recoveredCode").value);PP.setMessage($("recoveryResultMessage"),"Code copié.");}
+        try{await PP.copyText($("recoveredCode").value);recoveryCodeStored=true;updateRecoveryContinue();PP.setMessage($("recoveryResultMessage"),"Code copié.");}
         catch(error){PP.setMessage($("recoveryResultMessage"),error.message,true);}
       });
-      $("confirmNewRecoverySaved").addEventListener("change",function(){$("continueAfterRecoveryBtn").disabled=!this.checked;});
+      $("confirmNewRecoverySaved").addEventListener("change",updateRecoveryContinue);
       $("continueAfterRecoveryBtn").addEventListener("click",async function(){
         if(!$("confirmNewRecoverySaved").checked)return;
         $("recoveryResultPanel").hidden=true;
