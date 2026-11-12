@@ -143,6 +143,7 @@ create index if not exists public_events_slug_sort_idx on public.public_events(s
 create index if not exists public_initiatives_slug_sort_idx on public.public_initiatives(slug, sort_order, created_at desc);
 create index if not exists public_contacts_owner_created_idx on public.public_contacts(owner_slug, created_at desc);
 create index if not exists public_sessions_expiry_idx on public.public_sessions(expires_at);
+create index if not exists public_sessions_owner_slug_idx on public.public_sessions(owner_slug);
 
 -- No anonymous/authenticated direct Data API access. The Edge Function uses the server secret.
 alter table public.public_profiles enable row level security;
