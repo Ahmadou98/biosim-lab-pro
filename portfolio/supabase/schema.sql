@@ -70,8 +70,10 @@ create table if not exists public.profile (
 );
 
 grant usage on schema public to anon, authenticated;
-grant select on public.events, public.experiences, public.diplomas, public.initiatives, public.profile to anon, authenticated;
-grant insert, update, delete on public.events, public.experiences, public.diplomas, public.initiatives, public.profile to authenticated;
+-- Remove inherited/default writes from PUBLIC and anon before granting least privilege.
+revoke all privileges on public.events, public.experiences, public.diplomas, public.initiatives, public.profile from anon, public;
+grant select on public.events, public.experiences, public.diplomas, public.initiatives, public.profile to anon;
+grant select, insert, update, delete on public.events, public.experiences, public.diplomas, public.initiatives, public.profile to authenticated;
 
 alter table public.events enable row level security;
 alter table public.experiences enable row level security;
