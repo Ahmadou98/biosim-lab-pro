@@ -26,6 +26,41 @@
         <button id="loginButton" class="pp-btn pp-btn-primary" type="submit">Accéder à mon espace ↗</button>
         <p class="pp-hint">Vous n’avez pas encore de portfolio ? <a href="create.html" style="color:#07845f;font-weight:800">Créer mon portfolio</a>.</p>
       </form>
+      <div style="margin-top:18px;padding-top:15px;border-top:1px solid #e3eaf0">
+        <button id="forgotAccessBtn" class="pp-btn pp-btn-outline pp-btn-small" type="button">Identifiant oublié ou PIN perdu ?</button>
+        <p class="pp-hint" style="margin-top:8px">Utilisez le code de récupération enregistré lors de la création du portfolio. Il fonctionne même si vous avez oublié votre identifiant.</p>
+        <section id="recoveryFormPanel" hidden class="pp-panel" style="margin-top:14px;background:#f8fafb;box-shadow:none">
+          <form id="recoveryForm" class="pp-form">
+            <h2 class="pp-form-section">Récupérer mon portfolio</h2>
+            <label class="pp-field"><span class="pp-label">Code de récupération</span><textarea class="pp-textarea" id="recoveryInput" rows="2" required minlength="64" maxlength="64" placeholder="Collez le code de récupération à 64 caractères"></textarea></label>
+            <label class="pp-field"><span class="pp-label">Nouveau PIN à 6 chiffres</span><input class="pp-input" id="newRecoveryPin" type="password" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" required autocomplete="new-password" placeholder="••••••"></label>
+            <label class="pp-field"><span class="pp-label">Confirmer le nouveau PIN</span><input class="pp-input" id="confirmRecoveryPin" type="password" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" required autocomplete="new-password" placeholder="••••••"></label>
+            <div id="recoveryFormMessage" class="pp-message" role="alert" aria-live="polite"></div>
+            <div class="pp-form-actions">
+              <button id="recoverAccountBtn" class="pp-btn pp-btn-primary" type="submit">Récupérer mon compte ↗</button>
+              <button id="cancelRecoveryBtn" class="pp-btn pp-btn-outline" type="button">Annuler</button>
+            </div>
+            <p class="pp-hint">Ce code est à usage unique. Après récupération, un nouveau code vous sera remis. L'ancien ne fonctionnera plus.</p>
+          </form>
+        </section>
+      </div>
+    </section>
+
+    <section id="recoveryResultPanel" class="pp-panel" hidden style="max-width:620px;margin:35px auto">
+      <p class="pp-eyebrow">SÉCURITÉ DU COMPTE</p>
+      <h1 class="pp-page-heading">Votre code de récupération</h1>
+      <p class="pp-page-intro">Conservez ces informations maintenant. Le code affiché ici ne sera plus consultable après cette étape.</p>
+      <div class="pp-form" style="margin-top:20px">
+        <div class="pp-field"><span class="pp-label">Identifiant retrouvé</span><div id="recoveredSlug" class="pp-input" style="font-weight:850;background:#f7fafb">—</div></div>
+        <div class="pp-field"><span class="pp-label">Votre nouveau code de récupération</span><textarea id="recoveredCode" class="pp-textarea" rows="3" readonly style="font-family:ui-monospace,monospace;font-size:12px;font-weight:850;letter-spacing:.05em"></textarea></div>
+        <div class="pp-form-actions">
+          <button id="downloadNewRecoveryBtn" class="pp-btn pp-btn-primary" type="button">Télécharger mon nouveau code ↓</button>
+          <button id="copyNewRecoveryBtn" class="pp-btn pp-btn-outline" type="button">Copier le code</button>
+        </div>
+        <label class="pp-checkline"><input id="confirmNewRecoverySaved" type="checkbox"><span>J'ai téléchargé ou enregistré le nouveau code en lieu sûr.</span></label>
+        <div id="recoveryResultMessage" class="pp-message" role="status"></div>
+        <button id="continueAfterRecoveryBtn" class="pp-btn pp-btn-primary" type="button" disabled>Continuer vers mon espace ↗</button>
+      </div>
     </section>
 
     <section id="studioApp" hidden>
@@ -147,8 +182,21 @@
             '</div>'+
             '<div id="profileMessage" class="pp-message" role="status"></div>'+
             '<button class="pp-btn pp-btn-primary" type="submit">Enregistrer mon profil</button>'+
-          '</form>';
+          '</form>'+
+          '<div class="pp-panel" style="margin-top:16px;background:#f8fafb;box-shadow:none">'+
+            '<h3 class="pp-form-section">Récupération du compte</h3>'+
+            '<p class="pp-hint" style="margin:8px 0 12px">Générez ou remplacez votre code de récupération. Il vous permettra de retrouver votre identifiant et de réinitialiser votre PIN si nécessaire.</p>'+
+            '<button id="generateRecoveryBtn" class="pp-btn pp-btn-outline pp-btn-small" type="button">Générer un code de récupération</button>'+
+          '</div>';
         $("profileForm").addEventListener("submit",saveProfile);
+        $("generateRecoveryBtn").addEventListener("click",async function(){
+          const btn=this;btn.disabled=true;
+          try{
+            const recovery=await PP.api("rotate-recovery-code",{token});
+            showRecoveryResult(recovery.slug,recovery.recovery_code,token);
+          }catch(error){message(error.message,true);}
+          finally{btn.disabled=false;}
+        });
       }
       function profileField(name,label,value,required){
         const type=required=== "email"||required==="url"?required:"text";
@@ -254,6 +302,58 @@
         sessionStorage.removeItem(storeTokenKey);sessionStorage.removeItem(storeSlugKey);location.reload();
       });
       $("loginSlug").value=new URLSearchParams(location.search).get("slug")||sessionStorage.getItem(storeSlugKey)||"";
+      $("forgotAccessBtn").addEventListener("click",function(){
+        $("recoveryFormPanel").hidden=!$("recoveryFormPanel").hidden;
+        if(!$("recoveryFormPanel").hidden)$("recoveryInput").focus();
+      });
+      $("cancelRecoveryBtn").addEventListener("click",function(){
+        $("recoveryFormPanel").hidden=true;$("recoveryForm").reset();PP.setMessage($("recoveryFormMessage"),"");
+      });
+      $("recoveryForm").addEventListener("submit",async function(event){
+        event.preventDefault();PP.setMessage($("recoveryFormMessage"),"");
+        const btn=$("recoverAccountBtn");
+        if($("newRecoveryPin").value!==$("confirmRecoveryPin").value){
+          PP.setMessage($("recoveryFormMessage"),"Les deux nouveaux codes PIN ne correspondent pas.",true);return;
+        }
+        if(!this.reportValidity())return;
+        btn.disabled=true;btn.textContent="Récupération en cours…";
+        try{
+          const result=await PP.api("recover-account",{
+            recovery_code:$("recoveryInput").value.trim().toLowerCase(),
+            new_pin:$("newRecoveryPin").value
+          });
+          token=result.token;
+          sessionStorage.setItem(storeTokenKey,token);
+          sessionStorage.setItem(storeSlugKey,result.slug);
+          showRecoveryResult(result.slug,result.recovery_code,token);
+          $("recoveryForm").reset();
+        }catch(error){PP.setMessage($("recoveryFormMessage"),error.message,true);}
+        finally{btn.disabled=false;btn.textContent="Récupérer mon compte ↗";}
+      });
+      function showRecoveryResult(slug,code,nextToken){
+        token=nextToken||token;
+        sessionStorage.setItem(storeTokenKey,token);
+        sessionStorage.setItem(storeSlugKey,slug);
+        $("loginPanel").hidden=true;$("studioApp").hidden=true;$("recoveryResultPanel").hidden=false;
+        $("recoveredSlug").textContent=slug;$("recoveredCode").value=code;
+        $("confirmNewRecoverySaved").checked=false;$("continueAfterRecoveryBtn").disabled=true;
+        window.scrollTo({top:0,behavior:"smooth"});
+      }
+      $("downloadNewRecoveryBtn").addEventListener("click",function(){
+        PP.downloadRecoveryFile($("recoveredSlug").textContent,$("recoveredCode").value);
+        PP.setMessage($("recoveryResultMessage"),"Fichier téléchargé. Conservez-le en lieu sûr.");
+      });
+      $("copyNewRecoveryBtn").addEventListener("click",async function(){
+        try{await PP.copyText($("recoveredCode").value);PP.setMessage($("recoveryResultMessage"),"Code copié.");}
+        catch(error){PP.setMessage($("recoveryResultMessage"),error.message,true);}
+      });
+      $("confirmNewRecoverySaved").addEventListener("change",function(){$("continueAfterRecoveryBtn").disabled=!this.checked;});
+      $("continueAfterRecoveryBtn").addEventListener("click",async function(){
+        if(!$("confirmNewRecoverySaved").checked)return;
+        $("recoveryResultPanel").hidden=true;
+        try{await loadData();}
+        catch(error){$("recoveryResultPanel").hidden=false;PP.setMessage($("recoveryResultMessage"),error.message,true);}
+      });
       $("loginForm").addEventListener("submit",async event=>{
         event.preventDefault();PP.setMessage($("loginMessage"),"");
         const button=$("loginButton");button.disabled=true;button.textContent="Vérification…";
