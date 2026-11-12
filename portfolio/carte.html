@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071a2d">
+  <meta name="description" content="Digital business card of Ahmadou Lamine Diouf — Biomanufacturing Specialist, advocating for African vaccine manufacturing.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ahmadou Lamine Diouf | Digital Contact Card">
+  <meta property="og:description" content="Connect with Ahmadou Lamine Diouf — Biomanufacturing Specialist | Advocating for African Vaccine Manufacturing.">
+  <meta property="og:url" content="https://ahmadou-lamine-diouf.pages.dev/carte.html">
+  <title>Digital Contact Card | Ahmadou Lamine Diouf</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root{color-scheme:light}
+    body{font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:#f2f5f7}
+    .premium-card{background:radial-gradient(circle at 13% 12%,rgba(22,160,120,.2),transparent 33%),linear-gradient(120deg,#071a2d 0%,#102f49 67%,#0c273e 100%);box-shadow:0 30px 90px rgba(7,26,45,.22)}
+    .card-grid{background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:34px 34px}
+    .contact-link{display:flex;align-items:flex-start;gap:.75rem;min-width:0;border-radius:.75rem;padding:.7rem .8rem;transition:background .2s}
+    .contact-link:hover{background:rgba(22,160,120,.08)}
+    .action-btn{display:inline-flex;min-height:46px;align-items:center;justify-content:center;gap:.55rem;border-radius:.7rem;padding:.75rem 1.05rem;font-size:.86rem;font-weight:750;transition:transform .2s,background .2s}
+    .action-btn:active{transform:scale(.98)}
+    .action-primary{background:#087e61;color:#fff}.action-primary:hover{background:#066d53}
+    .action-dark{background:#071a2d;color:#fff}.action-dark:hover{background:#123653}
+    .action-light{background:#fff;border:1px solid #d8e0e6;color:#0b2540}.action-light:hover{background:#f8fafb}
+    .qr-frame{background:#fff;padding:12px;border-radius:14px;display:inline-flex;align-items:center;justify-content:center}
+    #qrCode canvas,#qrCode img{display:block;width:190px!important;height:190px!important}
+    @media(max-width:640px){#qrCode canvas,#qrCode img{width:150px!important;height:150px!important}}
+    .photo-frame{background:linear-gradient(145deg,#caa76b,#16a078);padding:4px}
+    .photo-frame img{background:#14314a}
+    .muted-label{font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#92a7b8}
+    .sr-only-canvas{position:fixed;left:-10000px;top:0;width:1800px;height:1000px;pointer-events:none}
+  </style>
+</head>
+<body class="min-h-screen text-slate-800 antialiased">
+  <header class="mx-auto flex max-w-6xl items-center justify-between px-4 py-5 sm:px-7">
+    <a href="/" class="text-sm font-bold tracking-tight text-[#071a2d]">AHMADOU LAMINE DIOUF</a>
+    <div class="flex items-center gap-2">
+      <button id="langEn" class="rounded-lg px-3 py-2 text-xs font-bold text-slate-500" aria-pressed="true">EN</button>
+      <button id="langFr" class="rounded-lg px-3 py-2 text-xs font-bold text-slate-500" aria-pressed="false">FR</button>
+      <a href="/" class="ml-1 hidden rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 sm:inline-flex" data-t="back">Back to portfolio ↗</a>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-4 pb-12 sm:px-7">
+    <div class="mx-auto mb-6 max-w-3xl text-center">
+      <p class="text-[10px] font-extrabold uppercase tracking-[.22em] text-emerald-700" data-t="kicker">DIGITAL BUSINESS CARD</p>
+      <h1 class="mt-2 font-serif text-3xl font-bold tracking-tight text-[#071a2d] sm:text-4xl" data-t="heading">One scan. A direct connection.</h1>
+      <p class="mx-auto mt-3 max-w-xl text-sm leading-6 text-slate-500" data-t="intro">Save my contact, reach me directly, or share my professional contact card.</p>
+    </div>
+
+    <section id="businessCard" class="premium-card card-grid relative isolate overflow-hidden rounded-[1.6rem] border border-white/10 px-5 py-7 text-white shadow-2xl sm:rounded-[2rem] sm:px-10 sm:py-10 lg:px-12">
+      <div class="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full border border-white/10"></div>
+      <div class="pointer-events-none absolute -right-8 -top-12 h-56 w-56 rounded-full border border-emerald-200/10"></div>
+      <div class="relative grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_270px] lg:gap-10">
+        <div class="min-w-0">
+          <div class="flex items-center gap-3">
+            <span class="h-[2px] w-9 bg-[#c9a76a]"></span>
+            <span class="muted-label !text-emerald-200" data-t="brand">AFRICAN VACCINE MANUFACTURING</span>
+          </div>
+          <div class="mt-8 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-7">
+            <div class="photo-frame h-28 w-28 shrink-0 rounded-full sm:h-36 sm:w-36">
+              <img id="profilePhoto" src="https://avatars.githubusercontent.com/u/189660768?v=4" alt="Ahmadou Lamine Diouf" class="h-full w-full rounded-full object-cover">
+            </div>
+            <div class="min-w-0">
+              <p class="muted-label" data-t="nameLabel">YOUR CONTACT</p>
+              <h2 id="fullName" class="mt-2 break-words font-serif text-3xl font-bold leading-tight tracking-tight sm:text-4xl">Ahmadou Lamine Diouf</h2>
+              <p id="professionalTitle" class="mt-3 max-w-2xl text-sm font-semibold leading-6 text-slate-200 sm:text-base">Biomanufacturing Specialist | Advocating for African Vaccine Manufacturing</p>
+              <p id="signature" class="mt-3 text-xs font-semibold tracking-wide text-emerald-200">Advocating for African Vaccine Manufacturing</p>
+            </div>
+          </div>
+
+          <div class="mt-8 grid gap-2 border-t border-white/15 pt-6 sm:grid-cols-2">
+            <a id="phoneLink" class="contact-link" href="tel:+221771018290">
+              <span class="mt-0.5 text-emerald-200">☎</span>
+              <span class="min-w-0"><span class="muted-label block" data-t="phone">PHONE / WHATSAPP</span><span id="phoneText" class="mt-1 block break-all text-sm font-semibold text-white">+221 77 101 82 90</span></span>
+            </a>
+            <a id="emailLink" class="contact-link" href="mailto:ahmadoulaminediouf39@gmail.com">
+              <span class="mt-0.5 text-emerald-200">✉</span>
+              <span class="min-w-0"><span class="muted-label block" data-t="email">EMAIL</span><span id="emailText" class="mt-1 block break-all text-sm font-semibold text-white">ahmadoulaminediouf39@gmail.com</span></span>
+            </a>
+            <a id="linkedinLink" class="contact-link" href="https://www.linkedin.com/in/ahmadou-lamine-diouf-003a98321/" target="_blank" rel="noopener noreferrer">
+              <span class="mt-0.5 font-bold text-emerald-200">in</span>
+              <span class="min-w-0"><span class="muted-label block" data-t="linkedin">LINKEDIN</span><span id="linkedinText" class="mt-1 block break-all text-sm font-semibold text-white">linkedin.com/in/ahmadou-lamine-diouf</span></span>
+            </a>
+            <div class="contact-link">
+              <span class="mt-0.5 text-emerald-200">⌖</span>
+              <span class="min-w-0"><span class="muted-label block" data-t="location">LOCATION</span><span id="locationText" class="mt-1 block text-sm font-semibold text-white">Dakar, Senegal</span></span>
+            </div>
+          </div>
+          <p class="mt-6 text-[9px] font-bold uppercase tracking-[.2em] text-slate-400">AHMADOU LAMINE DIOUF <span class="mx-2 text-[#c9a76a]">•</span> BIO­MANUFACTURING <span class="mx-2 text-[#c9a76a]">•</span> SENEGAL</p>
+        </div>
+
+        <aside class="mx-auto w-full max-w-[270px] rounded-2xl bg-white p-4 text-center text-[#071a2d] shadow-xl lg:mx-0">
+          <p class="text-[10px] font-extrabold uppercase tracking-[.17em] text-emerald-800" data-t="scan">SCAN TO CONNECT</p>
+          <div class="mt-3 flex justify-center">
+            <div id="qrCode" class="qr-frame min-h-[174px] min-w-[174px] sm:min-h-[214px] sm:min-w-[214px]" aria-label="QR code to open the interactive contact card"></div>
+          </div>
+          <p class="mt-3 text-xs font-bold text-[#071a2d]" data-t="scanCaption">Open my interactive contact card</p>
+          <p class="mt-1 break-all text-[9px] text-slate-400">ahmadou-lamine-diouf.pages.dev/carte.html</p>
+        </aside>
+      </div>
+      <div class="relative mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-white/15 pt-5">
+        <span class="text-[10px] font-semibold tracking-wide text-slate-400" data-t="slogan">Advocating for African Vaccine Manufacturing</span>
+        <span class="text-[9px] font-bold uppercase tracking-[.2em] text-[#d2b57e]">DAKAR · SENEGAL</span>
+      </div>
+    </section>
+
+    <section class="mx-auto mt-7 max-w-4xl">
+      <div class="flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <button id="downloadPng" class="action-btn action-primary w-full sm:w-auto"><span>↓</span><span data-t="downloadImage">Download business card (PNG)</span></button>
+        <button id="shareCard" class="action-btn action-dark w-full sm:w-auto"><span>↗</span><span data-t="share">Share my card</span></button>
+        <button id="downloadVcard" class="action-btn action-light w-full sm:w-auto"><span>＋</span><span data-t="saveContact">Save contact (vCard)</span></button>
+      </div>
+      <p id="status" class="mt-3 min-h-5 text-center text-xs text-slate-500" aria-live="polite"></p>
+    </section>
+
+    <section class="mx-auto mt-8 max-w-4xl rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+      <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+        <div>
+          <h2 class="font-serif text-xl font-bold text-[#071a2d]" data-t="directTitle">Connect directly</h2>
+          <p class="mt-1 text-sm text-slate-500" data-t="directIntro">Choose how you would like to get in touch.</p>
+        </div>
+        <a id="whatsappButton" href="https://wa.me/221771018290" target="_blank" rel="noopener noreferrer" class="action-btn action-primary">WhatsApp ↗</a>
+      </div>
+      <div class="mt-5 grid gap-3 sm:grid-cols-3">
+        <a id="callButton" href="tel:+221771018290" class="rounded-xl border border-slate-200 p-4 text-sm font-bold text-[#071a2d] hover:border-emerald-500"><span class="block text-xs font-medium text-slate-400" data-t="callLabel">CALL</span><span class="mt-1 block" data-t="callAction">Call me ↗</span></a>
+        <a id="mailButton" href="mailto:ahmadoulaminediouf39@gmail.com" class="rounded-xl border border-slate-200 p-4 text-sm font-bold text-[#071a2d] hover:border-emerald-500"><span class="block text-xs font-medium text-slate-400" data-t="mailLabel">EMAIL</span><span class="mt-1 block" data-t="mailAction">Send an email ↗</span></a>
+        <a id="linkedinButton" href="https://www.linkedin.com/in/ahmadou-lamine-diouf-003a98321/" target="_blank" rel="noopener noreferrer" class="rounded-xl border border-slate-200 p-4 text-sm font-bold text-[#071a2d] hover:border-emerald-500"><span class="block text-xs font-medium text-slate-400">LINKEDIN</span><span class="mt-1 block" data-t="linkedinAction">View LinkedIn ↗</span></a>
+      </div>
+    </section>
+
+    <div class="mt-8 text-center">
+      <a href="/" class="text-sm font-semibold text-emerald-800 hover:underline" data-t="portfolioLink">Explore my professional portfolio ↗</a>
+    </div>
+  </main>
+
+  <canvas id="exportCanvas" class="sr-only-canvas" width="1800" height="1000" aria-hidden="true"></canvas>
+
+  <script>
+    (function(){
+      'use strict';
+      const SUPABASE_URL='https://kjrgvpxmqrbhbejqedcm.supabase.co';
+      const SUPABASE_KEY='sb_publishable_LIE3gft788Rt0Y9szWBBbQ_9vW2rwZw';
+      const CARD_URL='https://ahmadou-lamine-diouf.pages.dev/carte.html';
+      const FALLBACK_PHOTO='https://avatars.githubusercontent.com/u/189660768?v=4';
+      const translations={
+        en:{
+          back:'Back to portfolio ↗',kicker:'DIGITAL BUSINESS CARD',heading:'One scan. A direct connection.',
+          intro:'Save my contact, reach me directly, or share my professional contact card.',
+          brand:'AFRICAN VACCINE MANUFACTURING',nameLabel:'YOUR CONTACT',phone:'PHONE / WHATSAPP',
+          email:'EMAIL',linkedin:'LINKEDIN',location:'LOCATION',scan:'SCAN TO CONNECT',
+          scanCaption:'Open my interactive contact card',slogan:'Advocating for African Vaccine Manufacturing',
+          downloadImage:'Download business card (PNG)',share:'Share my card',saveContact:'Save contact (vCard)',
+          directTitle:'Connect directly',directIntro:'Choose how you would like to get in touch.',
+          callLabel:'PHONE',callAction:'Call me ↗',mailLabel:'EMAIL',mailAction:'Send an email ↗',
+          linkedinAction:'View LinkedIn ↗',portfolioLink:'Explore my professional portfolio ↗',
+          imageReady:'Your business card image is ready.',shareReady:'Choose where to share your card.',
+          copied:'Card link copied. You can now paste it into a message.',
+          copyFailed:'Unable to copy automatically. Use this link: ',vcardReady:'Contact file downloaded.',
+          qrError:'The QR code could not be generated. Reload the page.',
+          downloadError:'The image could not be generated in this browser.',
+          shareUnsupported:'Image sharing is not available here. Download the PNG instead.',
+          missingProfile:'Could not load the live profile. Displaying saved contact details.'
+        },
+        fr:{
+          back:'Retour au portfolio ↗',kicker:'CARTE DE VISITE NUMÉRIQUE',heading:'Un scan. Un contact direct.',
+          intro:'Enregistrez mes coordonnées, contactez-moi directement ou partagez ma carte professionnelle.',
+          brand:'FABRICATION DE VACCINS EN AFRIQUE',nameLabel:'VOTRE CONTACT',phone:'TÉLÉPHONE / WHATSAPP',
+          email:'E-MAIL',linkedin:'LINKEDIN',location:'LOCALISATION',scan:'SCANNER POUR ME JOINDRE',
+          scanCaption:'Ouvrir ma carte de contact interactive',slogan:'Engagé pour la fabrication de vaccins en Afrique',
+          downloadImage:'Télécharger la carte (PNG)',share:'Partager ma carte',saveContact:'Enregistrer le contact (vCard)',
+          directTitle:'Me contacter directement',directIntro:'Choisissez le moyen de contact qui vous convient.',
+          callLabel:'TÉLÉPHONE',callAction:'M’appeler ↗',mailLabel:'E-MAIL',mailAction:'Envoyer un e-mail ↗',
+          linkedinAction:'Voir mon LinkedIn ↗',portfolioLink:'Découvrir mon portfolio professionnel ↗',
+          imageReady:'Votre image de carte de visite est prête.',shareReady:'Choisissez où partager votre carte.',
+          copied:'Lien de la carte copié. Vous pouvez maintenant le coller dans un message.',
+          copyFailed:'Copie automatique impossible. Utilisez ce lien : ',vcardReady:'Fichier contact téléchargé.',
+          qrError:'Le QR code n’a pas pu être généré. Rechargez la page.',
+          downloadError:'Impossible de générer l’image dans ce navigateur.',
+          shareUnsupported:'Le partage d’image n’est pas disponible ici. Téléchargez plutôt le PNG.',
+          missingProfile:'Le profil en direct est indisponible. Les coordonnées enregistrées sont affichées.'
+        }
+      };
+      let lang='en';
+      let profile={
+        full_name:'Ahmadou Lamine Diouf',
+        title_en:'Biomanufacturing Specialist | Advocating for African Vaccine Manufacturing',
+        title_fr:'Spécialiste en bioproduction | Engagé pour la fabrication de vaccins en Afrique',
+        signature_en:'Advocating for African Vaccine Manufacturing',
+        signature_fr:'Engagé pour la fabrication de vaccins en Afrique',
+        location:'Dakar, Senegal',
+        phone:'+221 77 101 82 90',
+        email:'ahmadoulaminediouf39@gmail.com',
+        linkedin_url:'https://www.linkedin.com/in/ahmadou-lamine-diouf-003a98321/',
+        photo_url:FALLBACK_PHOTO
+      };
+      const $=id=>document.getElementById(id);
+      const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+      function t(key){return translations[lang][key]||translations.en[key]||key;}
+      function safeUrl(value){try{const u=new URL(value);return ['https:','http:','mailto:','tel:'].includes(u.protocol)?u.href:'';}catch(e){return '';}}
+      function digits(value){return String(value||'').replace(/\D/g,'');}
+      function setText(id,value){if($(id))$(id).textContent=value||'';}
+      function applyProfile(){
+        const title=lang==='fr'?(profile.title_fr||profile.title_en):(profile.title_en||profile.title_fr);
+        const signature=lang==='fr'?(profile.signature_fr||profile.signature_en):(profile.signature_en||profile.signature_fr);
+        const phone=profile.phone||'';
+        const phoneHref='tel:'+phone.replace(/[^\d+]/g,'');
+        const email=profile.email||'';
+        const linkedin=profile.linkedin_url||'';
+        setText('fullName',profile.full_name);
+        setText('professionalTitle',title);
+        setText('signature',signature);
+        setText('phoneText',phone);
+        setText('emailText',email);
+        setText('locationText',profile.location);
+        const linkedText=linkedin.replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,'');
+        setText('linkedinText',linkedText);
+        $('phoneLink').href=phoneHref;
+        $('emailLink').href='mailto:'+email;
+        $('linkedinLink').href=linkedin;
+        $('callButton').href=phoneHref;
+        $('mailButton').href='mailto:'+email;
+        $('linkedinButton').href=linkedin;
+        $('whatsappButton').href='https://wa.me/'+digits(phone)+'?text='+encodeURIComponent(lang==='fr'?'Bonjour Ahmadou, je souhaiterais entrer en contact avec vous.':'Hello Ahmadou, I would like to connect with you.');
+        const photo=$('profilePhoto');
+        photo.crossOrigin='anonymous';
+        photo.src=safeUrl(profile.photo_url)||FALLBACK_PHOTO;
+        document.title=(profile.full_name||'Ahmadou Lamine Diouf')+' | Digital Contact Card';
+      }
+      function makeQR(){
+        $('qrCode').innerHTML='';
+        if(!window.QRCode){$('status').textContent=t('qrError');return false;}
+        new QRCode($('qrCode'),{
+          text:CARD_URL,width:220,height:220,colorDark:'#071a2d',
+          colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H
+        });
+        return true;
+      }
+      function setLanguage(next){
+        lang=next;
+        document.documentElement.lang=lang;
+        document.querySelectorAll('[data-t]').forEach(node=>{node.textContent=t(node.dataset.t);});
+        $('langEn').setAttribute('aria-pressed',String(lang==='en'));
+        $('langFr').setAttribute('aria-pressed',String(lang==='fr'));
+        $('langEn').className='rounded-lg px-3 py-2 text-xs font-bold '+(lang==='en'?'bg-[#071a2d] text-white':'text-slate-500');
+        $('langFr').className='rounded-lg px-3 py-2 text-xs font-bold '+(lang==='fr'?'bg-[#071a2d] text-white':'text-slate-500');
+        applyProfile();
+      }
+      $('langEn').addEventListener('click',()=>setLanguage('en'));
+      $('langFr').addEventListener('click',()=>setLanguage('fr'));
+      async function loadProfile(){
+        const result=await db.from('profile').select('*').eq('id',1).maybeSingle();
+        if(result.error||!result.data){$('status').textContent=t('missingProfile');}
+        else{profile={...profile,...result.data};}
+        setLanguage(lang);
+        makeQR();
+      }
+      function wrapText(ctx,text,x,y,maxWidth,lineHeight,maxLines){
+        const words=String(text||'').split(/\s+/);
+        let line='',lines=0;
+        for(let n=0;n<words.length;n++){
+          const test=line?line+' '+words[n]:words[n];
+          if(ctx.measureText(test).width>maxWidth&&line){
+            ctx.fillText(line,x,y);line=words[n];y+=lineHeight;lines++;
+            if(maxLines&&lines>=maxLines-1){if(ctx.measureText(line+'…').width>maxWidth){while(line.length&&ctx.measureText(line+'…').width>maxWidth)line=line.slice(0,-1);}ctx.fillText(line+'…',x,y);return y+lineHeight;}
+          }else line=test;
+        }
+        if(line)ctx.fillText(line,x,y);
+        return y+lineHeight;
+      }
+      function roundedRect(ctx,x,y,w,h,r,fill){
+        ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);
+        ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
+        if(fill)ctx.fill();
+      }
+      function loadImage(url){
+        return new Promise(resolve=>{
+          if(!url){resolve(null);return;}
+          const image=new Image();image.crossOrigin='anonymous';
+          image.onload=()=>resolve(image);image.onerror=()=>resolve(null);
+          image.src=url;
+        });
+      }
+      async function renderPng(){
+        const canvas=$('exportCanvas'),ctx=canvas.getContext('2d');
+        const W=1800,H=1000;
+        ctx.clearRect(0,0,W,H);
+        const gradient=ctx.createLinearGradient(0,0,W,H);
+        gradient.addColorStop(0,'#071a2d');gradient.addColorStop(.68,'#102f49');gradient.addColorStop(1,'#0b243b');
+        ctx.fillStyle=gradient;roundedRect(ctx,0,0,W,H,54,true);
+        ctx.save();ctx.globalAlpha=.14;ctx.strokeStyle='#a5d5c6';ctx.lineWidth=2;
+        for(let x=80;x<W;x+=68){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+        for(let y=60;y<H;y+=68){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+        ctx.restore();
+        ctx.fillStyle='#c9a76a';roundedRect(ctx,105,115,64,5,2,true);
+        ctx.fillStyle='#b8d8cd';ctx.font='800 20px Arial';ctx.letterSpacing='4px';
+        ctx.fillText(lang==='fr'?'FABRICATION DE VACCINS EN AFRIQUE':'AFRICAN VACCINE MANUFACTURING',190,121);
+        const qrCanvas=$('qrCode').querySelector('canvas');
+        if(!qrCanvas)throw new Error('QR_NOT_READY');
+        ctx.fillStyle='#ffffff';roundedRect(ctx,1270,155,420,680,28,true);
+        ctx.fillStyle='#087e61';ctx.font='800 17px Arial';ctx.textAlign='center';
+        ctx.fillText(lang==='fr'?'SCANNER POUR ME JOINDRE':'SCAN TO CONNECT',1480,215);
+        ctx.drawImage(qrCanvas,1325,255,310,310);
+        ctx.fillStyle='#071a2d';ctx.font='700 24px Arial';
+        ctx.fillText(lang==='fr'?'Carte de contact interactive':'Interactive contact card',1480,620);
+        ctx.fillStyle='#64748b';ctx.font='16px Arial';
+        ctx.fillText('ahmadou-lamine-diouf.pages.dev',1480,660);
+        ctx.fillStyle='#9bb0be';ctx.font='700 16px Arial';ctx.textAlign='left';
+        ctx.fillText(lang==='fr'?'VOTRE CONTACT':'YOUR CONTACT',455,285);
+        const photo=await loadImage(profile.photo_url||FALLBACK_PHOTO);
+        if(photo){
+          ctx.save();ctx.beginPath();ctx.arc(265,505,145,0,Math.PI*2);ctx.clip();ctx.drawImage(photo,120,360,290,290);ctx.restore();
+          ctx.strokeStyle='#c9a76a';ctx.lineWidth=7;ctx.beginPath();ctx.arc(265,505,149,0,Math.PI*2);ctx.stroke();
+        }else{
+          ctx.fillStyle='#16415b';ctx.beginPath();ctx.arc(265,505,145,0,Math.PI*2);ctx.fill();
+          ctx.fillStyle='#fff';ctx.font='bold 78px Georgia';ctx.textAlign='center';ctx.fillText('ALD',265,530);ctx.textAlign='left';
+        }
+        ctx.fillStyle='#ffffff';ctx.textAlign='left';ctx.font='bold 66px Georgia';
+        wrapText(ctx,profile.full_name,455,380,730,76,2);
+        ctx.fillStyle='#e2eaf0';ctx.font='600 27px Arial';
+        const title=lang==='fr'?(profile.title_fr||profile.title_en):(profile.title_en||profile.title_fr);
+        const titleEnd=wrapText(ctx,title,455,510,730,40,3);
+        ctx.fillStyle='#8fe0c2';ctx.font='bold 22px Arial';
+        wrapText(ctx,lang==='fr'?(profile.signature_fr||profile.signature_en):(profile.signature_en||profile.signature_fr),455,Math.max(635,titleEnd+18),730,31,2);
+        ctx.strokeStyle='rgba(255,255,255,.25)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(455,735);ctx.lineTo(1170,735);ctx.stroke();
+        ctx.fillStyle='#9bb0be';ctx.font='700 15px Arial';ctx.fillText(lang==='fr'?'TÉLÉPHONE / WHATSAPP':'PHONE / WHATSAPP',455,785);
+        ctx.fillStyle='#ffffff';ctx.font='600 23px Arial';ctx.fillText(profile.phone||'',455,824);
+        ctx.fillStyle='#9bb0be';ctx.font='700 15px Arial';ctx.fillText('EMAIL',820,785);
+        ctx.fillStyle='#ffffff';ctx.font='600 20px Arial';ctx.fillText(profile.email||'',820,824);
+        ctx.fillStyle='#9bb0be';ctx.font='700 15px Arial';ctx.fillText('LINKEDIN',455,875);
+        ctx.fillStyle='#ffffff';ctx.font='600 19px Arial';ctx.fillText(String(profile.linkedin_url||'').replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,''),455,914);
+        ctx.fillStyle='#9bb0be';ctx.font='700 15px Arial';ctx.fillText(lang==='fr'?'LOCALISATION':'LOCATION',820,875);
+        ctx.fillStyle='#ffffff';ctx.font='600 19px Arial';ctx.fillText(profile.location||'',820,914);
+        ctx.textAlign='right';ctx.fillStyle='#d6ba86';ctx.font='800 15px Arial';
+        ctx.fillText('DAKAR  •  SENEGAL',1690,925);
+        return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('PNG_EXPORT_FAILED')),'image/png'));
+      }
+      async function downloadPng(){
+        $('status').textContent='';
+        try{
+          const blob=await renderPng();
+          const url=URL.createObjectURL(blob);
+          const link=document.createElement('a');link.href=url;link.download='Ahmadou_Lamine_Diouf_Carte_de_visite.png';
+          document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+          $('status').textContent=t('imageReady');
+          return blob;
+        }catch(error){console.error(error);$('status').textContent=error.message==='QR_NOT_READY'?t('qrError'):t('downloadError');return null;}
+      }
+      $('downloadPng').addEventListener('click',downloadPng);
+      $('shareCard').addEventListener('click',async()=>{
+        $('status').textContent='';
+        try{
+          const blob=await renderPng();
+          const file=new File([blob],'Ahmadou_Lamine_Diouf_Carte_de_visite.png',{type:'image/png'});
+          if(navigator.canShare&&navigator.canShare({files:[file]})&&navigator.share){
+            await navigator.share({files:[file],title:profile.full_name,text:lang==='fr'?'Ma carte de visite professionnelle. Scannez le QR code pour accéder à mes coordonnées cliquables.':'My professional contact card. Scan the QR code to access my clickable contact details.'});
+          }else if(navigator.share){
+            await navigator.share({title:profile.full_name,text:(lang==='fr'?'Ma carte de visite : ':'My contact card: ')+CARD_URL,url:CARD_URL});
+          }else{
+            await navigator.clipboard.writeText(CARD_URL);
+            $('status').textContent=t('copied');
+          }
+        }catch(error){
+          if(error.name==='AbortError')return;
+          try{await navigator.clipboard.writeText(CARD_URL);$('status').textContent=t('copied');}
+          catch(e){$('status').textContent=t('copyFailed')+CARD_URL;}
+        }
+      });
+      function downloadVCard(){
+        const clean=(value)=>String(value||'').replace(/[\n\r,;]/g,' ');
+        const vcard=[
+          'BEGIN:VCARD','VERSION:3.0',
+          'N:Diouf;Ahmadou Lamine;;;',
+          'FN:'+clean(profile.full_name),
+          'TITLE:'+clean(lang==='fr'?(profile.title_fr||profile.title_en):(profile.title_en||profile.title_fr)),
+          'TEL;TYPE=CELL,VOICE:'+clean(profile.phone),
+          'EMAIL;TYPE=INTERNET:'+clean(profile.email),
+          'URL:'+clean(profile.linkedin_url),
+          'ADR;TYPE=WORK:;;'+clean(profile.location),
+          'NOTE:'+clean(lang==='fr'?(profile.signature_fr||profile.signature_en):(profile.signature_en||profile.signature_fr)),
+          'END:VCARD'
+        ].join('\r\n');
+        const blob=new Blob([vcard],{type:'text/vcard;charset=utf-8'});
+        const url=URL.createObjectURL(blob),a=document.createElement('a');
+        a.href=url;a.download='Ahmadou_Lamine_Diouf.vcf';document.body.appendChild(a);a.click();a.remove();
+        setTimeout(()=>URL.revokeObjectURL(url),1500);$('status').textContent=t('vcardReady');
+      }
+      $('downloadVcard').addEventListener('click',downloadVCard);
+      loadProfile();
+    })();
+  </script>
+</body>
+</html>
