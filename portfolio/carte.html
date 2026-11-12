@@ -329,13 +329,13 @@
         wrapText(ctx,lang==='fr'?(profile.signature_fr||profile.signature_en):(profile.signature_en||profile.signature_fr),455,Math.max(635,titleEnd+18),730,31,2);
         ctx.strokeStyle='rgba(255,255,255,.25)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(455,735);ctx.lineTo(1170,735);ctx.stroke();
         ctx.fillStyle='#9bb0be';ctx.font='700 15px Arial';ctx.fillText(lang==='fr'?'TÉLÉPHONE / WHATSAPP':'PHONE / WHATSAPP',455,785);
-        ctx.fillStyle='#ffffff';ctx.font='600 23px Arial';ctx.fillText(profile.phone||'',455,824);
+        ctx.fillStyle='#ffffff';ctx.font='600 23px Arial';wrapText(ctx,profile.phone||'',455,824,340,28,1);
         ctx.fillStyle='#9bb0be';ctx.font='700 15px Arial';ctx.fillText('EMAIL',820,785);
-        ctx.fillStyle='#ffffff';ctx.font='600 20px Arial';ctx.fillText(profile.email||'',820,824);
+        ctx.fillStyle='#ffffff';ctx.font='600 17px Arial';wrapText(ctx,profile.email||'',820,824,345,24,2);
         ctx.fillStyle='#9bb0be';ctx.font='700 15px Arial';ctx.fillText('LINKEDIN',455,875);
-        ctx.fillStyle='#ffffff';ctx.font='600 19px Arial';ctx.fillText(String(profile.linkedin_url||'').replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,''),455,914);
+        ctx.fillStyle='#ffffff';ctx.font='600 15px Arial';wrapText(ctx,String(profile.linkedin_url||'').replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,''),455,914,700,22,2);
         ctx.fillStyle='#9bb0be';ctx.font='700 15px Arial';ctx.fillText(lang==='fr'?'LOCALISATION':'LOCATION',820,875);
-        ctx.fillStyle='#ffffff';ctx.font='600 19px Arial';ctx.fillText(profile.location||'',820,914);
+        ctx.fillStyle='#ffffff';ctx.font='600 18px Arial';wrapText(ctx,profile.location||'',820,914,345,24,2);
         ctx.textAlign='right';ctx.fillStyle='#d6ba86';ctx.font='800 15px Arial';
         ctx.fillText('DAKAR  •  SENEGAL',1690,925);
         return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('PNG_EXPORT_FAILED')),'image/png'));
