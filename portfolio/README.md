@@ -1,19 +1,23 @@
 # Ahmadou Lamine Diouf — Personal Portfolio
 
-Bilingual institutional portfolio for biomanufacturing and African vaccine manufacturing advocacy.
+A bilingual (EN/FR) executive portfolio and advocacy site connected to a private Supabase CMS.
 
-## Deployment
-- Hosted on Cloudflare Pages: https://ahmadou-lamine-diouf.pages.dev
-- GitHub repository: https://github.com/Ahmadou98/biosim-lab-pro
-- Production branch: `personal-portfolio`
-- Site root: `portfolio/`
-- Entry point: `index.html`
+## Public site and admin
+- Website: https://ahmadou-lamine-diouf.pages.dev
+- Owner administration: https://ahmadou-lamine-diouf.pages.dev/admin.html
+- Setup guide: [ADMIN-SETUP.md](./ADMIN-SETUP.md)
+- Supabase schema: [supabase/schema.sql](./supabase/schema.sql)
 
-## Editing
-The site is a self-contained HTML5 page with Tailwind CSS CDN and vanilla JavaScript.
-- English is the default language; the EN / FR selector switches all translated page content without reloading.
-- The vCard is generated locally in the visitor's browser.
-- WhatsApp, email and LinkedIn actions are direct links.
-- The portrait currently uses the public GitHub profile avatar. Replace the `src` on `#profilePhoto` with a dedicated professional image when one is available.
+## Architecture
+- Static HTML5, Tailwind CSS CDN and vanilla JavaScript.
+- Cloudflare Pages deployment from GitHub branch `personal-portfolio`, root directory `portfolio/`.
+- Supabase project `ALD-Portfolio` (`kjrgvpxmqrbhbejqedcm`), region `eu-west-3`.
+- Supabase Auth (email/password), Postgres RLS, and public-read image bucket `portfolio-media`.
+- Tables: `events`, `experiences`, `diplomas`, `initiatives`, `profile`.
 
-The production branch is kept separate from `main`; the main application is unchanged.
+## Content management
+Use `admin.html` to add, edit, publish/unpublish or remove events, experiences, diplomas/certifications, initiatives and the main profile. Images can be selected from a phone or computer, are resized/compressed in the browser, then uploaded to Supabase Storage. Existing images can be removed from a record's editor.
+
+Public content reads are restricted to published records. Database writes and Storage uploads/updates/deletions are restricted by RLS to the owner email `ahmadoulaminediouf39@gmail.com`. Only the Supabase publishable key appears in browser code; no service-role or secret key is present.
+
+See [ADMIN-SETUP.md](./ADMIN-SETUP.md) before first sign-in, especially the Supabase Auth Site URL and redirect URL settings.
