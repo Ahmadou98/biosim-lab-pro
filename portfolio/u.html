@@ -268,7 +268,7 @@
         if(!data.phone&&!data.email)throw new Error(text("Enter a phone number or an email address.","Indiquez un téléphone ou une adresse e-mail."));
         const result=await PP.api("share-contact",{
           slug:profile.slug,full_name:data.full_name,phone:data.phone||null,email:data.email||null,
-          organization:data.organization||null,share_method:method
+          organization:data.organization||null,share_method:method,consent:true
         });
         showContactSuccess(data.full_name,result.owner_name||profile.full_name);
       }
