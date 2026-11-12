@@ -273,6 +273,7 @@
         showContactSuccess(data.full_name,result.owner_name||profile.full_name);
       }
       function showContactSuccess(name,owner){
+        $("contactModal").hidden=false;
         $("contactFormPane").hidden=true;$("contactSuccessPane").hidden=false;
         $("contactSuccessTitle").textContent=text("Contact shared with "+owner+"!","Contact partagé avec "+owner+" !");
         $("contactSuccessCopy").textContent=text("Thank you, "+name+". Your contact details have been sent securely.","Merci "+name+". Vos coordonnées ont été transmises de manière sécurisée.");
