@@ -18,35 +18,38 @@
     html{min-width:320px;background:#f1f5f9}
     body{margin:0;min-height:100vh;padding:16px 14px 38px;background:#f1f5f9;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
     a{color:inherit}
-    .topbar{width:min(100%,420px);margin:0 auto 18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .topbar{width:min(100%,420px);margin:0 auto 8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
     .topbar-brand{font-size:10px;line-height:1.3;font-weight:850;letter-spacing:.09em;color:var(--navy);text-decoration:none}
     .topbar-actions{display:flex;align-items:center;gap:5px}
     .lang-btn,.back-link{border:0;border-radius:999px;padding:8px 10px;background:transparent;color:#64748b;font:700 11px/1 system-ui,sans-serif;text-decoration:none;cursor:pointer}
     .lang-btn[aria-pressed="true"]{background:var(--navy);color:#fff}
     .back-link{border:1px solid #dbe3eb;background:#fff;color:var(--navy)}
     .card-shell{width:min(100%,420px);margin:0 auto;background:#fff;border-radius:28px;overflow:hidden;border:1px solid #e8edf2;box-shadow:0 18px 55px rgba(11,31,58,.12)}
-    .card-header{height:166px;position:relative;display:flex;justify-content:center;align-items:flex-start;padding:27px 18px 0;background:var(--navy)}
-    .event-pill{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:0 17px;border-radius:999px;background:#fff;color:var(--navy);font-size:10px;font-weight:900;letter-spacing:.105em;text-align:center;white-space:nowrap;box-shadow:0 3px 12px rgba(0,0,0,.12)}
-    .photo-frame{position:absolute;z-index:2;left:50%;bottom:0;width:124px;height:124px;transform:translate(-50%,52%);padding:6px;border:1px solid #e5e7eb;border-radius:50%;background:#fff;box-shadow:0 7px 22px rgba(11,31,58,.14)}
+    .card-header{height:136px;position:relative;display:flex;justify-content:center;align-items:flex-start;padding:24px 18px 0;background:var(--navy)}
+    .event-pill{display:inline-flex;align-items:center;justify-content:center;min-height:29px;padding:0 13px;border-radius:999px;background:#fff;color:var(--navy);font-size:9px;font-weight:900;letter-spacing:.09em;text-align:center;white-space:nowrap;box-shadow:0 3px 12px rgba(0,0,0,.12)}
+    .card-lang{position:absolute;top:9px;right:10px;display:flex;gap:3px}
+    .card-lang .lang-btn{padding:6px 8px;color:rgba(255,255,255,.78);font-size:9px}
+    .card-lang .lang-btn[aria-pressed="true"]{background:rgba(255,255,255,.18);color:#fff}
+    .photo-frame{position:absolute;z-index:2;left:50%;bottom:0;width:106px;height:106px;transform:translate(-50%,52%);padding:5px;border:1px solid #e5e7eb;border-radius:50%;background:#fff;box-shadow:0 7px 22px rgba(11,31,58,.14)}
     .photo-frame img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;background:#e2e8f0}
-    .card-content{padding:77px 25px 26px;background:#fff}
+    .card-content{padding:58px 22px 18px;background:#fff}
     .name{margin:0 auto;max-width:100%;color:#101d30;text-align:center;font-size:clamp(27px,7.5vw,34px);font-weight:850;line-height:1.12;letter-spacing:-.045em;overflow-wrap:anywhere;word-break:normal;text-wrap:balance}
-    .professional-title{margin:13px 0 0;color:var(--emerald);font-size:14px;font-weight:750;line-height:1.55;text-align:center;overflow-wrap:anywhere}
-    .bio{margin:13px auto 0;max-width:340px;min-height:60px;color:#64748b;font-size:12.5px;font-weight:450;line-height:1.6;text-align:center;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden}
-    .qr-section{margin:22px auto 0;text-align:center}
-    .qr-label{margin:0 0 11px;color:#64748b;font-size:9px;font-weight:900;letter-spacing:.17em;text-transform:uppercase}
-    .qr-frame{display:inline-flex;align-items:center;justify-content:center;padding:10px;border:1px solid #e8edf2;border-radius:18px;background:#fff;box-shadow:0 4px 15px rgba(11,31,58,.06)}
-    #qrCode{width:220px;height:220px;display:flex;align-items:center;justify-content:center}
-    #qrCode canvas,#qrCode img{display:block;width:220px!important;height:220px!important;max-width:100%}
-    .qr-caption{margin:10px 0 0;color:#64748b;font-size:10px;line-height:1.5}
-    .contact-details{display:grid;gap:0;margin:21px 0 0;padding:0;border-top:1px solid #edf1f5}
-    .contact-row{display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:9px;min-width:0;padding:11px 2px;border-bottom:1px solid #edf1f5;text-decoration:none}
-    .contact-icon{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:#ecfdf5;color:var(--emerald);font-size:14px;font-weight:850}
+    .professional-title{margin:7px 0 0;color:var(--emerald);font-size:12px;font-weight:750;line-height:1.4;text-align:center;overflow-wrap:anywhere}
+    .bio{margin:7px auto 0;max-width:340px;min-height:0;color:#64748b;font-size:11px;font-weight:450;line-height:1.4;text-align:center;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+    .qr-section{margin:10px auto 0;text-align:center}
+    .qr-label{margin:0 0 6px;color:#64748b;font-size:8px;font-weight:900;letter-spacing:.15em;text-transform:uppercase}
+    .qr-frame{display:inline-flex;align-items:center;justify-content:center;padding:7px;border:1px solid #e8edf2;border-radius:14px;background:#fff;box-shadow:0 4px 15px rgba(11,31,58,.06)}
+    #qrCode{width:164px;height:164px;display:flex;align-items:center;justify-content:center}
+    #qrCode canvas,#qrCode img{display:block;width:164px!important;height:164px!important;max-width:100%}
+    .qr-caption{margin:5px 0 0;color:#64748b;font-size:9px;line-height:1.3}
+    .contact-details{display:grid;gap:0;margin:10px 0 0;padding:0;border-top:1px solid #edf1f5}
+    .contact-row{display:grid;grid-template-columns:29px minmax(0,1fr);align-items:center;gap:8px;min-width:0;padding:5px 1px;border-bottom:1px solid #edf1f5;text-decoration:none}
+    .contact-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:#ecfdf5;color:var(--emerald);font-size:12px;font-weight:850}
     .contact-copy{min-width:0}
-    .contact-label{display:block;color:#94a3b8;font-size:8px;font-weight:900;letter-spacing:.16em;line-height:1.4}
-    .contact-value{display:block;margin-top:3px;color:#17263b;font-size:12px;font-weight:700;line-height:1.45;overflow-wrap:anywhere;word-break:break-word}
-    .actions{display:grid;gap:10px;margin-top:22px}
-    .action-btn{width:100%;min-height:49px;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 14px;border:0;border-radius:13px;text-align:center;text-decoration:none;font:850 11px/1.3 system-ui,sans-serif;letter-spacing:.035em;cursor:pointer;transition:transform .16s ease,filter .16s ease}
+    .contact-label{display:block;color:#94a3b8;font-size:7px;font-weight:900;letter-spacing:.15em;line-height:1.25}
+    .contact-value{display:block;margin-top:2px;color:#17263b;font-size:10px;font-weight:700;line-height:1.25;overflow-wrap:anywhere;word-break:break-word}
+    .actions{display:grid;gap:7px;margin-top:11px}
+    .action-btn{width:100%;min-height:41px;display:flex;align-items:center;justify-content:center;gap:7px;padding:9px 11px;border:0;border-radius:11px;text-align:center;text-decoration:none;font:850 10px/1.25 system-ui,sans-serif;letter-spacing:.035em;cursor:pointer;transition:transform .16s ease,filter .16s ease}
     .action-btn:active{transform:scale(.985)}
     .action-save{background:#07845f;color:#fff;box-shadow:0 5px 13px rgba(7,132,95,.2)}
     .action-save:hover{filter:brightness(.96)}
@@ -58,32 +61,65 @@
     .utility-btn{min-height:38px;border:1px solid #e2e8f0;border-radius:11px;background:#fff;color:#64748b;font:700 10px/1.3 system-ui,sans-serif;cursor:pointer}
     .utility-btn:hover{border-color:#a7c7ba;color:var(--navy)}
     .status{width:min(100%,420px);min-height:20px;margin:12px auto 0;color:#64748b;font-size:11px;line-height:1.5;text-align:center}
-    .portfolio-link{display:block;width:min(100%,420px);margin:17px auto 0;color:#0b6b51;font-size:11px;font-weight:750;text-align:center;text-decoration:none}
-    .portfolio-link:hover{text-decoration:underline}
+    .portfolio-link{display:flex;width:min(100%,420px);min-height:42px;align-items:center;justify-content:center;margin:12px auto 0;padding:10px 14px;border:1px solid #d5e3dc;border-radius:12px;background:#fff;color:#0b6b51;font-size:11px;font-weight:800;text-align:center;text-decoration:none;box-shadow:0 3px 10px rgba(11,31,58,.04)}
+    .portfolio-link:hover{border-color:#0b6b51;background:#f7fbf9}
     .sr-only-canvas{position:fixed;left:-10000px;top:0;width:1px;height:1px;pointer-events:none}
     @media(max-width:360px){
       body{padding-left:10px;padding-right:10px}
-      .card-content{padding-left:19px;padding-right:19px}
-      .event-pill{font-size:9px;letter-spacing:.08em}
-      #qrCode,#qrCode canvas,#qrCode img{width:202px!important;height:202px!important}
-      .action-btn{font-size:10px;padding-left:8px;padding-right:8px}
+      .card-content{padding-left:15px;padding-right:15px}
+      .event-pill{font-size:8px;letter-spacing:.06em}
+      #qrCode,#qrCode canvas,#qrCode img{width:148px!important;height:148px!important}
+      .action-btn{font-size:9px;padding-left:7px;padding-right:7px}
+    }
+    @media(max-width:600px) and (max-height:850px){
+      body{padding-top:8px;padding-bottom:12px}
+      .topbar{margin-bottom:5px}
+      .card-header{height:126px;padding-top:23px}
+      .photo-frame{width:96px;height:96px}
+      .card-content{padding-top:52px;padding-bottom:13px}
+      .name{font-size:clamp(24px,7vw,29px)}
+      .professional-title{margin-top:5px;font-size:11px;line-height:1.3}
+      .bio{margin-top:5px;font-size:10px;line-height:1.3;-webkit-line-clamp:2;line-clamp:2}
+      .qr-section{margin-top:7px}
+      #qrCode,#qrCode canvas,#qrCode img{width:146px!important;height:146px!important}
+      .qr-caption{margin-top:3px}
+      .contact-details{margin-top:7px}
+      .contact-row{padding:4px 1px}
+      .actions{margin-top:8px;gap:6px}
+      .action-btn{min-height:36px;padding:7px 9px}
+      .portfolio-link{margin-top:8px;min-height:36px}
+    }
+    @media(max-width:600px) and (max-height:740px){
+      .card-header{height:112px}
+      .photo-frame{width:82px;height:82px}
+      .card-content{padding-top:46px}
+      .name{font-size:24px}
+      .professional-title{font-size:10px}
+      .bio{font-size:9px}
+      #qrCode,#qrCode canvas,#qrCode img{width:126px!important;height:126px!important}
+      .contact-row{grid-template-columns:25px minmax(0,1fr);gap:6px;padding:3px 0}
+      .contact-icon{width:23px;height:23px}
+      .contact-value{font-size:9px}
+      .action-btn{min-height:33px;font-size:9px}
     }
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
   </style>
 </head>
 <body>
   <header class="topbar">
-    <a class="topbar-brand" href="/">AHMADOU LAMINE DIOUF</a>
+    <a class="topbar-brand" href="https://ahmadou-lamine-diouf.pages.dev/">AHMADOU LAMINE DIOUF</a>
     <div class="topbar-actions">
-      <button id="langEn" class="lang-btn" type="button" aria-pressed="true">EN</button>
-      <button id="langFr" class="lang-btn" type="button" aria-pressed="false">FR</button>
-      <a class="back-link" href="/" data-t="back">Portfolio ↗</a>
+      <a class="back-link" href="https://ahmadou-lamine-diouf.pages.dev/" data-t="back">Portfolio ↗</a>
     </div>
   </header>
 
   <main>
     <section id="businessCard" class="card-shell" aria-label="Digital business card">
       <div class="card-header">
+        <div class="card-lang" role="group" aria-label="Language">
+          <button id="langEn" class="lang-btn" type="button" aria-pressed="true">EN</button>
+          <button id="langFr" class="lang-btn" type="button" aria-pressed="false">FR</button>
+        </div>
         <span class="event-pill">CPHIA 2026 · ADDIS ABABA</span>
         <div class="photo-frame">
           <img id="profilePhoto" src="https://avatars.githubusercontent.com/u/189660768?v=4" alt="Ahmadou Lamine Diouf">
@@ -112,7 +148,7 @@
           </a>
           <a id="linkedinLink" class="contact-row" href="https://www.linkedin.com/in/ahmadou-lamine-diouf-003a98321/" target="_blank" rel="noopener noreferrer">
             <span class="contact-icon" aria-hidden="true">in</span>
-            <span class="contact-copy"><span class="contact-label">LINKEDIN</span><span id="linkedinText" class="contact-value">linkedin.com/in/ahmadou-lamine-diouf-003a98321</span></span>
+            <span class="contact-copy"><span class="contact-label">LINKEDIN</span><span id="linkedinText" class="contact-value">in/ahmadou-lamine-diouf</span></span>
           </a>
           <div class="contact-row">
             <span class="contact-icon" aria-hidden="true">⌖</span>
@@ -123,8 +159,8 @@
         <div class="actions">
           <button id="downloadVcard" class="action-btn action-save" type="button"><span class="action-symbol" aria-hidden="true">↓</span><span data-t="saveContact">SAVE CONTACT (.vcf)</span></button>
           <div class="network-actions">
-            <a id="whatsappButton" class="action-btn action-network" href="https://wa.me/221771018290" target="_blank" rel="noopener noreferrer"><span class="action-symbol" aria-hidden="true">◉</span><span>WHATSAPP</span></a>
-            <a id="linkedinButton" class="action-btn action-network" href="https://www.linkedin.com/in/ahmadou-lamine-diouf-003a98321/" target="_blank" rel="noopener noreferrer"><span class="action-symbol" aria-hidden="true">in</span><span>LINKEDIN</span></a>
+            <a id="whatsappButton" class="action-btn action-network" href="https://wa.me/221771018290" target="_blank" rel="noopener noreferrer"><span class="action-symbol" aria-hidden="true">◉</span><span data-t="whatsappButtonLabel">WHATSAPP</span></a>
+            <a id="linkedinButton" class="action-btn action-network" href="https://www.linkedin.com/in/ahmadou-lamine-diouf-003a98321/" target="_blank" rel="noopener noreferrer"><span class="action-symbol" aria-hidden="true">in</span><span data-t="linkedinButtonLabel">LINKEDIN</span></a>
           </div>
         </div>
       </div>
@@ -135,7 +171,7 @@
       <button id="shareCard" class="utility-btn" type="button" data-t="share">Share digital card</button>
     </div>
     <p id="status" class="status" aria-live="polite"></p>
-    <a href="/" class="portfolio-link" data-t="portfolioLink">Explore my professional portfolio ↗</a>
+    <a href="https://ahmadou-lamine-diouf.pages.dev/" class="portfolio-link" data-t="portfolioLink">View Full Portfolio &amp; Advocacy ↗</a>
   </main>
 
   <canvas id="exportCanvas" class="sr-only-canvas" width="1080" height="1680" aria-hidden="true"></canvas>
@@ -156,7 +192,8 @@
           back:'Portfolio ↗',phone:'PHONE / WHATSAPP',email:'EMAIL',location:'LOCATION',
           scan:'SCAN TO CONNECT',scanCaption:'Scan to open my digital contact card',
           saveContact:'SAVE CONTACT (.vcf)',downloadImage:'Download card image (PNG)',
-          share:'Share digital card',portfolioLink:'Explore my professional portfolio ↗',
+          whatsappButtonLabel:'WHATSAPP',linkedinButtonLabel:'LINKEDIN',
+          share:'Share digital card',portfolioLink:'View Full Portfolio & Advocacy ↗',
           vcardReady:'Contact file downloaded.',imageReady:'Your card image has been downloaded.',
           copied:'Card link copied. You can paste it into a message.',
           copyFailed:'Automatic copy failed. Use this link: ',
@@ -169,7 +206,8 @@
           back:'Portfolio ↗',phone:'TÉLÉPHONE / WHATSAPP',email:'E-MAIL',location:'LOCALISATION',
           scan:'SCANNER POUR ME CONTACTER',scanCaption:'Scannez pour ouvrir ma carte de contact',
           saveContact:'ENREGISTRER LE CONTACT (.vcf)',downloadImage:'Télécharger la carte (PNG)',
-          share:'Partager la carte',portfolioLink:'Découvrir mon portfolio professionnel ↗',
+          whatsappButtonLabel:'WHATSAPP',linkedinButtonLabel:'LINKEDIN',
+          share:'Partager la carte',portfolioLink:'Voir le portfolio complet et mon engagement ↗',
           vcardReady:'Fichier contact téléchargé.',imageReady:'Votre image de carte a été téléchargée.',
           copied:'Lien de la carte copié. Vous pouvez le coller dans un message.',
           copyFailed:'Copie automatique impossible. Utilisez ce lien : ',
@@ -229,8 +267,7 @@
         setText('emailText',profile.email||'');
         setText('locationText',profile.location||'');
         const linkedin=safeUrl(profile.linkedin_url)||'';
-        let linkedText=linkedin.replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,'');
-        setText('linkedinText',linkedText);
+        setText('linkedinText','in/ahmadou-lamine-diouf');
         const phone=String(profile.phone||'');
         const phoneHref='tel:'+phone.replace(/[^\d+]/g,'');
         $('phoneLink').href=phoneHref;
@@ -350,8 +387,9 @@
         ctx.fillStyle='#07845f';roundedRect(ctx,110,1450,860,68,18,true);
         ctx.fillStyle='#ffffff';ctx.textAlign='center';ctx.font='900 22px Arial';
         ctx.fillText(lang==='fr'?'ENREGISTRER LE CONTACT':'SAVE CONTACT',540,1493);
-        ctx.fillStyle='#0B1F3A';ctx.font='700 16px Arial';
-        ctx.fillText('ahmadou-lamine-diouf.pages.dev/carte.html',540,1570);
+        ctx.fillStyle='#0B1F3A';roundedRect(ctx,245,1532,590,58,16,true);
+        ctx.fillStyle='#ffffff';ctx.font='800 18px Arial';
+        ctx.fillText('VIEW FULL PORTFOLIO & ADVOCACY ↗',540,1568);
         return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('PNG_EXPORT_FAILED')),'image/png'));
       }
       async function downloadPng(){
